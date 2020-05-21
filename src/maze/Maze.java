@@ -15,11 +15,16 @@ public class Maze {
 	}
 	
 	public Maze(String filename) {
+	
 		// file에서 map 읽어오기 #2
 		
 //		this.width = width;
 //		this.height = height;
 //		this.map = map;
+	}
+	
+	public int[][] getMap(){
+		return map;
 	}
 	
 	public int[][] getArea(int x, int y) {
