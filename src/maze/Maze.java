@@ -25,6 +25,14 @@ public class Maze {
 	public int[][] getArea(int x, int y) {
 		int[][] smap = new int[3][3];
 		// 지도에서 해당 위치 주변의 9칸을 배열로 만들어 리턴한다. #3
+		int[] index = {-1, 0, 1};
+		
+		for (int i=0;i<smap.length;i++) {
+			for (int j=0;j<smap[0].length;j++) {
+				smap[i][j] = map[x+index[i]][y+index[j]];
+			}
+		}
+		
 		return smap;
 	}
 
