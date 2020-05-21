@@ -133,7 +133,8 @@ public class MazeEscapeGUI2 extends JFrame {
 		}
 		
 		count++;
-		this.setWindow(map);
+		this.setWindow(map); 
+		
 
 		if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
 			JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
