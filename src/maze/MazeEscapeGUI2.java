@@ -67,11 +67,12 @@ public class MazeEscapeGUI2 extends JFrame {
 
 		mapLabels = new JLabel[map.length][];
 		
+		GridBagConstraints gbc = new GridBagConstraints();
+		
 		for (int i=0; i<map.length; i++) {
 			mapLabels[i] = new JLabel[map[i].length];
 			
 			for (int j=0; j<map[i].length; j++) {
-				GridBagConstraints gbc = new GridBagConstraints();
 				gbc.gridx=j;
 				gbc.gridy=i;
 
@@ -108,15 +109,32 @@ public class MazeEscapeGUI2 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public void setWindow(int [][] map) {
-		getContentPane().removeAll();
-		initWindow();
+	public void setWindow(int prev_x, int prev_y, int [][] map) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		mapPanel.remove(mapLabels[prev_y][prev_x]);
+		mapLabels[prev_y][prev_x] = new JLabel(new ImageIcon("res/way.jpg"));
+		gbc.gridx=prev_x;
+		gbc.gridy=prev_y;
+		mapPanel.add(mapLabels[prev_y][prev_x], gbc);
+
+		mapPanel.remove(mapLabels[curr_y][curr_x]);
+		mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+		gbc.gridx=curr_x;
+		gbc.gridy=curr_y;
+		mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+
+		lbCount.setText("ÀÌµ¿È½¼ö : " + count);
+		
 		revalidate();
 		repaint();
 	}
 	
 	public void play() {
 		int[][] map = maze.getMap();
+		int prev_x = curr_x;
+		int prev_y = curr_y;
+		
 		int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y) );
 		if (dir==1 && curr_y > 0) {
 			if (map[curr_y-1][curr_x]==0)
@@ -133,7 +151,7 @@ public class MazeEscapeGUI2 extends JFrame {
 		}
 		
 		count++;
-		this.setWindow(map); 
+		this.setWindow(prev_x, prev_y, map); 
 		
 
 		if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
