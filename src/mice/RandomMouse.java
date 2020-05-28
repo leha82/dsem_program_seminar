@@ -13,7 +13,6 @@ public class RandomMouse extends Mouse {
 	// 4: ¿ŞÂÊ
 	public int nextMove(int x, int y, int[][] smap) {
 		int dir = (int)(Math.random()*100) % 5;
-		
 		return dir;
 	}
 }
