@@ -1,8 +1,6 @@
 package maze;
 
 import java.util.*;
-import java.io.FileReader;
-import java.io.BufferedReader;
 
 import mice.*;
 
@@ -13,19 +11,25 @@ public class MazeEscape {
 	private ArrayList<String> miceList;
 	private Mouse mouse;
 	private int start_x, start_y;
+	private int curr_x, curr_y;
 	private int esc_x, esc_y;
 
 	public MazeEscape() {
 		this.count = 0;
 		this.mapfile = "maps/testmap.txt";
+		this.miceList = new ArrayList<String>();
 	}
 
 	public void loadMap() {
 		this.maze = new Maze(mapfile);
-		this.start_x = 0;
-		this.start_y = 0;
-		this.esc_x = 6;
-		this.esc_y = 6;
+		this.start_x = maze.getStart_x();
+		this.start_y = maze.getStart_y();
+		this.esc_x = maze.getEsc_x();
+		this.esc_y = maze.getEsc_y();
+		
+		this.curr_x = this.start_x;
+		this.curr_y = this.start_y;
+
 	}
 
 	public void loadMice() {
@@ -33,42 +37,66 @@ public class MazeEscape {
 		this.mouse = new RandomMouse();
 	}
 
-	public void printMap() {
+	public void printMap(int x, int y) {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
 		int[][] map = maze.getMap();
-		Scanner sc = new Scanner(System.in);
 		String goal = "▶";
 		String load = "·";
 		String block = "■";
-		map[esc_x][esc_y] = Integer.parseInt(goal);
+		String mouse = "§";
 		
 		for (int i = 0; i < map.length; i++) {
 
 			for (int j = 0; j < map[i].length; j++) {
-				if (map[i][j] == 0) {
-					map[i][j] = Integer.parseInt(load);
+				if (x == j && y == i) {
+					System.out.print(mouse);
+				} else if (esc_x == j && esc_y == i) {
+					System.out.print(goal);
+				} else if (map[i][j] == 0) {
+					System.out.print(load);
 				} else if (map[i][j] == 1) {
-					map[i][j] = Integer.parseInt(block);
-				}
-				System.out.print(map[i][j] + " ");
+					System.out.print(block);
+				} 
+				
+				System.out.print(" ");
 			}
 			System.out.println();
 		}
-		sc.nextLine();
-		System.out.println();
+		System.out.println("count : " + count);
+
 	}
 
 	public void play() {
-		int x = this.start_x;
-		int y = this.start_y;
+		Scanner sc = new Scanner(System.in);
 		this.count = 0;
-		while ((x != this.esc_x) || (y != this.esc_y)) {
-			this.printMap();
-			mouse.nextMove(x, y, maze.getArea(x, y) );
+
+		while ((this.curr_x != this.esc_x) || (this.curr_y != this.esc_y)) {
+			this.printMap(this.curr_x, this.curr_y);
+			sc.nextLine();
+
+			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y) );
+			System.out.println(dir);
+			
+			if (dir==1 && curr_y > 0) { // check up
+				if (maze.getMapPoint(curr_x,curr_y-1)==0)
+					curr_y--;	
+			} else if (dir==2 && curr_x < maze.getWidth()-1) { // check right
+				if (maze.getMapPoint(curr_x+1,curr_y)==0)
+					curr_x++;
+			} else if (dir==3 && curr_y < maze.getHeight()-1) { // check down
+				if (maze.getMapPoint(curr_x,curr_y+1)==0)
+					curr_y++;	
+			} else if (dir==4 && curr_x > 0) {	// check left
+				if (maze.getMapPoint(curr_x-1,curr_y)==0)
+					curr_x--;
+			}
+
 			count++;
 		}
+		
 		System.out.println("Escape Success!!");
 		System.out.println("Total Moves : " + count);
+		sc.close();
 	}
 
 	public static void main(String[] args) {
