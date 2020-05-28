@@ -39,10 +39,14 @@ public class MazeEscape {
 	public void play() {
 		int x = this.start_x;
 		int y = this.start_y;
+		this.count = 0;
 		while ((x != this.esc_x) || (y != this.esc_y)) {
 			this.printMap();
 			mouse.nextMove(x, y, maze.getArea(x, y) );
+			count++;
 		}
+		System.out.println("Escape Success!!");
+		System.out.println("Total Moves : " + count);
 	}
 	
 	public static void main(String[] args) {

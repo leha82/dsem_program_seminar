@@ -1,6 +1,7 @@
 # eclipse configure file
 *.classpath
 *.project
+module-info.java
 
 # Compiled class file
 *.class
