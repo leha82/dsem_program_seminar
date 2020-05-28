@@ -46,9 +46,9 @@ public class Maze {
 				token = line.split(" ");
 				for (int i = 0; i < token.length; i++) {
 					map[row][i] = Integer.parseInt(token[i]);
-					System.out.print(map[row][i]);
+					//System.out.print(map[row][i]);
 				}
-				System.out.println(" ");
+				//System.out.println(" ");
 				row++;
 			}
 			br.close();
@@ -84,7 +84,7 @@ public class Maze {
 		// 지도에서 해당 위치 주변의 9칸을 배열로 만들어 리턴한다. #3
 		int[] index = {-1, 0, 1};
 		
-		System.out.println("(" + x + "," + y +")");
+		//System.out.println("(" + x + "," + y +")");
 		for (int i=0;i<smap.length;i++) {
 			for (int j=0;j<smap[0].length;j++) {
 				if (x+index[j] < 0 || y+index[i] < 0 || 
@@ -95,9 +95,9 @@ public class Maze {
 					smap[i][j] = map[y+index[i]][x+index[j]];
 				}
 				
-				System.out.print(smap[i][j] + " ");
+				//System.out.print(smap[i][j] + " ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		
 		return smap;
