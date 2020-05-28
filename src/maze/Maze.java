@@ -46,7 +46,7 @@ public class Maze {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// file에서 map 읽어오기 #2
+		// file에서 map 읽어기 #2
 		
 	}
 	
