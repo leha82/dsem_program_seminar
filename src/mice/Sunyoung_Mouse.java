@@ -2,8 +2,8 @@ package mice;
 
 import java.util.Stack;
 
-public class Sunyoung_Mouse {
-	int[][] new_maze = new int[7][7];
+public class Sunyoung_Mouse extends Mouse {
+	int[][] new_maze = new int[10][10];
 
 	public Sunyoung_Mouse() {
 
