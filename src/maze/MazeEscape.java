@@ -9,7 +9,7 @@ public class MazeEscape {
 	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
-	private Mouse mouse;
+	private Sunyoung_Mouse mouse;
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
@@ -34,8 +34,10 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse();
+		this.mouse = new Sunyoung_Mouse();
+//		this.mouse = new RandomMouse();
 	}
+
 
 	public void printMap(int x, int y) {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
