@@ -7,7 +7,7 @@ public class RandomMouse_woolin extends Mouse {
 	private Maze maze;
 	private MazeEscape me;
 	
-	public int[][] tmap = new int[7][7];
+	public int[][] tmap = new int[10][10];
 	public int path = 2;
 	public RandomMouse_woolin() {
 		
@@ -31,7 +31,7 @@ public class RandomMouse_woolin extends Mouse {
 			for (int j=0;j<smap[0].length;j++) {
 				if (smap[i][j] != -1) {
 					if (tmap[y+index[i]][x+index[j]] == path) {
-						tmap[y+index[i]][x+index[j]] = tmap[y+index[i]][x+index[j]];
+//						tmap[y+index[i]][x+index[j]] = tmap[y+index[i]][x+index[j]];
 					} else {
 						tmap[y+index[i]][x+index[j]] = smap[i][j];
 					}
