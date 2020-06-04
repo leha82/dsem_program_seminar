@@ -5,7 +5,8 @@ import java.io.*;
 public class Maze {
 	private int width, height;
 	private int start_x, start_y;
-	private int esc_x, esc_y;
+	public int esc_x;
+	private int esc_y;
 	private int[][] map;
 
 	public Maze() {
@@ -84,7 +85,7 @@ public class Maze {
 		// 지도에서 해당 위치 주변의 9칸을 배열로 만들어 리턴한다. #3
 		int[] index = {-1, 0, 1};
 		
-		//System.out.println("(" + x + "," + y +")");
+		System.out.println("(" + x + "," + y +")");
 		for (int i=0;i<smap.length;i++) {
 			for (int j=0;j<smap[0].length;j++) {
 				if (x+index[j] < 0 || y+index[i] < 0 || 
@@ -95,11 +96,11 @@ public class Maze {
 					smap[i][j] = map[y+index[i]][x+index[j]];
 				}
 				
-				//System.out.print(smap[i][j] + " ");
+				System.out.print(smap[i][j] + " ");
 			}
-			//System.out.println();
+			System.out.println();
 		}
-		
+	//	System.out.print(smap[x+1][y+1] + " ");
 		return smap;
 	}
 

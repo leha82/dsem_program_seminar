@@ -7,7 +7,9 @@ import java.util.*;
 import javax.swing.*;
 
 import mice.Mouse;
-import mice.RandomMouse;
+import mice.RandomMouse_sojin;
+
+import mice.*;
 
 public class MazeEscapeGUI extends JFrame {
 	private JPanel mainPanel;
@@ -19,7 +21,7 @@ public class MazeEscapeGUI extends JFrame {
 	private JLabel lbCount;
 	private JLabel[][] mapLabels;
 
-	private String mapfile = "maps/testmap.txt";
+	private String mapfile = "maps/testmap2.txt";
 	private int count;
 	private Maze maze;
 	private ArrayList<String> miceList;
@@ -33,7 +35,6 @@ public class MazeEscapeGUI extends JFrame {
 	public MazeEscapeGUI() {
 		super("Maze Escape");
 		this.count = 0;
-		this.mapfile = "maps/testmap.txt";
 		this.finished = false;
 	}
 
@@ -53,7 +54,7 @@ public class MazeEscapeGUI extends JFrame {
 	public void loadMice() {
 		miceList = new ArrayList<String>();
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse();
+		this.mouse = new RandomMouse_sojin();
 	}
 	
 	public void initWindow() {
@@ -167,6 +168,7 @@ public class MazeEscapeGUI extends JFrame {
 		int i=0;
 		while (!finished && (i < move || move == -1)) {
 			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y) );
+			
 			if (dir==1 && curr_y > 0) {
 				if (map[curr_y-1][curr_x]==0)
 					curr_y--;	

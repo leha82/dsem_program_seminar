@@ -9,7 +9,11 @@ public class MazeEscape {
 	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
+<<<<<<< HEAD
 	private Sunyoung_Mouse mouse;
+=======
+	private RandomMouse_woolin mouse;
+>>>>>>> refs/remotes/origin/master
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
@@ -34,8 +38,13 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
+<<<<<<< HEAD
 		this.mouse = new Sunyoung_Mouse();
 //		this.mouse = new RandomMouse();
+=======
+
+		this.mouse = new RandomMouse_woolin();
+>>>>>>> refs/remotes/origin/master
 	}
 
 
@@ -43,7 +52,7 @@ public class MazeEscape {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
 		int[][] map = maze.getMap();
 		String goal = "▶";
-		String load = "·";
+		String road = "·";
 		String block = "■";
 		String mouse = "§";
 		
@@ -55,7 +64,7 @@ public class MazeEscape {
 				} else if (esc_x == j && esc_y == i) {
 					System.out.print(goal);
 				} else if (map[i][j] == 0) {
-					System.out.print(load);
+					System.out.print(road);
 				} else if (map[i][j] == 1) {
 					System.out.print(block);
 				} 
@@ -76,9 +85,8 @@ public class MazeEscape {
 			this.printMap(this.curr_x, this.curr_y);
 			sc.nextLine();
 
-			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y) );
-			System.out.println(dir);
-			
+			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y));
+		
 			if (dir==1 && curr_y > 0) { // check up
 				if (maze.getMapPoint(curr_x,curr_y-1)==0)
 					curr_y--;	
