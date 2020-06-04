@@ -9,11 +9,7 @@ public class MazeEscape {
 	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
-<<<<<<< HEAD
-	private Sunyoung_Mouse mouse;
-=======
-	private RandomMouse_woolin mouse;
->>>>>>> refs/remotes/origin/master
+	private Mouse mouse;
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
@@ -38,13 +34,9 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-<<<<<<< HEAD
 		this.mouse = new Sunyoung_Mouse();
 //		this.mouse = new RandomMouse();
-=======
 
-		this.mouse = new RandomMouse_woolin();
->>>>>>> refs/remotes/origin/master
 	}
 
 
