@@ -6,12 +6,10 @@ import java.util.*;
 
 import javax.swing.*;
 
-<<<<<<< HEAD
 import mice.Mouse;
 import mice.RandomMouse_sojin;
-=======
+
 import mice.*;
->>>>>>> branch 'master' of https://github.com/leha82/dsem_program_seminar.git
 
 public class MazeEscapeGUI extends JFrame {
 	private JPanel mainPanel;

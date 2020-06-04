@@ -34,11 +34,10 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-<<<<<<< HEAD
+
 		this.mouse = new RandomMouse_sojin();
-=======
+
 		this.mouse = new mouseMoo();
->>>>>>> branch 'master' of https://github.com/leha82/dsem_program_seminar.git
 	}
 
 	public void printMap(int x, int y) {
