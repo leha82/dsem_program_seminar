@@ -9,7 +9,7 @@ public class MazeEscape {
 	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
-	private Mouse mouse;
+	private RandomMouse_woolin mouse;
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
@@ -34,7 +34,7 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse();
+		this.mouse = new RandomMouse_woolin();
 	}
 
 	public void printMap(int x, int y) {
@@ -74,9 +74,8 @@ public class MazeEscape {
 			this.printMap(this.curr_x, this.curr_y);
 			sc.nextLine();
 
-			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y) );
-			System.out.println(dir);
-			
+			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y));
+		
 			if (dir==1 && curr_y > 0) { // check up
 				if (maze.getMapPoint(curr_x,curr_y-1)==0)
 					curr_y--;	
