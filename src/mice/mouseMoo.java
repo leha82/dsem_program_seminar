@@ -22,7 +22,7 @@ public class mouseMoo extends Mouse {
 
 		int dir = right(2);
 
-		return dir;
+		return dir; 
 	}
 
 	public int right(int r) {
