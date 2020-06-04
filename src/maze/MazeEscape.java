@@ -34,7 +34,7 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse();
+		this.mouse = new RandomMouse_sojin();
 	}
 
 	public void printMap(int x, int y) {

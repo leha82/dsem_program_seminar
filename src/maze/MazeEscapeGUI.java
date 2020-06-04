@@ -7,7 +7,7 @@ import java.util.*;
 import javax.swing.*;
 
 import mice.Mouse;
-import mice.RandomMouse;
+import mice.RandomMouse_sojin;
 
 public class MazeEscapeGUI extends JFrame {
 	private JPanel mainPanel;
@@ -53,7 +53,7 @@ public class MazeEscapeGUI extends JFrame {
 	public void loadMice() {
 		miceList = new ArrayList<String>();
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse();
+		this.mouse = new RandomMouse_sojin();
 	}
 	
 	public void initWindow() {
