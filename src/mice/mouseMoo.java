@@ -10,7 +10,7 @@ public class mouseMoo extends Mouse {
 	}
 
 	// Mouse가 다음으로 움직일 방향을 정한다.
-	// 0: 제자리
+	// 0: 제자리 
 	// 1: 위쪽
 	// 2: 오른쪽
 	// 3: 아래쪽
