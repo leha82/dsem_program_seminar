@@ -41,7 +41,7 @@ public class MazeEscape {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
 		int[][] map = maze.getMap();
 		String goal = "▶";
-		String load = "·";
+		String road = "·";
 		String block = "■";
 		String mouse = "§";
 		
@@ -53,7 +53,7 @@ public class MazeEscape {
 				} else if (esc_x == j && esc_y == i) {
 					System.out.print(goal);
 				} else if (map[i][j] == 0) {
-					System.out.print(load);
+					System.out.print(road);
 				} else if (map[i][j] == 1) {
 					System.out.print(block);
 				} 
