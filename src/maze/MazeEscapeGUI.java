@@ -167,6 +167,7 @@ public class MazeEscapeGUI extends JFrame {
 		int i=0;
 		while (!finished && (i < move || move == -1)) {
 			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y) );
+			
 			if (dir==1 && curr_y > 0) {
 				if (map[curr_y-1][curr_x]==0)
 					curr_y--;	
