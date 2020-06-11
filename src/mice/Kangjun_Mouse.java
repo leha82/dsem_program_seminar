@@ -29,11 +29,6 @@ public class Kangjun_Mouse extends Mouse {
 				// 직진방향이 비어있으면 dir을 변함 없이
 				
 				// 직진방향이 막혀있으면, dir을 반대 방향 뒤로 돌기 -> nextMove();
-				
-		this.x = x;
-		this.y = y;
-		
-		
 		// 1: 위쪽
 		// 2: 오른쪽
 		// 3: 아래쪽
@@ -44,8 +39,11 @@ public class Kangjun_Mouse extends Mouse {
 			else if(smap[1][2] == 1) {
 				if(smap[0][1] == 1) {
 					dir = 3;
+					return dir;
 				}
+				return dir;
 			}
+			return dir;
 		}
 	
 		if (dir == 2) {  //오른
@@ -54,8 +52,11 @@ public class Kangjun_Mouse extends Mouse {
 			else if(smap[2][1] == 1) {
 				if(smap[1][2] == 1) {
 					dir = 4;
+					return dir;
 				}
+				return dir;
 			}
+			return dir;
 		}
 		
 		if (dir == 3) {  //아래
@@ -64,8 +65,11 @@ public class Kangjun_Mouse extends Mouse {
 			else if(smap[1][0] == 1) {
 				if(smap[2][1] == 1) {
 					dir = 1;
+					return dir;
 				}
+				return dir;
 			}
+			return dir;
 		}
 		
 		if (dir == 4) {  //왼
@@ -74,8 +78,11 @@ public class Kangjun_Mouse extends Mouse {
 			else if(smap[0][1] == 1) {
 				if(smap[1][0] == 1) {
 					dir = 2;
+					return dir;
 				}
+				return dir;
 			}
+			return dir;
 		}
 		return dir;
 	}
