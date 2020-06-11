@@ -6,6 +6,9 @@ import java.util.*;
 
 import javax.swing.*;
 
+import mice.Mouse;
+import mice.RandomMouse_sojin;
+
 import mice.*;
 
 public class MazeEscapeGUI extends JFrame {
@@ -34,7 +37,7 @@ public class MazeEscapeGUI extends JFrame {
 		this.count = 0;
 		this.finished = false;
 	}
-	
+
 	public void loadMap() {
 		this.maze = new Maze(mapfile);
 		
