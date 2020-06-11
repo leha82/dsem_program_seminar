@@ -1,9 +1,9 @@
 package mice;
 
 public class Mouse_woolin extends Mouse {
-	public int dir = 1;  // 처음 방향성 (1)
+	private int dir = 1;  // 처음 방향성 (1)
 	public Mouse_woolin() {
-		
+
 	}
 	
 	// Mouse가 다음으로 움직일 방향을 정한다.
@@ -14,7 +14,7 @@ public class Mouse_woolin extends Mouse {
 			if (smap[1][2] == 0) {  // 오른쪽이 갈 수 있으면
 				dir = 2;
 				return dir;
-			} else if (smap[0][1] == 0) {  // 위쪽 갈 수 있으면
+			} else if (smap[0][1] == 0) {  // 직진 방향(위)
 				dir = 1;
 				return dir;
 			} else if (smap[1][0] == 0) {  // 왼쪽 갈 수 있으면

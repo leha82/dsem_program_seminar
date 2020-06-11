@@ -17,7 +17,7 @@ public class MazeEscape {
 
 	public MazeEscape() {
 		this.count = 0;
-		this.mapfile = "maps/testmap2.txt";
+		this.mapfile = "maps/testmap.txt";
 		this.miceList = new ArrayList<String>();
 	}
 
@@ -35,7 +35,7 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
-		this.mouse = new Sunyoung_Mouse();
+		this.mouse = new Mouse_woolin();
 //		this.mouse = new RandomMouse();
 
 	}
