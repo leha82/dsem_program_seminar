@@ -1,4 +1,4 @@
-package mice;
+package maze;
 
 public abstract class Mouse {
 	// Mouse가 다음으로 움직일 방향을 정한다.

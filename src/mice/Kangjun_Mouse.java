@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class Kangjun_Mouse extends Mouse {
 	private int dir = 1;
 	public static int x;
