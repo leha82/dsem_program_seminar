@@ -38,6 +38,7 @@ public class MazeEscape {
 		this.mouse = new Mouse_sojin();
 	}
 
+
 	public void printMap(int x, int y) {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
 		int[][] map = maze.getMap();
@@ -75,9 +76,8 @@ public class MazeEscape {
 			this.printMap(this.curr_x, this.curr_y);
 			sc.nextLine();
 
-			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y) );
-			System.out.println(dir);
-			
+			int dir = mouse.nextMove(this.curr_x, this.curr_y, maze.getArea(this.curr_x, this.curr_y));
+		
 			if (dir==1 && curr_y > 0) { // check up
 				if (maze.getMapPoint(curr_x,curr_y-1)==0)
 					curr_y--;	
