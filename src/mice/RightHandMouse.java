@@ -21,7 +21,7 @@ public class RightHandMouse extends Mouse {
 		int[] rp_Y = {0, 1, 2, 1, 0};
 		
 		int[] sp_X = {0, 1, 2, 1, 0}; // straight position by current dir
-		int[] sp_Y = {0, 0, 0, 2, 1};
+		int[] sp_Y = {0, 0, 1, 2, 1};
 		
 		int[] rt_Dir = {0, 2, 3, 4, 1};
 		int[] ut_Dir = {0, 3, 4, 1, 2};
