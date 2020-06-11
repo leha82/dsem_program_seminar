@@ -10,6 +10,7 @@ public class MazeEscape {
 	private Maze maze;
 	private ArrayList<String> miceList;
 	private Mouse mouse;
+
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
