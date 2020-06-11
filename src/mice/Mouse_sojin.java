@@ -16,7 +16,7 @@ public class Mouse_sojin extends Mouse {
 			} else if (smap[0][1] == 0) {
 				dir = 1;
 				mouse_dir = 1;
-			} else if (smap[1][0] == 0) {
+			} else {
 				dir = 4;
 				mouse_dir = 4;
 			}
@@ -30,7 +30,7 @@ public class Mouse_sojin extends Mouse {
 			} else if (smap[1][2] == 0) {
 				dir = 2;
 				mouse_dir = 2;
-			} else if (smap[0][1] == 0) {
+			} else {
 				dir = 1;
 				mouse_dir = 1;
 			}
@@ -44,7 +44,7 @@ public class Mouse_sojin extends Mouse {
 			} else if (smap[2][1] == 0) {
 				dir = 3;
 				mouse_dir = 3;
-			} else if (smap[1][2] == 0) {
+			} else  {
 				dir = 2;
 				mouse_dir = 2;
 			}
@@ -58,7 +58,7 @@ public class Mouse_sojin extends Mouse {
 			} else if (smap[1][0] == 0) {
 				dir = 4;
 				mouse_dir = 4;
-			} else if (smap[2][1] == 0) {
+			} else  {
 				dir = 3;
 				mouse_dir = 3;
 			}
