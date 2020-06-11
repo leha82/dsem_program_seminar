@@ -28,7 +28,6 @@ public class mouseMoo extends Mouse {
 			dir = 4;
 			nextMove(x, y, map);
 		}
-		
 		return dir;
 	}
 }
