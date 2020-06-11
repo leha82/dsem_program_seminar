@@ -38,6 +38,8 @@ public class MazeEscape {
 		this.mouse = new Mouse_woolin();
 //		this.mouse = new RandomMouse();
 
+
+		this.mouse = new Mouse_sojin();
 	}
 
 
