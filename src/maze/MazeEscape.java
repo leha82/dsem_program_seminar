@@ -16,7 +16,7 @@ public class MazeEscape {
 
 	public MazeEscape() {
 		this.count = 0;
-		this.mapfile = "maps/testmap.txt";
+		this.mapfile = "maps/testmap2.txt";
 		this.miceList = new ArrayList<String>();
 	}
 
