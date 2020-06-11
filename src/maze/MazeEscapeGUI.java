@@ -7,7 +7,7 @@ import java.util.*;
 import javax.swing.*;
 
 import mice.Mouse;
-import mice.RandomMouse_sojin;
+import mice.Mouse_sojin;
 
 import mice.*;
 
@@ -21,7 +21,7 @@ public class MazeEscapeGUI extends JFrame {
 	private JLabel lbCount;
 	private JLabel[][] mapLabels;
 
-	private String mapfile = "maps/testmap2.txt";
+	private String mapfile = "maps/testmap.txt";
 	private int count;
 	private Maze maze;
 	private ArrayList<String> miceList;
@@ -54,7 +54,7 @@ public class MazeEscapeGUI extends JFrame {
 	public void loadMice() {
 		miceList = new ArrayList<String>();
 		miceList.add("RandomMouse");
-		this.mouse = new RandomMouse_sojin();
+		this.mouse = new Mouse_sojin();
 	}
 	
 	public void initWindow() {

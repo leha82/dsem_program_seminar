@@ -35,8 +35,10 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
+
 		this.mouse = new mouseMoo();
 //		this.mouse = new RandomMouse();
+
 
 	}
 
