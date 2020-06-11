@@ -9,14 +9,15 @@ public class MazeEscape {
 	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
-	private Mouse_woolin mouse;
+	private Mouse mouse;
+
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
 
 	public MazeEscape() {
 		this.count = 0;
-		this.mapfile = "maps/testmap.txt";
+		this.mapfile = "maps/testmap2.txt";
 		this.miceList = new ArrayList<String>();
 	}
 
@@ -34,9 +35,11 @@ public class MazeEscape {
 
 	public void loadMice() {
 		miceList.add("RandomMouse");
+		this.mouse = new Sunyoung_Mouse();
+//		this.mouse = new RandomMouse();
 
-		this.mouse = new Mouse_woolin();
 	}
+
 
 	public void printMap(int x, int y) {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1

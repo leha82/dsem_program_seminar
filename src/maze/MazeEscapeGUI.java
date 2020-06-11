@@ -37,7 +37,7 @@ public class MazeEscapeGUI extends JFrame {
 		this.count = 0;
 		this.finished = false;
 	}
-	
+
 	public void loadMap() {
 		this.maze = new Maze(mapfile);
 		
