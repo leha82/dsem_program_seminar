@@ -96,9 +96,9 @@ public class Maze {
 					smap[i][j] = map[y+index[i]][x+index[j]];
 				}
 				
-				System.out.print(smap[i][j] + " ");
+				//System.out.print(smap[i][j] + " ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 	//	System.out.print(smap[x+1][y+1] + " ");
 		return smap;
