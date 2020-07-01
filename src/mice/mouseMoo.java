@@ -2,11 +2,10 @@ package mice;
 
 public class mouseMoo extends Mouse {
 	public static int map[][];
-	public static int x;
-	public static int y;
 	public static int dir;
+
 	public mouseMoo() {
-		this.dir = 0;
+		this.dir = 2;
 	}
 
 	// Mouse가 다음으로 움직일 방향을 정함
@@ -17,17 +16,71 @@ public class mouseMoo extends Mouse {
 	// 4: 왼쪽
 	public int nextMove(int x, int y, int[][] smap) {
 		this.map = smap;
-		this.x = x;
-		this.y = y;
 
-		if(map[2][1] == 0) {
-			dir = 3;
-		}else if(map[1][2] == 0) {
-			dir = 2;
-		}else if(map[2][1] == 1 && map[1][2] == 1){
-			dir = 4;
-			nextMove(x, y, map);
+		if (dir == 2) { //오른쪽 뱡향
+			if (map[2][1] == 0) {
+				dir = 3;
+				return dir;
+			} else if (map[1][2] == 0) {
+				dir = 2;
+				return dir;
+			} else if (map[0][1] == 0) {
+				dir = 1;
+				return dir;
+			} else {
+				dir = 4;
+				return dir;
+			}
 		}
-		return dir;
+
+		if (dir == 1) { //위쪽 방향
+			if (map[1][2] == 0) {
+				dir = 2;
+				return dir;
+			} else if (map[0][1] == 0) {
+				dir = 1;
+				return dir;
+			} else if (map[1][0] == 0) {
+				dir = 4;
+				return dir;
+			} else {
+				dir = 3;
+				return dir;
+			}
+		}
+		
+	  if(dir == 3) { //아래쪽 방향
+		  if(map[1][0] == 0) {
+			  dir = 4;
+			  return dir;
+		  }else if(map[2][1] == 0) {
+			  dir = 3;
+			  return dir;
+		  }else if(map[1][2] == 0) {
+			  dir = 2;
+			  return dir;
+		  }else {
+			  dir = 1;
+			  return dir;
+		  }
+	  }
+	  
+	  if(dir == 4) { //왼쪽 방향
+		  if(map[0][1] == 0) {
+			  dir = 1;
+			  return dir;
+		  }else if(map[1][0] == 0) {
+			  dir = 4;
+			  return dir;
+			  
+		  }else if(map[2][1] == 0) {
+			  dir = 3;
+			  return dir;
+		  }else {
+			  dir = 2;
+			  return dir;
+		  }
+	  }
+	return dir;
 	}
 }
