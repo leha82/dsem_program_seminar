@@ -104,7 +104,7 @@ public class MazeEscapeGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> list = (JComboBox<String>)e.getSource();//이벤트가 발생한 콤보박스 알아냄
-				int index = list.getSelectedIndex(); //해당 인덱스 알아오기
+				int index = list.getSelectedIndex(); //해당 인덱스 알기
 				String classname = miceList.get(index);
 				
 				try {
