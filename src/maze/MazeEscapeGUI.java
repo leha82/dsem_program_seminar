@@ -126,6 +126,9 @@ public class MazeEscapeGUI extends JFrame {
 			}
 		});
 		
+		// 랭킹보기 버튼 추가
+		// 랭킹보기 버튼을 클릭하면 팝업창이 떠서 RankList를 출력한다.
+		
 		lbCount = new JLabel("이동횟수 : " + count);
 		infoPanel = new JPanel();
 		infoPanel.add(btnNext);
