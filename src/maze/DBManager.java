@@ -15,6 +15,9 @@ public class DBManager {
 					+ "timestamp datetime,"
 					+ "count int)";
 			log.pstmt = log.conn.prepareStatement(createSql);
+			
+			System.out.println("»ý¼º");
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

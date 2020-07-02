@@ -11,9 +11,9 @@ public class LogManager {
    private String password;
    
    Connection conn;
-   private Statement stmt;
+   Statement stmt;
    ResultSet rs;
-	PreparedStatement pstmt;
+   PreparedStatement pstmt;
 	
 	public LogManager() {
 		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -152,7 +152,7 @@ public class LogManager {
    
    public static void main(String[] args) {
       LogManager Log = new LogManager();
-
+      Log.putLog("woolin", 55);
       Log.getminCount("Sunyoung_mouse");
    }
    
