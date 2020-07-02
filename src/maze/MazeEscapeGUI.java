@@ -193,6 +193,7 @@ public class MazeEscapeGUI extends JFrame {
 				finished = true;
 			}
 			
+			
 			i++;
 		}
 
