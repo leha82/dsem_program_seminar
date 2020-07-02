@@ -95,8 +95,9 @@ public class LogManager {
               int count = rs.getInt("count");
               LogRank logrank = new LogRank(Mouse, timestamp, count);
               rankList.add(logrank);
-              
+              System.out.println(rankList.toString());
            }
+           
       } catch (SQLException e) {
          e.printStackTrace();
       }      // 单捞磐海捞胶 立加 秦力
@@ -129,6 +130,7 @@ public class LogManager {
    public static void main(String[] args) {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
+      Log.getRankingList();
       Log.putLog("wolin", 0);
    }
    
