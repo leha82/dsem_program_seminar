@@ -125,12 +125,35 @@ public class LogManager {
       return true;
    }
    
+   public int getminCount(String mouseName) {
+	      int min_count = 0;
+	      
+	      // 单捞磐海捞胶 立加
+	      connectDB();
+	      
+	      try {
+	    	  
+	         String sql = "select min(count) as min_count from Log"; 
+	         pstmt = conn.prepareStatement(sql);
+	           rs = pstmt.executeQuery();
+	           
+	           while(rs.next()) {
+	              min_count = rs.getInt("min_count");
+	           }
+	           System.out.println(min_count);
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }
+	      
+	      // 单捞磐海捞胶 立加 秦力
+	      disconnectDB();
+	      return min_count;
+	   }
+   
    public static void main(String[] args) {
       LogManager Log = new LogManager();
-      Log.getCount("Sunyoung_mouse");
-      Log.getRankingList();
-      Log.putLog("sojin", 5);
 
+      Log.getminCount("Sunyoung_mouse");
    }
    
 
