@@ -18,7 +18,7 @@ public class MazeEscapeGUI extends JFrame {
 	private JLabel lbCount;
 	private JLabel[][] mapLabels;
 
-	private String mapfile = "maps/testmap.txt";
+	private String mapfile = "maps/testmap2.txt";
 	private int count;
 	private Maze maze;
 	private ArrayList<String> miceList;
@@ -47,6 +47,18 @@ public class MazeEscapeGUI extends JFrame {
 		this.curr_y = this.start_y;
 
 	}
+	public void initmap() {
+		this.maze = new Maze(mapfile);
+		
+		this.start_x = 0;
+		this.start_y = 0;
+		this.esc_x = maze.getEsc_x();
+		this.esc_y = maze.getEsc_y();
+		
+		this.curr_x = this.start_x;
+		this.curr_y = this.start_y;
+
+	}
 	
 	public void loadMice() {
 		miceList = new ArrayList<String>();
@@ -55,12 +67,52 @@ public class MazeEscapeGUI extends JFrame {
 		// 패키지명.클래스명으로 list에 넣기 ex: mice.RandomMouse
 		
 		this.mouse = new Mouse_seungyeon();
+		miceList.add("mice.Mouse_kangjun");
+		miceList.add("mice.Mouse_sangmoo");
+		miceList.add("mice.Mouse_seungyeon");
+		miceList.add("mice.Mouse_sojin");	
+		miceList.add("mice.Mouse_woolin");
+		miceList.add("mice.Sunyoung_Mouse");
 	}
 	
 	public void initWindow() {
 		int[][] map = maze.getMap();
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
 		
+		JComboBox<String> mouseComboBox = new JComboBox<String>();
+		for(int i = 0; i < miceList.size(); i++) {
+			mouseComboBox.addItem(miceList.get(i));
+		}
+		c.add(mouseComboBox);
+		setSize(500,500);
+		setVisible(true);
 		
+		mouseComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> list = (JComboBox<String>)e.getSource();//이벤트가 발생한 콤보박스 알아냄
+				int index = list.getSelectedIndex(); //해당 인덱스 알아오기
+				String classname = miceList.get(index);
+				
+				try {
+					Class<?> cls = Class.forName(classname);
+					Object obj = cls.newInstance();
+							
+					mouse = (Mouse) obj;
+					mouse.printClassName();
+					setWindow(curr_x, curr_y, map);
+					loadMap();
+//					this.mouse = new RandomMouse();
+				} catch (Exception e1) {
+					System.out.println("Error: " + e1.getMessage());
+					e1.printStackTrace();
+				} 
+				//mouse.printClassName();
+				
+				// TODO Auto-generated method stub
+			}
+		});
 		// Todo: 메뉴 추가 - Load Mouse - miceList를 나열
 		// mouse를 선택할 경우 - this.mouse에 해당 클래스 생성 및 지정
 		// mouse 선택 후 맵 초기화
