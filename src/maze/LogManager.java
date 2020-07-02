@@ -93,7 +93,6 @@ public class LogManager {
               String Mouse = rs.getString("mouse_name");
               String timestamp= rs.getString("timestamp");
               int count = rs.getInt("count");
-              LogRank logrank = new LogRank(Mouse, timestamp, count);
               rankList.add(id +"," + Mouse +"," + timestamp +"," + count);
 
            }
@@ -101,7 +100,7 @@ public class LogManager {
       } catch (SQLException e) {
          e.printStackTrace();
       }      // 单捞磐海捞胶 立加 秦力
-      
+      System.out.println(rankList);
       disconnectDB();
       return rankList;
    }
@@ -129,13 +128,10 @@ public class LogManager {
    
    public static void main(String[] args) {
       LogManager Log = new LogManager();
-      Log.getCount("Sunyoung_mouse");
-<<<<<<< HEAD
+      Log.getCount("woolin");
       Log.getRankingList();
-      Log.putLog("wolin", 0);
-=======
-      System.out.println(Log.getRankingList().get(0));
->>>>>>> branch 'logmanage' of https://github.com/leha82/dsem_program_seminar.git
+//      Log.putLog("sonyo", 1);
+
    }
    
 
