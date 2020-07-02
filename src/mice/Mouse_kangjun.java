@@ -1,4 +1,5 @@
 package mice;
+
 import maze.Mouse;
 
 public class Mouse_kangjun extends Mouse {

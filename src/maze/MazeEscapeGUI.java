@@ -50,8 +50,11 @@ public class MazeEscapeGUI extends JFrame {
 	
 	public void loadMice() {
 		miceList = new ArrayList<String>();
+		miceList.add("RandomMouse");
+		this.mouse = new Mouse_sojin();
 //		miceList.add("RandomMouse");
-		this.mouse = new RightHandMouse();
+		this.mouse = new RandomMouse();
+		this.mouse = new Mouse_seungyeon();
 	}
 	
 	public void initWindow() {
