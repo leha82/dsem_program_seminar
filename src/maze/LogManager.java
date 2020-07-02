@@ -10,10 +10,10 @@ public class LogManager {
 	private String userid;
 	private String password;
 
-	private Connection conn;
+	Connection conn;
 	private Statement stmt;
 	ResultSet rs;
-	private PreparedStatement pstmt;
+	PreparedStatement pstmt;
 	
 	public LogManager() {
 		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";

@@ -1,31 +1,25 @@
 package maze;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import java.sql.*;
 public class DBManager {
-	private static Statement stmt;
 	public static void main(String[] args) {
 		LogManager log = new LogManager();
+		// 데이터베이스 접속
+		log.connectDB();			
 		
 		try {
-			// 데이터베이스 접속
-			log.connectDB();
-			
-			// 데이터베이스에서 테이블 생성
-			String sql = "CREATE TABEL Log("
+			// 테이블 생성
+			String createSql = "CREATE TABLE Log("
 					+ "id int IDENTITY (1,1) NOT NULL,"
 					+ "mouse_name varchar(200),"
-					+ "timestamp datetime"
-					+ "count int"
-					+ ")";
-			
-			ResultSet rs = stmt.executeQuery(sql);
-			stmt.close();
-			
+					+ "timestamp datetime,"
+					+ "count int)";
+			log.pstmt = log.conn.prepareStatement(createSql);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		// 데이터베이스 접속 해제
+		log.disconnectDB();
 	}
 }
