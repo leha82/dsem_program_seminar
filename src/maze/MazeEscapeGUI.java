@@ -2,10 +2,11 @@ package maze;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.table.*;
 
 import mice.*;
 
@@ -20,10 +21,11 @@ public class MazeEscapeGUI extends JFrame {
 	private JLabel lbCount;
 	private JLabel ranking;
 	private JLabel[][] mapLabels;
-	private String mapfile = "maps/testmap.txt";
+	private String mapfile = "maps/testmap2.txt";
 	private int count;
 	private Maze maze;
 	private ArrayList<String> miceList;
+	private String mouseClassName;
 	private Mouse mouse;
 	private int start_x, start_y;
 	private int curr_x, curr_y;
@@ -94,27 +96,22 @@ public class MazeEscapeGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> list = (JComboBox<String>)e.getSource();//이벤트가 발생한 콤보박스 알아냄
 				int index = list.getSelectedIndex(); //해당 인덱스 알기
-				String classname = miceList.get(index);
+				mouseClassName = miceList.get(index);
 				
 				try {
-					Class<?> cls = Class.forName(classname);
+					Class<?> cls = Class.forName(mouseClassName);
 					Object obj = cls.newInstance();
 							
 					mouse = (Mouse) obj;
 					mouse.printClassName();
 					setWindow(curr_x, curr_y, map);
 					loadMap();
-//					this.mouse = new RandomMouse();
 				} catch (Exception e1) {
 					System.out.println("Error: " + e1.getMessage());
 					e1.printStackTrace();
 				} 
 			}
 		});
-		// Todo: 메뉴 추가 - Load Mouse - miceList를 나열
-		// mouse를 선택할 경우 - this.mouse에 해당 클래스 생성 및 지정
-		// mouse 선택 후 맵 초기화
-		
 		
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
@@ -234,6 +231,8 @@ public class MazeEscapeGUI extends JFrame {
 
 		int i = 0;
 		while (!finished && (i < move || move == -1)) {
+			System.out.println(mouseClassName);
+			mouse.printClassName();
 			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y));
 
 			if (dir == 1 && curr_y > 0) {
@@ -260,10 +259,9 @@ public class MazeEscapeGUI extends JFrame {
 
 				// 랭킹 업로드 메소드
 				LogManager log = new LogManager();
-				int mincount = log.getMinCount("woolin");
-//				System.out.println(mincount);
+				int mincount = log.getMinCount(mouseClassName);
 				if (count < mincount || mincount < 0) {
-					log.putLog("woolin", count);
+					log.putLog(mouseClassName, count);
 				}
 
 				finished = true;
