@@ -129,16 +129,7 @@ public class LogManager {
    public static void main(String[] args) {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
-<<<<<<< HEAD
-      Log.putLog("wooling", 5);
-=======
-
-      Log.getRankingList();
-      Log.putLog("wolin", 0);
-
-      System.out.println(Log.getRankingList().get(0));
-
->>>>>>> branch 'logmanage' of https://github.com/leha82/dsem_program_seminar.git
+      Log.putLog("sojin", 5);
    }
    
 
