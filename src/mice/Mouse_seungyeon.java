@@ -1,10 +1,7 @@
 package mice;
 
-
 public class Mouse_seungyeon extends Mouse{	
 	private int dir;
-	private int x[] = {0, 0, 1, 2, 1};
-	private int y[] = {0, 1, 2, 1, 0};
 	
 	public Mouse_seungyeon() {
 		dir = 2;
