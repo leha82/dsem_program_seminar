@@ -57,6 +57,7 @@ public class LogManager {
       connectDB();
       
       try {
+    	  
          String sql = "select count from Log where mouse_name ='" + mouseName + "'"; 
          pstmt = conn.prepareStatement(sql);
            rs = pstmt.executeQuery();
