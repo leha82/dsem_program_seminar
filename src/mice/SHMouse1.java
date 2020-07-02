@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class SHMouse1 extends Mouse {
 	public int dir;
 	

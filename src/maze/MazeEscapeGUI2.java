@@ -6,7 +6,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import mice.Mouse;
 import mice.RandomMouse;
 
 public class MazeEscapeGUI2 extends JFrame {

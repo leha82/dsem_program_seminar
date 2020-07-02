@@ -2,11 +2,11 @@ package mice;
 
 import maze.Mouse;
 
-public class mouseMoo extends Mouse {
+public class Mouse_sangmoo extends Mouse {
 	public static int map[][];
 	public static int dir;
 
-	public mouseMoo() {
+	public Mouse_sangmoo() {
 		this.dir = 2;
 	}
 
