@@ -6,20 +6,24 @@ import java.util.*;
 
 import javax.swing.*;
 
-import mice.*;
+import mice.RandomMouse;
 
-public class MazeEscapeGUI extends JFrame {
+public class MazeEscapeGUI2 extends JFrame {
+	int[][] initmap = { {0, 0, 0, 1, 1, 1},
+					{1, 1, 0, 0, 0, 0},
+					{1, 1, 1, 1, 0, 1},
+					{1, 1, 1, 1, 0, 0}};
+
+	
 	private JPanel mainPanel;
 	private JPanel mapPanel;
 	private JPanel infoPanel;
 	private JButton btnNext;
-	private JButton btnNext10;
-	private JButton btnNextAll;
 	private JLabel lbCount;
 	private JLabel[][] mapLabels;
-
-	private String mapfile = "maps/testmap.txt";
+	
 	private int count;
+	private String mapfile;
 	private Maze maze;
 	private ArrayList<String> miceList;
 	private Mouse mouse;
@@ -29,32 +33,29 @@ public class MazeEscapeGUI extends JFrame {
 	
 	private boolean finished;
 	
-	public MazeEscapeGUI() {
+	public MazeEscapeGUI2() {
 		super("Maze Escape");
 		this.count = 0;
+		this.mapfile = "maps/testmap.txt";
 		this.finished = false;
 	}
-
+	
 	public void loadMap() {
-		this.maze = new Maze(mapfile);
+//		this.maze = new Maze(mapfile);
+		this.maze = new Maze(6, 4, initmap);
 		
-		this.start_x = maze.getStart_x();
-		this.start_y = maze.getStart_y();
-		this.esc_x = maze.getEsc_x();
-		this.esc_y = maze.getEsc_y();
-		
-		this.curr_x = this.start_x;
-		this.curr_y = this.start_y;
-
+		this.start_x = 0;
+		this.start_y = 0;
+		this.curr_x = start_x;
+		this.curr_y = start_y;
+		this.esc_x = 5;
+		this.esc_y = 3;
 	}
 	
 	public void loadMice() {
 		miceList = new ArrayList<String>();
 		miceList.add("RandomMouse");
-		this.mouse = new Mouse_sojin();
-//		miceList.add("RandomMouse");
 		this.mouse = new RandomMouse();
-		this.mouse = new Mouse_seungyeon();
 	}
 	
 	public void initWindow() {
@@ -88,43 +89,11 @@ public class MazeEscapeGUI extends JFrame {
 		}
 
 		btnNext = new JButton("다음 이동");
-		btnNext.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNext)
-						play(1);
-				}
-			}
-		});
-		
-		btnNext10 = new JButton("다음 10번 이동");
-		btnNext10.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNext10)
-						play(10);
-				}
-			}
-		});
+		btnNext.addActionListener(new NextButtonListener());
 
-		btnNextAll = new JButton("끝까지 이동");
-		btnNextAll.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNextAll)
-						play(-1);
-				}
-			}
-		});
-		
 		lbCount = new JLabel("이동횟수 : " + count);
 		infoPanel = new JPanel();
 		infoPanel.add(btnNext);
-		infoPanel.add(btnNext10);
-		infoPanel.add(btnNextAll);
 		infoPanel.add(lbCount);
 		
 		mainPanel = new JPanel();
@@ -134,7 +103,7 @@ public class MazeEscapeGUI extends JFrame {
 		
 		add(mainPanel);
 		
-		setSize (map[0].length * 60 + 100, map.length * 60 + 50);
+		setSize (map[0].length * 60, map.length * 60 + 50);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -160,49 +129,50 @@ public class MazeEscapeGUI extends JFrame {
 		repaint();
 	}
 	
-	public void play(int move) {
+	public void play() {
 		int[][] map = maze.getMap();
 		int prev_x = curr_x;
 		int prev_y = curr_y;
 		
-		int i=0;
-		while (!finished && (i < move || move == -1)) {
-			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y) );
-			
-			if (dir==1 && curr_y > 0) {
-				if (map[curr_y-1][curr_x]==0)
-					curr_y--;	
-			} else if (dir==2 && curr_x < maze.getWidth()-1) {
-				if (map[curr_y][curr_x+1]==0)
-					curr_x++;
-			} else if (dir==3 && curr_y < maze.getHeight()-1) {
-				if (map[curr_y+1][curr_x]==0)
-					curr_y++;	
-			} else if (dir==4 && curr_x > 0) {
-				if (map[curr_y][curr_x-1]==0)
-					curr_x--;
-			}
-			
-			count++;
-			this.setWindow(prev_x, prev_y, map); 
-			prev_x = curr_x;
-			prev_y = curr_y;
-
-			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-				finished = true;
-			}
-			
-			i++;
+		int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y) );
+		if (dir==1 && curr_y > 0) {
+			if (map[curr_y-1][curr_x]==0)
+				curr_y--;	
+		} else if (dir==2 && curr_x < maze.getWidth()-1) {
+			if (map[curr_y][curr_x+1]==0)
+				curr_x++;
+		} else if (dir==3 && curr_y < maze.getHeight()-1) {
+			if (map[curr_y+1][curr_x]==0)
+				curr_y++;	
+		} else if (dir==4 && curr_x > 0) {
+			if (map[curr_y][curr_x-1]==0)
+				curr_x--;
 		}
+		
+		count++;
+		this.setWindow(prev_x, prev_y, map); 
+		
 
+		if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
+			JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+			finished = true;
+		}
 	}
 	
-
 	public static void main(String[] args) {
-		MazeEscapeGUI me = new MazeEscapeGUI();
+		MazeEscapeGUI2 me = new MazeEscapeGUI2();
 		me.loadMap();
 		me.loadMice();
 		me.initWindow();
+	}
+	
+	class NextButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!finished) {
+				if (e.getSource() == btnNext)
+					play();
+			}
+		}
 	}
 }
