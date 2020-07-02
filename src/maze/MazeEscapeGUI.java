@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import mice.*;
 
@@ -15,9 +16,10 @@ public class MazeEscapeGUI extends JFrame {
 	private JButton btnNext;
 	private JButton btnNext10;
 	private JButton btnNextAll;
+	private JButton showranking;
 	private JLabel lbCount;
+	private JLabel ranking;
 	private JLabel[][] mapLabels;
-
 	private String mapfile = "maps/testmap.txt";
 	private int count;
 	private Maze maze;
@@ -26,7 +28,7 @@ public class MazeEscapeGUI extends JFrame {
 	private int start_x, start_y;
 	private int curr_x, curr_y;
 	private int esc_x, esc_y;
-	
+	private ArrayList<String> rankList;
 	private boolean finished;
 	
 	public MazeEscapeGUI() {
@@ -54,9 +56,34 @@ public class MazeEscapeGUI extends JFrame {
 		// Todo : bin/mice 폴더안에 .class 파일명들을 리스트업하고 클래스명만 miceList로 넣기
 		// 패키지명.클래스명으로 list에 넣기 ex: mice.RandomMouse
 		
-		this.mouse = new Mouse_seungyeon();
+		this.mouse = new RightHandMouse();
 	}
-	
+	public void ranklistup() {
+		rankList = new ArrayList<String>();
+		rankList.add("dfd");
+		rankList.add("dsfs");
+		System.out.println("d");
+	}
+	class showrank extends  JFrame {
+		public showrank() {
+			ranklistup();
+			setTitle("랭킹보기");
+			String []a = {"id","mouse_name","timestamp","count"};
+	        String [][]b = {{"1","sojin","10","14"},
+	                        {"2","woolin","10","14"},
+	                        {"3","sonyo","10","14"}};
+			DefaultTableModel model = new DefaultTableModel(b,a);
+			JTable table = new JTable(model);
+			JScrollPane sc = new JScrollPane(table);
+			Container c = getContentPane();
+			String a1 = rankList.get(0);
+			ranking = new JLabel(a1);
+			c.add(ranking);
+			c.add(sc);
+			setSize(500, 600);
+			setVisible(true);
+		}
+	}
 	public void initWindow() {
 		int[][] map = maze.getMap();
 		
@@ -125,15 +152,23 @@ public class MazeEscapeGUI extends JFrame {
 				}
 			}
 		});
-		
 		// 랭킹보기 버튼 추가
 		// 랭킹보기 버튼을 클릭하면 팝업창이 떠서 RankList를 출력한다.
+		
+		showranking = new JButton("랭킹보기");
+		showranking.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new showrank();
+			}
+		});
 		
 		lbCount = new JLabel("이동횟수 : " + count);
 		infoPanel = new JPanel();
 		infoPanel.add(btnNext);
 		infoPanel.add(btnNext10);
 		infoPanel.add(btnNextAll);
+		infoPanel.add(showranking);
 		infoPanel.add(lbCount);
 		
 		mainPanel = new JPanel();
@@ -213,6 +248,7 @@ public class MazeEscapeGUI extends JFrame {
 
 	public static void main(String[] args) {
 		MazeEscapeGUI me = new MazeEscapeGUI();
+		
 		me.loadMap();
 		me.loadMice();
 		me.initWindow();
