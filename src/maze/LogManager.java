@@ -75,8 +75,8 @@ public class LogManager {
       return count;
    }
    
-   public ArrayList<LogRank> getRankingList() {
-      ArrayList<LogRank> rankList = new ArrayList<LogRank>();
+   public ArrayList<String> getRankingList() {
+      ArrayList<String> rankList = new ArrayList<String>();
       
       // 单捞磐海捞胶 立加
       connectDB();
@@ -89,12 +89,12 @@ public class LogManager {
            rs = pstmt.executeQuery();
            
            while(rs.next()) {
-              
+              String id = rs.getString("Id");
               String Mouse = rs.getString("mouse_name");
               String timestamp= rs.getString("timestamp");
               int count = rs.getInt("count");
-              LogRank logrank = new LogRank(Mouse, timestamp, count);
-              rankList.add(logrank);
+
+              rankList.add(id +"," + Mouse +"," + timestamp +"," + count);
               
            }
       } catch (SQLException e) {
@@ -129,7 +129,7 @@ public class LogManager {
    public static void main(String[] args) {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
-      Log.putLog("wolin", 0);
+      System.out.println(Log.getRankingList().get(0));
    }
    
 
