@@ -248,8 +248,8 @@ public class MazeEscapeGUI extends JFrame {
 				
 			// 랭킹 업로드 메소트
 			LogManager log = new LogManager();	
-			if (count < log.getminCount("f")) {
-				
+			if (count < log.getminCount("woolin")) {
+				log.putLog("woolin", count);
 			}
 				
 			finished = true;
