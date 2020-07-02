@@ -2,6 +2,7 @@ package maze;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.*;
 
 import javax.swing.*;
@@ -53,12 +54,17 @@ public class MazeEscapeGUI extends JFrame {
 
 		// Todo : bin/mice 폴더안에 .class 파일명들을 리스트업하고 클래스명만 miceList로 넣기
 		// 패키지명.클래스명으로 list에 넣기 ex: mice.RandomMouse
-		miceList.add("mice.Mouse_kangjun");
-		miceList.add("mice.Mouse_sangmoo");
-		miceList.add("mice.Mouse_seungyeon");
-		miceList.add("mice.Mouse_sojin");	
-		miceList.add("mice.Mouse_woolin");
-		miceList.add("mice.Sunyoung_Mouse");
+		
+		ArrayList<String> file = new ArrayList<String>();
+		File folder = new File("bin/mice");
+		File[] listOfFiles = folder.listFiles();
+		String name;
+		for (int i = 0; i < listOfFiles.length; i++) {
+		  if (listOfFiles[i].isFile()) {
+			  name = "mice."+listOfFiles[i].getName().replaceAll(".class", "");
+			  miceList.add(name);
+		  }
+		}
 		
 		this.mouse = new Mouse_seungyeon();
 	}
