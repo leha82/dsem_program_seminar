@@ -129,8 +129,7 @@ public class LogManager {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
       Log.getRankingList();
-      Log.putLog("wolin", 0);
-
+      Log.putLog("sojin", 5);
 
    }
    
