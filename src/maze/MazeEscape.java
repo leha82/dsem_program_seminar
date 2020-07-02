@@ -36,7 +36,7 @@ public class MazeEscape {
 	public void loadMice() {
 		miceList.add("RandomMouse");
 
-		this.mouse = new Mouse_sojin();
+		this.mouse = new Sunyoung_Mouse();
 	}
 
 
