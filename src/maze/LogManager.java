@@ -129,7 +129,7 @@ public class LogManager {
    public static void main(String[] args) {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
-      System.out.println(Log.getRankingList().get(0));
+      Log.putLog("wooling", 5);
    }
    
 
