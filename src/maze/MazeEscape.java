@@ -40,6 +40,7 @@ public class MazeEscape {
 //		this.mouse = new RandomMouse();
 
 
+		this.mouse = new Mouse_seungyeon();
 	}
 
 
