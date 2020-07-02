@@ -36,7 +36,6 @@ public class LogManager {
 		
 		// rankList를 만든다 
 		
-		
 		// 데이터베이스 접속 해제
 		return rankList;
 	}
