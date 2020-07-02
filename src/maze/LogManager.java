@@ -30,7 +30,11 @@ public class LogManager {
 	
 	public ArrayList<LogRank> getRankingList() {
 		ArrayList<LogRank> rankList = new ArrayList<LogRank>();
+		
 		// 데이터베이스 접속
+		connectDB();
+		
+		
 		
 		// 테이블의 데이터 획득
 		
