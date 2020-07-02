@@ -50,14 +50,21 @@ public class MazeEscapeGUI extends JFrame {
 	
 	public void loadMice() {
 		miceList = new ArrayList<String>();
-		miceList.add("RandomMouse");
-		this.mouse = new Mouse_sojin();
-//		miceList.add("RandomMouse");
+		
+		// Todo : bin/mice 폴더안에 .class 파일명들을 리스트업하고 클래스명만 miceList로 넣기
+		// 패키지명.클래스명으로 list에 넣기 ex: mice.RandomMouse
+		
 		this.mouse = new Mouse_seungyeon();
 	}
 	
 	public void initWindow() {
 		int[][] map = maze.getMap();
+		
+		
+		// Todo: 메뉴 추가 - Load Mouse - miceList를 나열
+		// mouse를 선택할 경우 - this.mouse에 해당 클래스 생성 및 지정
+		// mouse 선택 후 맵 초기화
+		
 		
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
