@@ -1,15 +1,25 @@
 package maze;
 
+import java.sql.*;
 public class DBManager {
 	public static void main(String[] args) {
+		LogManager log = new LogManager();
 		// 데이터베이스 접속
+		log.connectDB();			
 		
-		// 데이터베이스에서 테이블 생성
-		
-		// id int auto_increment (indentity 1),
-		// mouse_name varchar(200),
-		// timestamp datetime, 
-		// count int
-		
+		try {
+			// 테이블 생성
+			String createSql = "CREATE TABLE Log("
+					+ "id int IDENTITY (1,1) NOT NULL,"
+					+ "mouse_name varchar(200),"
+					+ "timestamp datetime,"
+					+ "count int)";
+			log.pstmt = log.conn.prepareStatement(createSql);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		// 데이터베이스 접속 해제
+		log.disconnectDB();
 	}
 }

@@ -9,32 +9,31 @@ public class LogManager {
    private String url;
    private String userid;
    private String password;
-
-   private Connection conn;
+   
+   Connection conn;
    private Statement stmt;
    ResultSet rs;
-   private PreparedStatement pstmt;
-   
-   public LogManager() {
-      this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-      this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
-      this.userid = "sonyo";
-      this.password = "1234";
-   }
-   
-   public boolean connectDB() {
-      this.conn = null;
-      try {
-         Class.forName(this.driver);
-         this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
-         this.stmt = this.conn.createStatement();
-      } catch (Exception e) {
-         System.out.println(e.toString());
-         return false;
-      }
-      return true;
-   }
-
+	PreparedStatement pstmt;
+	
+	public LogManager() {
+		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
+		this.userid = "sonyo";
+		this.password = "1234";
+	}
+	
+	public boolean connectDB() {
+		this.conn = null;
+		try {
+			Class.forName(this.driver);
+			this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
+			this.stmt = this.conn.createStatement();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			return false;
+		}
+		return true;
+	}
    public boolean disconnectDB() {
       try {
          if (this.stmt != null)
@@ -93,10 +92,11 @@ public class LogManager {
               String Mouse = rs.getString("mouse_name");
               String timestamp= rs.getString("timestamp");
               int count = rs.getInt("count");
-
+              LogRank logrank = new LogRank(Mouse, timestamp, count);
               rankList.add(id +"," + Mouse +"," + timestamp +"," + count);
-              
+
            }
+           
       } catch (SQLException e) {
          e.printStackTrace();
       }      // 单捞磐海捞胶 立加 秦力
@@ -129,7 +129,16 @@ public class LogManager {
    public static void main(String[] args) {
       LogManager Log = new LogManager();
       Log.getCount("Sunyoung_mouse");
+<<<<<<< HEAD
       Log.putLog("wooling", 5);
+=======
+
+      Log.getRankingList();
+      Log.putLog("wolin", 0);
+
+      System.out.println(Log.getRankingList().get(0));
+
+>>>>>>> branch 'logmanage' of https://github.com/leha82/dsem_program_seminar.git
    }
    
 
