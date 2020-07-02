@@ -67,7 +67,7 @@ public class MazeEscapeGUI extends JFrame {
 		// Todo : bin/mice 폴더안에 .class 파일명들을 리스트업하고 클래스명만 miceList로 넣기
 		// 패키지명.클래스명으로 list에 넣기 ex: mice.RandomMouse
 		
-		ArrayList<String> file = new ArrayList<String>();
+
 		File folder = new File("bin/mice");
 		File[] listOfFiles = folder.listFiles();
 		String name;
