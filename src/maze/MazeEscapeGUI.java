@@ -77,14 +77,7 @@ public class MazeEscapeGUI extends JFrame {
 			  miceList.add(name);
 		  }
 		}
-		
-		this.mouse = new Mouse_seungyeon();
-		miceList.add("mice.Mouse_kangjun");
-		miceList.add("mice.Mouse_sangmoo");
-		miceList.add("mice.Mouse_seungyeon");
-		miceList.add("mice.Mouse_sojin");	
-		miceList.add("mice.Mouse_woolin");
-		miceList.add("mice.Sunyoung_Mouse");
+
 	}
 	
 	public void initWindow() {
