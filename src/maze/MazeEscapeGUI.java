@@ -199,6 +199,9 @@ public class MazeEscapeGUI extends JFrame {
 
 			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
 				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+				
+				// 랭킹 업로드 메소트
+				
 				finished = true;
 			}
 			
