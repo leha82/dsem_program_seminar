@@ -9,32 +9,31 @@ public class LogManager {
    private String url;
    private String userid;
    private String password;
-
-   private Connection conn;
+   
+   Connection conn;
    private Statement stmt;
    ResultSet rs;
-   private PreparedStatement pstmt;
-   
-   public LogManager() {
-      this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-      this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
-      this.userid = "sonyo";
-      this.password = "1234";
-   }
-   
-   public boolean connectDB() {
-      this.conn = null;
-      try {
-         Class.forName(this.driver);
-         this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
-         this.stmt = this.conn.createStatement();
-      } catch (Exception e) {
-         System.out.println(e.toString());
-         return false;
-      }
-      return true;
-   }
-
+	PreparedStatement pstmt;
+	
+	public LogManager() {
+		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
+		this.userid = "sonyo";
+		this.password = "1234";
+	}
+	
+	public boolean connectDB() {
+		this.conn = null;
+		try {
+			Class.forName(this.driver);
+			this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
+			this.stmt = this.conn.createStatement();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			return false;
+		}
+		return true;
+	}
    public boolean disconnectDB() {
       try {
          if (this.stmt != null)
@@ -128,9 +127,10 @@ public class LogManager {
    
    public static void main(String[] args) {
       LogManager Log = new LogManager();
-      Log.getCount("woolin");
+      Log.getCount("Sunyoung_mouse");
       Log.getRankingList();
-//      Log.putLog("sonyo", 1);
+      Log.putLog("wolin", 0);
+
 
    }
    
