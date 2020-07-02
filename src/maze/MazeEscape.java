@@ -34,13 +34,21 @@ public class MazeEscape {
 	}
 
 	public void loadMice() {
-		miceList.add("RandomMouse");
-
-		this.mouse = new mouseMoo();
-//		this.mouse = new RandomMouse();
-
-
-		this.mouse = new Mouse_seungyeon();
+		miceList.add("mice.RightHandMouse");
+		String classname = miceList.get(0);
+		
+		try {
+			Class<?> cls = Class.forName(classname);
+			Object obj = cls.newInstance();
+					
+			this.mouse = (Mouse) obj;
+			mouse.printClassName();
+			
+//			this.mouse = new RandomMouse();
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			e.printStackTrace();
+		} 
 	}
 
 
