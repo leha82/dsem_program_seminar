@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class RandomMouse extends Mouse {
 	public RandomMouse() {
 		

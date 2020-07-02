@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class Mouse_sangmoo extends Mouse {
 	public static int map[][];
 	public static int dir;

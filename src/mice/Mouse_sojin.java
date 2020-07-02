@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class Mouse_sojin extends Mouse {
 	int mouse_dir = 2;
 	

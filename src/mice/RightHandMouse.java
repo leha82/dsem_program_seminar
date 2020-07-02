@@ -1,5 +1,7 @@
 package mice;
 
+import maze.Mouse;
+
 public class RightHandMouse extends Mouse {
 	private int dir;
 	
