@@ -14,9 +14,9 @@ public class DBManager {
 	public DBManager() {
 		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정
 		
-		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
-		this.userid = "sonyo";
+		this.driver = "com.mysql.cj.jdbc.Driver";
+		this.url = "jdbc:mysql://203.234.62.143:3306/maze?serverTimezone=Asia/Seoul ";
+		this.userid = "sojin";
 		this.password = "1234";
 	}
 	

@@ -36,9 +36,9 @@ public class LogManager {
 		return count;
 	}
 
-	public ArrayList<String> getRankingList() {
+	public ArrayList<LogRank> getRankingList() {
 		// Todo : 스트링 arraylist를 LogRank로 수정
-		ArrayList<String> rankList = new ArrayList<String>();
+		ArrayList<LogRank> rankList = new ArrayList<LogRank>();
 
 		// 데이터베이스 접속
 		dbm.connectDB();
@@ -51,19 +51,17 @@ public class LogManager {
 			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
-				String id = rs.getString("id");
+				int id = rs.getInt("id");
 				String Mouse = rs.getString("mouse_name");
 				String timestamp = rs.getString("timestamp");
+				String mapname = rs.getString("mapname");
 				int count = rs.getInt("count");
-				rankList.add(id + "," + Mouse + "," + timestamp + "," + count);
-
+				rankList.add(new LogRank(id,Mouse, mapname, timestamp, count));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // 데이터베이스 접속 해제
-		System.out.println(rankList);
-		
 		dbm.disconnectDB();
 		return rankList;
 	}
@@ -118,10 +116,9 @@ public class LogManager {
 		return min_count;
 	}
 
-//	public static void main(String[] args) {
-//		LogManager Log = new LogManager();
-//		Log.putLog("woolin", 55);
-//		Log.getMinCount("Sunyoung_mouse");
-//	}
+	public static void main(String[] args) {
+		LogManager Log = new LogManager();
+		Log.getRankingList();
+	}
 
 }
