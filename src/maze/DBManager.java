@@ -15,8 +15,8 @@ public class DBManager {
 
 		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정		
 		this.driver = "com.mysql.cj.jdbc.Driver";
-		this.url = "jdbc:mysql://203.234.62.143:3306/maze?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false";
-		this.userid = "sojin";
+		this.url = "jdbc:mysql://203.234.62.115:3306/maze?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false";
+		this.userid = "root";
 		this.password = "1234";
 	}
 	
@@ -66,8 +66,8 @@ public class DBManager {
 		// 데이터베이스 접속
 		dbm.connectDB();
 		// log, map 테이블 생성
-		dbm.createLogTable();
-		dbm.createMapTable();
+	//	dbm.createLogTable();
+	//	dbm.createMapTable();
 	}
 	
 	public void createLogTable() {
