@@ -44,7 +44,6 @@ public class LogManager {
 		dbm.connectDB();
 
 		// 테이블의 데이터 획득
-
 		try {
 			// Todo : map이름도 string 혹은 LogRank 타입으로 사용할 수 있도록 변경
 			String sql = "select * from Log order by count asc";
@@ -52,13 +51,12 @@ public class LogManager {
 
 			while (rs.next()) {
 				String id = rs.getString("id");
-				String Mouse = rs.getString("mouse_name");
+				String mouse_name = rs.getString("mouse_name");
+				String map_name = rs.getString("map_name");
 				String timestamp = rs.getString("timestamp");
 				int count = rs.getInt("count");
-				rankList.add(id + "," + Mouse + "," + timestamp + "," + count);
-
+				rankList.add(id + "," + mouse_name + "," + map_name + "," + timestamp + "," + count);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // 데이터베이스 접속 해제
@@ -68,7 +66,7 @@ public class LogManager {
 		return rankList;
 	}
 
-	public boolean putLog(String mouseName, int count) {
+	public boolean putLog(String mouseName, String map_name, int count) {
 		boolean result = true;
 		
 		// 데이터베이스에 접속
@@ -80,8 +78,8 @@ public class LogManager {
 		try {
 			SimpleDateFormat current_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String time_stamp = current_time.format(System.currentTimeMillis());
-			String sql = "insert into Log(mouse_name, timestamp, count) values ('" + mouseName + "','" + time_stamp
-					+ "', " + count + ")";
+			String sql = "insert into Log(mouse_name, map_name, timestamp, count) values ('" 
+			+ mouseName + "','" + map_name + "','" + time_stamp + "', " + count + ")";
 			dbm.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();

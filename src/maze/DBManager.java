@@ -12,11 +12,11 @@ public class DBManager {
 	private PreparedStatement pstmt;
 	
 	public DBManager() {
-		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정
-		
+
+		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정		
 		this.driver = "com.mysql.cj.jdbc.Driver";
-		this.url =  "jdbc:mysql://203.234.62.143:3306/maze?serverTimezone=Asia/Seoul ";
-		this.userid =  "sojin";;
+		this.url = "jdbc:mysql://203.234.62.143:3306/maze?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false";
+		this.userid = "sojin";
 		this.password = "1234";
 	}
 	
@@ -25,6 +25,7 @@ public class DBManager {
 		try {
 			Class.forName(this.driver);
 			this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
+			System.out.println("Connection Successed  -- mysql --");
 			this.stmt = this.conn.createStatement();
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -63,8 +64,10 @@ public class DBManager {
 	public static void main(String[] args) {
 		DBManager dbm = new DBManager();
 		// 데이터베이스 접속
-		//dbm.createLogTable();
-		//dbm.createMaptable();
+		dbm.connectDB();
+		// log, map 테이블 생성
+		dbm.createLogTable();
+		dbm.createMapTable();
 	}
 	
 	public void createLogTable() {
@@ -73,21 +76,18 @@ public class DBManager {
 		try {
 			// 테이블 생성
 			// Todo : 테이블 생성 쿼리 수정 -> 맵이름이 추가되도록
-			//
-			String createSql = "CREATE TABLE Log("
-					+ "id int IDENTITY (1,1) NOT NULL,"
-					+ "mouse_name varchar(200),"
-					+ "timestamp datetime,"
-					+ "count int)";
-			pstmt = conn.prepareStatement(createSql);
-			
-			System.out.println("생성");
-			
+			// id, mouse_name, map_name, timestamp, count
+			String sql = "CREATE TABLE maze.log("
+					+ "id INT AUTO_INCREMENT,"
+					+ "mouse_name VARCHAR(200),"
+					+ "map_name VARCHAR(200),"
+					+ "timestamp DATETIME,"
+					+ "count INT,"
+					+ "PRIMARY KEY(id))";
+			stmt.execute(sql);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		// 데이터베이스 접속 해제
 		disconnectDB();
 	}
 	
@@ -97,26 +97,19 @@ public class DBManager {
 		try {
 			// 테이블 생성
 			// Todo : 테이블 생성 쿼리 수정 -> 맵이름이 추가되도록, Map 테이블 생성
-			// 			id : autoincrement
-			//			map 이름 : varchar
-			//			x size : int
-			//			y size : int
-			//			map : text - ex) 1,1,1,1,1,1,1:1,1,1,1,1,1,1,1 
+			// id, map_name, x_size, y_size, map
 			
-			String createSql = "CREATE TABLE Map(";
-//					+ "id int IDENTITY (1,1) NOT NULL,"
-//					+ "mouse_name varchar(200),"
-//					+ "timestamp datetime,"
-//					+ "count int)";
-			pstmt = conn.prepareStatement(createSql);
-			
-			System.out.println("생성");
-			
+			String sql = "CREATE TABLE maze.map("
+					+ "id INT AUTO_INCREMENT,"
+					+ "map_name VARCHAR(200),"
+					+ "x_size INT,"
+					+ "y_size INT,"
+					+ "map TEXT,"
+					+ "PRIMARY KEY(id))";
+			stmt.execute(sql);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		// 데이터베이스 접속 해제
 		disconnectDB();
 	}
 }
