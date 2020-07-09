@@ -5,64 +5,22 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class LogManager {
-	private String driver;
-	private String url;
-	private String userid;
-	private String password;
-
-	Connection conn;
-	Statement stmt;
-	ResultSet rs;
-	PreparedStatement pstmt;
+	DBManager dbm;
 
 	public LogManager() {
-		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정
-		
-		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
-		this.userid = "sonyo";
-		this.password = "1234";
+		this.dbm = new DBManager();
 	}
-
-	public boolean connectDB() {
-		this.conn = null;
-		try {
-			Class.forName(this.driver);
-			this.conn = DriverManager.getConnection(this.url, this.userid, this.password);
-			this.stmt = this.conn.createStatement();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	public boolean disconnectDB() {
-		try {
-			if (this.stmt != null)
-				this.stmt.close();
-			if (this.pstmt != null)
-				this.pstmt.close();
-			if (this.conn != null)
-				this.conn.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			return false;
-		}
-		return true;
-	}
-
+	
 	public int getCount(String mouseName) {
 		int count = 0;
 
 		// 데이터베이스 접속
-		connectDB();
+		dbm.connectDB();
 
 		try {
 
 			String sql = "select count from Log where mouse_name ='" + mouseName + "'";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
 				count = rs.getInt("count");
@@ -73,22 +31,24 @@ public class LogManager {
 		}
 
 		// 데이터베이스 접속 해제
-		disconnectDB();
+		dbm.disconnectDB();
+		
 		return count;
 	}
 
 	public ArrayList<String> getRankingList() {
+		// Todo : 스트링 arraylist를 LogRank로 수정
 		ArrayList<String> rankList = new ArrayList<String>();
 
 		// 데이터베이스 접속
-		connectDB();
+		dbm.connectDB();
 
 		// 테이블의 데이터 획득
 
 		try {
+			// Todo : map이름도 string 혹은 LogRank 타입으로 사용할 수 있도록 변경
 			String sql = "select * from Log order by count asc";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
 				String id = rs.getString("id");
@@ -103,7 +63,8 @@ public class LogManager {
 			e.printStackTrace();
 		} // 데이터베이스 접속 해제
 		System.out.println(rankList);
-		disconnectDB();
+		
+		dbm.disconnectDB();
 		return rankList;
 	}
 
@@ -111,8 +72,9 @@ public class LogManager {
 		boolean result = true;
 		
 		// 데이터베이스에 접속
-		connectDB();
+		dbm.connectDB();
 
+		// Todo : 맵이름 추가하여 로그에 넣는다.
 		// 시스템에서 시간을 받아 datetime 유형으로 만든다.
 		// 테이블에 파라메터의 값을 넣는다
 		try {
@@ -120,17 +82,14 @@ public class LogManager {
 			String time_stamp = current_time.format(System.currentTimeMillis());
 			String sql = "insert into Log(mouse_name, timestamp, count) values ('" + mouseName + "','" + time_stamp
 					+ "', " + count + ")";
-//			stmt.executeLargeUpdate(sql);
-			stmt.executeUpdate(sql);
-
-			
+			dbm.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			result = false;
 		}
 		
 		// 데이터베이스 접속 해제
-		disconnectDB();
+		dbm.disconnectDB();
 		return result;
 	}
 
@@ -138,14 +97,13 @@ public class LogManager {
 		int min_count = -1;
 
 		// 데이터베이스 접속
-		connectDB();
+		dbm.connectDB();
 
 		try {
 
 			String sql = "select count as min_count from Log "
 					+ "where mouse_name='" + mouseName + "';";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
 				min_count = rs.getInt("min_count");
@@ -156,7 +114,7 @@ public class LogManager {
 		}
 
 		// 데이터베이스 접속 해제
-		disconnectDB();
+		dbm.disconnectDB();
 		return min_count;
 	}
 

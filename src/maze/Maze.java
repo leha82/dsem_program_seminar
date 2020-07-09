@@ -65,14 +65,20 @@ public class Maze {
 	
 	
 	public void loadMapFromDB(String mapName) {
-		// Todo : map 저장하고 불러오면서 2차원 배열로 저장할 수 있도록 수정
-//		map 이름
-//		x size
-//		y size
-//		map 1,1,1,1,1,1,1:1,1,1,1,1,1,1,1
+		// Todo : map 저장하고 불러오면서 2차원 배열(this.map)로 저장할 수 있도록 수정
+		// mapName으로 쿼리를 날려 map의 내용을 받고, 파싱하여 this.map에 저장할 수 있도록 함 
+		// 			id : autoincrement
+		//			map 이름 : varchar
+		//			x size : int
+		//			y size : int
+		//			map : text - ex) 1,1,1,1,1,1,1:1,1,1,1,1,1,1,1 
 		
 	}
 	
+	public void storeMapToDB(String mapName, int[][] newMap) {
+		// Todo : DB에 mapName으로 newMap을 저장한다.
+		// 받아온 2차원 newMap[][]을 db에 저장할 수 있는 포맷으로 바꾸어 저장
+	}
 
 	
 	public int getWidth() {
