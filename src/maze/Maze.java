@@ -89,8 +89,8 @@ public class Maze {
 			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
-				x_size = rs.getInt("x_size");
-				y_size = rs.getInt("y_size");
+				this.width = rs.getInt("x_size");
+				this.height = rs.getInt("y_size");
 				map = rs.getString("map");
 			}
 		} catch (SQLException e) {
@@ -100,17 +100,16 @@ public class Maze {
 		// 单捞磐海捞胶 立加 秦力
 		dbm.disconnectDB();
 
-		int[][] loadmap = new int[y_size][x_size];
+		this.map = new int[this.height][this.width];
 		String[] line_array = map.split(":");
 		
-		for (int i = 0; i < line_array.length; i++) {
+		for (int i = 0; i < this.height; i++) {
 			String[] array = line_array[i].split(",");
-			for (int j = 0; j < array.length; j++) {
-				loadmap[i][j] = Integer.parseInt(array[j]);
+			for (int j = 0; j < this.width; j++) {
+				this.map[i][j] = Integer.parseInt(array[j]);
 			}
 
 		}
-		this.map = loadmap;
 	}
 
 	public void storeMapToDB(String mapName, int[][] newMap) {
@@ -120,8 +119,8 @@ public class Maze {
 		DBManager dbm = new DBManager();
 		// 单捞磐海捞胶 立加
 		dbm.connectDB();
-		int y_size = newMap.length;
-		int x_size = newMap[0].length;
+		int y_size = this.height;
+		int x_size = this.width;
 		String arraymap = Arrays.deepToString(newMap);
 		String textmap = arraymap.replace("[", "").replace("],", ":").replace("]", "").replace(" ", "");
 
