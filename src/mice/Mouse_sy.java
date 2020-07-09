@@ -82,6 +82,7 @@ public class Mouse_sy {
             	depth-=2;
             }
 	    }
+	    
 	    x = other_route[top][0];
     	y = other_route[top++][1];
     	
