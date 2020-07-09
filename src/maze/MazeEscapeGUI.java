@@ -129,8 +129,8 @@ public class MazeEscapeGUI extends JFrame {
 		mousemenubar.add(mouseMenu);
 		setJMenuBar(mousemenubar);
 		setSize(250, 250);
+		//setPreferredSize(new Dimension(250, 250));
 		setVisible(true);
-
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
 
@@ -196,9 +196,14 @@ public class MazeEscapeGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Todo : 초기화 버튼을 눌렀을때 동작 추가
-				System.out.println("dddd");
-				initMap();
-				initWindow();
+		        mapPanel.remove(mapLabels[curr_y][curr_x]);
+	            mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
+	            gbc.gridx = curr_x;
+	            gbc.gridy = curr_y;
+	            mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+	            revalidate();
+	            repaint();
+				loadMap();		
 			}
 		});
 
@@ -251,14 +256,16 @@ public class MazeEscapeGUI extends JFrame {
 			gbc.gridx=curr_x;
 			gbc.gridy=curr_y;
 			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
-			
-			initMap();
-			mapLabels[0][0] = new JLabel(new ImageIcon("res/mouse.jpg"));
-			gbc.gridx=0;
-			gbc.gridy=0;
-			mapPanel.add(mapLabels[0][0], gbc);
-			
 			//initWindow();
+			initMap();
+	
+			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+			gbc.gridx=curr_x;
+			gbc.gridy=curr_y;
+			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+			revalidate();
+	        repaint();
+//			initWindow();
 		}
 	}
 
