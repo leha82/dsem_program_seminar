@@ -207,9 +207,7 @@ public class MazeEscapeGUI extends JFrame {
 		btnShowRanking.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("dddd");
-				//int[][] map = maze.getMap();
-				//setWindow(curr_x, curr_y, map);
+				new ShowRanking();
 			}
 		});
 		
@@ -226,6 +224,7 @@ public class MazeEscapeGUI extends JFrame {
 		infoPanel.add(btnNext);
 		infoPanel.add(btnNext10);
 		infoPanel.add(btnNextAll);
+		infoPanel.add(btnShowRanking);
 		infoPanel.add(btnInit);
 		
 		mainPanel = new JPanel();
