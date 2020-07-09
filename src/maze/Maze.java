@@ -100,17 +100,17 @@ public class Maze {
 		// 单捞磐海捞胶 立加 秦力
 		dbm.disconnectDB();
 
-		String[][] loadmap = new String[y_size][x_size];
+		int[][] loadmap = new int[y_size][x_size];
 		String[] line_array = map.split(":");
 		
 		for (int i = 0; i < line_array.length; i++) {
 			String[] array = line_array[i].split(",");
 			for (int j = 0; j < array.length; j++) {
-				loadmap[i][j] = array[j];
+				loadmap[i][j] = Integer.parseInt(array[j]);
 			}
 
 		}
-
+		this.map = loadmap;
 	}
 
 	public void storeMapToDB(String mapName, int[][] newMap) {
