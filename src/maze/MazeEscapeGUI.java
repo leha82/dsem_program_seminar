@@ -306,10 +306,16 @@ public class MazeEscapeGUI extends JFrame {
 			prev_y = curr_y;
 
 			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-				finished = true;
-			}
+	            JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
 
+	            // 랭킹 업로드 메소드
+	            LogManager log = new LogManager();
+	            int mincount = log.getMinCount(mouseClassName);
+	            if (count < mincount || mincount < 0) {
+	               log.putLog(mouseClassName, mapFileName, count);
+	            }
+	            finished = true;
+	         }
 			i++;
 		}
 
