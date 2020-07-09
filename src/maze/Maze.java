@@ -63,6 +63,18 @@ public class Maze {
 		
 	}
 	
+	
+	public void loadMapFromDB(String mapName) {
+		// Todo : map 저장하고 불러오면서 2차원 배열로 저장할 수 있도록 수정
+//		map 이름
+//		x size
+//		y size
+//		map 1,1,1,1,1,1,1:1,1,1,1,1,1,1,1
+		
+	}
+	
+
+	
 	public int getWidth() {
 		return this.width;
 	}
