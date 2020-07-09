@@ -19,7 +19,6 @@ public class MazeEscapeGUI extends JFrame {
 	private JButton btnNextAll;
 	private JButton showranking;
 	private JLabel lbCount;
-	private JLabel ranking;
 	private JLabel[][] mapLabels;
 	private String mapfile = "maps/testmap2.txt";
 	private int count;
