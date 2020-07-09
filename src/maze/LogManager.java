@@ -16,6 +16,8 @@ public class LogManager {
 	PreparedStatement pstmt;
 
 	public LogManager() {
+		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정
+		
 		this.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 		this.url = "jdbc:sqlserver://203.234.62.144:1433; databaseName = Maze";
 		this.userid = "sonyo";

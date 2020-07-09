@@ -34,6 +34,7 @@ public class MazeEscape {
 	}
 
 	public void loadMice() {
+
 		miceList.add("mice.RightHandMouse");
 		String classname = miceList.get(0);
 		
