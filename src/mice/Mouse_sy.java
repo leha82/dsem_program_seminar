@@ -1,11 +1,11 @@
 package mice;
 
 public class Mouse_sy {
-	private int [][] map = {{0, 0, 1, 0, 1},
-							{1, 0, 0, 1, 1},
-							{1, 1, 0, 0, 1},
-							{1, 0, 0, 1, 1},
-							{1, 1, 0, 0, 0}};
+	private int [][] map = {{0, 0, 0, 0, 0},
+							{1, 0, 1, 1, 0},
+							{0, 0, 1, 0, 0},
+							{0, 1, 0, 1, 0},
+							{0, 0, 0, 0, 0}};
 	
 	private int y_length = map.length;
 	private int x_length = map[0].length;
