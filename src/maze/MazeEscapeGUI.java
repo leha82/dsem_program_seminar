@@ -214,7 +214,7 @@ public class MazeEscapeGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-/* item Action Listener*/
+/*item Action Listener*/
 	class MenuActionListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
