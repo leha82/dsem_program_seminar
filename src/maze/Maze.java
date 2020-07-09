@@ -111,14 +111,6 @@ public class Maze {
 
 		}
 
-//		for (int i = 0; i < loadmap.length; i++) {
-//			for (int j = 0; j < loadmap[i].length; j++) {
-//				System.out.print(loadmap[i][j] + " ");
-//			}
-//			System.out.println("");
-//		}
-//		System.out.println("\n");
-
 	}
 
 	public void storeMapToDB(String mapName, int[][] newMap) {
@@ -144,16 +136,6 @@ public class Maze {
 		dbm.disconnectDB();
 
 	}
-
-//	public static void main(String[] args) {
-//		Maze maze = new Maze();
-////		maze.loadMapFromDB("map1");
-//		String mapName = "map2";
-//		int [][] newmap = {{0, 0, 0, 0, 0},
-//						   {1, 0, 0, 1, 1},
-//						   {1, 1, 0, 0, 1}}; 
-//		maze.storeMapToDB(mapName, newmap);
-//	}
 
 	public int getWidth() {
 		return this.width;
