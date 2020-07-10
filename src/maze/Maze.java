@@ -80,17 +80,20 @@ public class Maze {
 		// 데이터베이스 접속
 		dbm.connectDB();
 		String map = "";
-		int x_size = 0;
-		int y_size = 0;
 
 		try {
 
-			String sql = "select x_size, y_size, map from map where map_name ='" + mapName + "'";
+			String sql = "select x_size, y_size, start_x, start_y, esc_x, esc_y, map from map where map_name ='"
+					+ mapName + "'";
 			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
 				this.width = rs.getInt("x_size");
 				this.height = rs.getInt("y_size");
+				this.start_x = rs.getInt("start_x");
+				this.start_y = rs.getInt("start_y");
+				this.esc_x = rs.getInt("esc_x");
+				this.esc_y = rs.getInt("esc_y");
 				map = rs.getString("map");
 			}
 		} catch (SQLException e) {
@@ -101,7 +104,9 @@ public class Maze {
 		dbm.disconnectDB();
 
 		this.map = new int[this.height][this.width];
-		String[] line_array = map.split(":");
+		String dbmap = map.replace("[", "").replace("],", ":").replace("]", "").replace(" ", "");	
+	
+		String[] line_array = dbmap.split(":");
 		
 		for (int i = 0; i < this.height; i++) {
 			String[] array = line_array[i].split(",");
@@ -115,17 +120,16 @@ public class Maze {
 	public void storeMapToDB(String mapName, int[][] newMap) {
 		// Todo : DB에 mapName으로 newMap을 저장한다.
 		// 받아온 2차원 newMap[][]을 db에 저장할 수 있는 포맷으로 바꾸어 저장
-		
+
 		DBManager dbm = new DBManager();
 		// 데이터베이스 접속
 		dbm.connectDB();
-		int y_size = this.height;
-		int x_size = this.width;
-		String arraymap = Arrays.deepToString(newMap);
-		String textmap = arraymap.replace("[", "").replace("],", ":").replace("]", "").replace(" ", "");
 
+		String textmap = Arrays.deepToString(newMap);
 		try {
-			String sql = "insert into map(map_name, x_size, y_size, map) values ('" + mapName + "'," + x_size + ","+ y_size + ",'" + textmap + "')";
+			String sql = "insert into map(map_name, x_size, y_size, start_x, start_y, esc_x, esc_y, map) " + "values ('"
+					+ mapName + "'," + this.width + "," + this.height + "," + this.start_x + "," + this.start_y + ","
+					+ this.esc_x + "," + this.esc_y + ",'" + textmap + "')";
 			dbm.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
