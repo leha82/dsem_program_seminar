@@ -119,6 +119,7 @@ public class MazeEscapeGUI extends JFrame {
 		MenuActionListener listener = new MenuActionListener();
 		JMenuBar mousemenubar = new JMenuBar();
 		JMenu mouseMenu = new JMenu("Load Mouse");
+		JMenu ShowRank = new JMenu("·©Å· º¸±â");
 		JMenuItem item[] = new JMenuItem[miceList.size()];
 
 		for (int i = 0; i < miceList.size(); i++) {
@@ -127,10 +128,11 @@ public class MazeEscapeGUI extends JFrame {
 			mouseMenu.add(item[i]);
 		}
 		mousemenubar.add(mouseMenu);
+		mousemenubar.add(ShowRank);
 		setJMenuBar(mousemenubar);
 		setSize(250, 250);
-		// setPreferredSize(new Dimension(250, 250));
 		setVisible(true);
+		
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
 
