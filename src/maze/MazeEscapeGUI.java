@@ -196,7 +196,7 @@ public class MazeEscapeGUI extends JFrame {
          @Override
          public void actionPerformed(ActionEvent e) {
             // Todo : 초기화 버튼을 눌렀을때 동작 추가
-              mapPanel.remove(mapLabels[curr_y][curr_x]);
+               mapPanel.remove(mapLabels[curr_y][curr_x]);
                mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
                gbc.gridx = curr_x;
                gbc.gridy = curr_y;
@@ -264,7 +264,7 @@ public class MazeEscapeGUI extends JFrame {
          gbc.gridy=curr_y;
          mapPanel.add(mapLabels[curr_y][curr_x], gbc);
          revalidate();
-           repaint();
+          repaint();
 //         initWindow();
       }
    }

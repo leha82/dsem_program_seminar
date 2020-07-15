@@ -104,7 +104,7 @@ public class LogManager {
          ResultSet rs = dbm.executeQuery(sql);
 
          while (rs.next()) {
-            min_count = rs.getInt("min_count");
+            min_count = rs.getInt("count");
          }
          System.out.println(min_count);
       } catch (SQLException e) {
