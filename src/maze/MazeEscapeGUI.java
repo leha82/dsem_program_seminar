@@ -59,13 +59,12 @@ public class MazeEscapeGUI extends JFrame {
 
 		this.curr_x = this.start_x;
 		this.curr_y = this.start_y;
+		
 		this.count = 0;
 		this.finished = false;
 	}
 
 	public void initMap() {
-		this.mouseClassName = defaultMouse;
-		this.mapFileName = defaultMap;
 		this.start_x = 0;
 		this.start_y = 0;
 		this.esc_x = maze.getEsc_x();
@@ -87,7 +86,8 @@ public class MazeEscapeGUI extends JFrame {
 		String name;
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				name = defaultMousePackage + listOfFiles[i].getName().replaceAll(".class", "");
+//				name = defaultMousePackage + listOfFiles[i].getName().replaceAll(".class", "");
+				name = listOfFiles[i].getName().replaceAll(".class", "");
 				miceList.add(name);
 			}
 		}
@@ -108,8 +108,8 @@ public class MazeEscapeGUI extends JFrame {
 			System.out.println("Error: " + e1.getMessage());
 			e1.printStackTrace();
 		}
-//		lbMouseName.setText("마우스 이름 : " + mouseName + "    ");
-//		lbCount.setText("이동횟수 : " + 0);
+//      lbMouseName.setText("마우스 이름 : " + mouseName + "    ");
+//      lbCount.setText("이동횟수 : " + 0);
 	}
 
 	public void initWindow() {
@@ -118,7 +118,7 @@ public class MazeEscapeGUI extends JFrame {
 		int[][] map = maze.getMap();
 		MenuActionListener listener = new MenuActionListener();
 		JMenuBar mousemenubar = new JMenuBar();
-		JMenu mouseMenu = new JMenu("MouseLoad");
+		JMenu mouseMenu = new JMenu("Load Mouse");
 		JMenuItem item[] = new JMenuItem[miceList.size()];
 
 		for (int i = 0; i < miceList.size(); i++) {
@@ -129,8 +129,8 @@ public class MazeEscapeGUI extends JFrame {
 		mousemenubar.add(mouseMenu);
 		setJMenuBar(mousemenubar);
 		setSize(250, 250);
+		// setPreferredSize(new Dimension(250, 250));
 		setVisible(true);
-
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
 
@@ -191,14 +191,52 @@ public class MazeEscapeGUI extends JFrame {
 			}
 		});
 
+      btnInit = new JButton("초기화");
+      btnInit.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            // Todo : 초기화 버튼을 눌렀을때 동작 추가
+               mapPanel.remove(mapLabels[curr_y][curr_x]);
+               mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
+               gbc.gridx = curr_x;
+               gbc.gridy = curr_y;
+               mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+               revalidate();
+               repaint();
+            loadMap();      
+         }
+      });
 		btnInit = new JButton("초기화");
 		btnInit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Todo : 초기화 버튼을 눌렀을때 동작 추가
-				System.out.println("dddd");
+				mapPanel.remove(mapLabels[curr_y][curr_x]);
+				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
+				gbc.gridx = curr_x;
+				gbc.gridy = curr_y;
+				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+				
 				initMap();
-				initWindow();
+
+				mapPanel.remove(mapLabels[curr_y][curr_x]);
+				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+				gbc.gridx = curr_x;
+				gbc.gridy = curr_y;
+				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+
+				mapPanel.remove(mapLabels[esc_y][esc_x]);
+				mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal.jpg"));
+				gbc.gridx = esc_x;
+				gbc.gridy = esc_y;
+				mapPanel.add(mapLabels[esc_y][esc_x], gbc);
+	
+				lbFileName.setText("맵 이름 : " + mapFileName + "    ");
+				lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
+				lbCount.setText("이동횟수 : " + count);
+				
+				revalidate();
+				repaint();
 			}
 		});
 
@@ -240,25 +278,40 @@ public class MazeEscapeGUI extends JFrame {
 	class MenuActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mouseClassName = e.getActionCommand(); 
+			mouseClassName = e.getActionCommand();
 			System.out.println("Choice -> " + mouseClassName);
+
+			changeMouseClass(defaultMousePackage + mouseClassName);
 			
-			changeMouseClass(mouseClassName);
 			GridBagConstraints gbc = new GridBagConstraints();
-			// Todo : 맵초기화 잘 동작하도록...
+
 			mapPanel.remove(mapLabels[curr_y][curr_x]);
 			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
-			gbc.gridx=curr_x;
-			gbc.gridy=curr_y;
+			gbc.gridx = curr_x;
+			gbc.gridy = curr_y;
 			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
-			
+
 			initMap();
-			mapLabels[0][0] = new JLabel(new ImageIcon("res/mouse.jpg"));
-			gbc.gridx=0;
-			gbc.gridy=0;
-			mapPanel.add(mapLabels[0][0], gbc);
+
+			mapPanel.remove(mapLabels[curr_y][curr_x]);
+			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+			gbc.gridx = curr_x;
+			gbc.gridy = curr_y;
+			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+
+			mapPanel.remove(mapLabels[esc_y][esc_x]);
+			mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal.jpg"));
+			gbc.gridx = esc_x;
+			gbc.gridy = esc_y;
+			mapPanel.add(mapLabels[esc_y][esc_x], gbc);
 			
-			//initWindow();
+			lbFileName.setText("맵 이름 : " + mapFileName + "    ");
+			lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
+			lbCount.setText("이동횟수 : " + count);
+			
+			revalidate();
+			repaint();
+//         initWindow();
 		}
 	}
 
@@ -277,9 +330,10 @@ public class MazeEscapeGUI extends JFrame {
 		gbc.gridy = curr_y;
 		mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
-//		lbFileName.setText("맵 이름 : " + mapFileName+ "    ");
+		lbFileName.setText("맵 이름 : " + mapFileName + "    ");
+		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
 		lbCount.setText("이동횟수 : " + count);
-
+		
 		revalidate();
 		repaint();
 	}
@@ -313,15 +367,15 @@ public class MazeEscapeGUI extends JFrame {
 			prev_y = curr_y;
 
 			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-	            JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-	            // 랭킹 업로드 메소드
-	            LogManager log = new LogManager();
-	            int mincount = log.getMinCount(mouseClassName);
-	            if (count < mincount || mincount < 0) {
-	               log.putLog(mouseClassName, mapFileName, count);
-	            }
-	            finished = true;
-	         }
+				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+				// 랭킹 업로드 메소드
+				LogManager log = new LogManager();
+				int mincount = log.getMinCount(mouseClassName);
+				if (count < mincount || mincount < 0) {
+					log.putLog(mouseClassName, mapFileName, count);
+				}
+				finished = true;
+			}
 			i++;
 		}
 
@@ -332,10 +386,10 @@ public class MazeEscapeGUI extends JFrame {
 			LogManager log = new LogManager();
 			ArrayList<LogRank> rankList = log.getRankingList();
 
-			String[] column = { "Rank", "Mouse name", "Map name","Record time", "Moves" };
+			String[] column = { "Rank", "Mouse", "Map", "Record time", "Moves" };
 			String[][] row = new String[rankList.size()][5];
 			for (int i = 0; i < rankList.size(); i++) {
-				LogRank listline = rankList.get(i);			
+				LogRank listline = rankList.get(i);
 				row[i][0] = Integer.toString(listline.getId());
 				row[i][1] = listline.getMouse();
 				row[i][2] = listline.getMapname();
@@ -351,7 +405,7 @@ public class MazeEscapeGUI extends JFrame {
 			table.setRowHeight(25);
 			table.getColumnModel().getColumn(0).setPreferredWidth(10);
 			table.getColumnModel().getColumn(4).setPreferredWidth(10);
-			for(int i =0;i<column.length;i++) {
+			for (int i = 0; i < column.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(dtcr);
 			}
 
