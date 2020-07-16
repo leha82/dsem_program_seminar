@@ -97,9 +97,6 @@ public class LogManager {
       // 데이터베이스에 접속
       dbm.connectDB();
 
-      // Todo : 맵이름 추가하여 로그에 넣는다.
-      // 시스템에서 시간을 받아 datetime 유형으로 만든다.
-      // 테이블에 파라메터의 값을 넣는다
       try {
          SimpleDateFormat current_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          String time_stamp = current_time.format(System.currentTimeMillis());

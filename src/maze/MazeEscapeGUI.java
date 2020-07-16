@@ -14,7 +14,7 @@ import mice.*;
 public class MazeEscapeGUI extends JFrame {
    private static String appTitle = "Maze Escape";
 //   private static String defaultMapFile = "maps/testmap2.txt";
-   private static String defaultMapFile = "maps/testmap2.txt";
+   private static String defaultMap = "testmap2";
    private static String defaultMouseDirectory = "bin/mice";
    private static String defaultMousePackage = "mice.";
    private static String defaultMouse = "RightHandMouse";
@@ -50,11 +50,12 @@ public class MazeEscapeGUI extends JFrame {
    public MazeEscapeGUI() {
       super(appTitle);
       this.mouseClassName = defaultMouse;
-      this.mapName = defaultMapFile;
+      this.mapName = defaultMap;
    }
 
    public void loadMap() {
-      this.maze = new Maze(mapName);
+      this.maze = new Maze();
+      this.maze.loadMapFromDB(mapName);
 
       this.start_x = maze.getStart_x();
       this.start_y = maze.getStart_y();
@@ -138,7 +139,6 @@ public class MazeEscapeGUI extends JFrame {
       }
       mousemenubar.add(mouseMenu);
 
-      // Todo : mapList에 있는 내용을 메뉴로 만들기
       JMenu mapMenu = new JMenu("Load Map");
       JMenuItem Mapitem[] = new JMenuItem[mapList.size()];
       for (int i = 0; i < mapList.size(); i++) {
@@ -424,7 +424,7 @@ public class MazeEscapeGUI extends JFrame {
 
          if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
             JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-            maze.storeMapToDB(mapName, map);
+            //maze.storeMapToDB(mapName, map);
             // 랭킹 업로드 메소드
             LogManager log = new LogManager();
             int mincount = log.getMinCount(mouseClassName);
