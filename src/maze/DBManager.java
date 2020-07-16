@@ -107,8 +107,10 @@ public class DBManager {
 					+ "x_size INT,"
 					+ "y_size INT,"
 					+ "map TEXT,"
-					+ "start INT,"
-					+ "end INT,"
+					+ "start_x INT,"
+					+ "start_y INT,"
+					+ "end_x INT,"
+					+ "end_y INT,"
 					+ "PRIMARY KEY(id))";
 			stmt.execute(sql);
 		}catch (SQLException e) {
