@@ -1,4 +1,4 @@
-package maze;
+package maze.mazemaker;
 
 public class RandomMapCreator {
 	private String mapName;

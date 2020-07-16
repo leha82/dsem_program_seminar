@@ -11,31 +11,6 @@ public class LogManager {
 		this.dbm = new DBManager();
 	}
 
-	public int getCount(String mouseName) {
-		int count = 0;
-
-		// 데이터베이스 접속
-		dbm.connectDB();
-
-		try {
-
-			String sql = "select count from maze.log where mouse_name ='" + mouseName + "'";
-			ResultSet rs = dbm.executeQuery(sql);
-
-			while (rs.next()) {
-				count = rs.getInt("count");
-			}
-//         System.out.println(count);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// 데이터베이스 접속 해제
-		dbm.disconnectDB();
-
-		return count;
-	}
-
 	public ArrayList<LogRank> getRankingList(String mapName) {
 		// Todo : 스트링 arraylist를 LogRank로 수정
 		ArrayList<LogRank> rankList = new ArrayList<LogRank>();

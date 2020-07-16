@@ -1,4 +1,4 @@
-package mice;
+package maze.mazemaker;
 
 public class Mouse_sy {
 	private int [][] map = {{0, 0, 0, 0, 0},

@@ -427,7 +427,7 @@ public class MazeEscapeGUI extends JFrame {
             int mincount = log.getMinCount(mouseClassName, mapName);
             System.out.println(mincount);
 
-            if (count < mincount || mincount < 0) {
+            if (count < mincount || mincount <= 0) {
                System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
                ArrayList<LogRank> rankList = log.getRankingList(mapName);
                
