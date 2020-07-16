@@ -14,7 +14,7 @@ import mice.*;
 public class MazeEscapeGUI extends JFrame {
 	private static String appTitle = "Maze Escape";
 //	private static String defaultMapFile = "maps/testmap2.txt";
-	private static String defaultMapFile = "maps/samplemap50.txt";
+	private static String defaultMapFile = "maps/samplemap100.txt";
 	private static String defaultMouseDirectory = "bin/mice";
 	private static String defaultMousePackage = "mice.";
 	private static String defaultMouse = "RightHandMouse";
@@ -290,7 +290,7 @@ public class MazeEscapeGUI extends JFrame {
 		mainPanel.add(infoPanel, "South");
 
 		add(mainPanel);
-		setSize(map[0].length * 60 + 100, map.length * 60 + 50);
+		setSize(map[0].length * 1 + 100, map.length * 1 + 50);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
