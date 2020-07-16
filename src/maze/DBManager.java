@@ -15,8 +15,8 @@ public class DBManager {
 
 		// Todo : DB를 mysql 로 바꾸고, 서버 주소 수정		
 		this.driver = "com.mysql.cj.jdbc.Driver";
-		this.url = "jdbc:mysql://203.234.62.143:3306/maze?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false";
-		this.userid = "sojin";
+		this.url = "jdbc:mysql://203.234.62.115:3306/maze?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&useSSL=false";
+		this.userid = "root";
 		this.password = "1234";
 	}
 	
@@ -30,7 +30,7 @@ public class DBManager {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 			return false;
-		}
+		} 
 		return true;
 	}
 
@@ -57,7 +57,7 @@ public class DBManager {
 	}
 		
 	public void executeUpdate(String sql) throws SQLException {
-//		Statement stmt = this.conn.createStatement();
+		Statement stmt = this.conn.createStatement();
 		stmt.executeUpdate(sql);
 	}
 	
@@ -66,8 +66,9 @@ public class DBManager {
 		// 데이터베이스 접속
 		dbm.connectDB();
 		// log, map 테이블 생성
-	//	dbm.createLogTable();
-	//	dbm.createMapTable();
+		dbm.createLogTable();
+		dbm.createMapTable();
+		dbm.disconnectDB();
 	}
 	
 	public void createLogTable() {
@@ -85,7 +86,8 @@ public class DBManager {
 					+ "count INT,"
 					+ "PRIMARY KEY(id))";
 			stmt.execute(sql);
-		}catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnectDB();
@@ -105,6 +107,10 @@ public class DBManager {
 					+ "x_size INT,"
 					+ "y_size INT,"
 					+ "map TEXT,"
+					+ "start_x INT,"
+					+ "start_y INT,"
+					+ "end_x INT,"
+					+ "end_y INT,"
 					+ "PRIMARY KEY(id))";
 			stmt.execute(sql);
 		}catch (SQLException e) {
