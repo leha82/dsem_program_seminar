@@ -13,7 +13,8 @@ import mice.*;
 
 public class MazeEscapeGUI extends JFrame {
 	private static String appTitle = "Maze Escape";
-	private static String defaultMapFile = "maps/testmap2.txt";
+//	private static String defaultMapFile = "maps/testmap2.txt";
+	private static String defaultMapFile = "maps/samplemap50.txt";
 	private static String defaultMouseDirectory = "bin/mice";
 	private static String defaultMousePackage = "mice.";
 	private static String defaultMouse = "RightHandMouse";
@@ -135,7 +136,7 @@ public class MazeEscapeGUI extends JFrame {
 
 	public void initWindow() {
 		// window나 panel을 초기화 하는것을 찾아 볼 것
-		maze.loadMapFromDB(mapName);
+//		maze.loadMapFromDB(mapName);
 		int[][] map = maze.getMap();
 //		LoadMouseMenuActionListener loadMouseListener = new LoadMouseMenuActionListener();
 		JMenuBar mousemenubar = new JMenuBar();
