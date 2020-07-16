@@ -56,6 +56,7 @@ public class MazeEscape {
 
 	public void printMap(int x, int y) {
 		// 지도를 출력하고 엔터하나 입력받도록 한다 #1
+		int[][] map = maze.getMap();
 		String goal = "▶";
 		String road = "·";
 		String block = "■";
