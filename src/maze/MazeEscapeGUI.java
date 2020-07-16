@@ -18,6 +18,8 @@ public class MazeEscapeGUI extends JFrame {
 	private static String defaultMouseDirectory = "bin/mice";
 	private static String defaultMousePackage = "mice.";
 	private static String defaultMouse = "RightHandMouse";
+	private static int imgSize = 10;
+	
 	private JPanel mainPanel;
 	private JPanel mapPanel;
 	private JPanel infoPanel;
@@ -180,13 +182,13 @@ public class MazeEscapeGUI extends JFrame {
 				gbc.gridy = i;
 
 				if (curr_x == j && curr_y == i) {
-					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse.jpg"));
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
 				} else if (esc_x == j && esc_y == i) {
-					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal.jpg"));
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
 				} else if (map[i][j] == 1) {
-					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall.jpg"));
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall"+imgSize+".jpg"));
 				} else {
-					mapLabels[i][j] = new JLabel(new ImageIcon("res/way.jpg"));
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
 				}
 				mapPanel.add(mapLabels[i][j], gbc);
 			}
@@ -231,7 +233,7 @@ public class MazeEscapeGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Todo : 초기화 버튼을 눌렀을때 동작 추가
 				mapPanel.remove(mapLabels[curr_y][curr_x]);
-				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
+				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
 				gbc.gridx = curr_x;
 				gbc.gridy = curr_y;
 				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
@@ -239,13 +241,13 @@ public class MazeEscapeGUI extends JFrame {
 				initMap();
 
 				mapPanel.remove(mapLabels[curr_y][curr_x]);
-				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
 				gbc.gridx = curr_x;
 				gbc.gridy = curr_y;
 				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
 				mapPanel.remove(mapLabels[esc_y][esc_x]);
-				mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal.jpg"));
+				mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
 				gbc.gridx = esc_x;
 				gbc.gridy = esc_y;
 				mapPanel.add(mapLabels[esc_y][esc_x], gbc);
@@ -305,7 +307,7 @@ public class MazeEscapeGUI extends JFrame {
 			GridBagConstraints gbc = new GridBagConstraints();
 
 			mapPanel.remove(mapLabels[curr_y][curr_x]);
-			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way.jpg"));
+			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
 			gbc.gridx = curr_x;
 			gbc.gridy = curr_y;
 			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
@@ -313,13 +315,13 @@ public class MazeEscapeGUI extends JFrame {
 			initMap();
 
 			mapPanel.remove(mapLabels[curr_y][curr_x]);
-			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
 			gbc.gridx = curr_x;
 			gbc.gridy = curr_y;
 			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
 			mapPanel.remove(mapLabels[esc_y][esc_x]);
-			mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal.jpg"));
+			mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal+"+imgSize+".jpg"));
 			gbc.gridx = esc_x;
 			gbc.gridy = esc_y;
 			mapPanel.add(mapLabels[esc_y][esc_x], gbc);
@@ -386,13 +388,13 @@ public class MazeEscapeGUI extends JFrame {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		mapPanel.remove(mapLabels[prev_y][prev_x]);
-		mapLabels[prev_y][prev_x] = new JLabel(new ImageIcon("res/way.jpg"));
+		mapLabels[prev_y][prev_x] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
 		gbc.gridx = prev_x;
 		gbc.gridy = prev_y;
 		mapPanel.add(mapLabels[prev_y][prev_x], gbc);
 
 		mapPanel.remove(mapLabels[curr_y][curr_x]);
-		mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse.jpg"));
+		mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
 		gbc.gridx = curr_x;
 		gbc.gridy = curr_y;
 		mapPanel.add(mapLabels[curr_y][curr_x], gbc);
