@@ -308,7 +308,7 @@ public class MazeEscapeGUI extends JFrame {
          mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
          mapPanel.remove(mapLabels[esc_y][esc_x]);
-         mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal+"+map.length+".jpg"));
+         mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+map.length+".jpg"));
          gbc.gridx = esc_x;
          gbc.gridy = esc_y;
          mapPanel.add(mapLabels[esc_y][esc_x], gbc);
@@ -427,15 +427,24 @@ public class MazeEscapeGUI extends JFrame {
             //maze.storeMapToDB(mapName, map);
             // 랭킹 업로드 메소드
             LogManager log = new LogManager();
-            int mincount = log.getMinCount(mouseClassName);
+            int mincount = log.getMinCount(mouseClassName, mapName);
             System.out.println(mincount);
 
             if (count < mincount || mincount < 0) {
                System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
+               ArrayList<LogRank> rankList = log.getRankingList(mapName);
                
+               for(int k=0;k<rankList.size();k++) {
+            	   LogRank lr = rankList.get(k);
+            	   if(lr.getMouse().contains(mouseClassName)){
+            		   log.deleteLog(lr.getId());
+            	   }
+               }
+
                log.putLog(mouseClassName, mapName, count);
             }
             finished = true;
+            
          }
          i++;
       }
