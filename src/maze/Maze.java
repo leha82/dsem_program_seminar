@@ -12,6 +12,7 @@ public class Maze {
 	public int esc_x;
 	private int esc_y;
 	private int[][] map;
+//	private static int[][] map;
 
 	public Maze() {
 		this(0, 0, null);
@@ -117,7 +118,7 @@ public class Maze {
 		}
 	}
 
-	public void storeMapToDB(String mapName, int[][] newMap) {
+	public boolean storeMapToDB(String mapName, int[][] newMap) {
 		// Todo : 메소드의 리턴타입을 boolean으로 바꾸고, DB에 동일한 mapName이 존재하는지 확인한 후 저장
 
 		DBManager dbm = new DBManager();
@@ -126,10 +127,20 @@ public class Maze {
 
 		String textmap = Arrays.deepToString(newMap);
 		try {
-			String sql = "insert into map(map_name, x_size, y_size, start_x, start_y, esc_x, esc_y, map) " + "values ('"
+			String sql = "select map_name from map";
+			ResultSet rs = dbm.executeQuery(sql);
+			
+			while(rs.next()) {
+				String map_name = rs.getString("map_name");
+				if(mapName.equals(map_name)) {
+					System.out.println("중복 맵 입니다.");
+					return false;
+				}
+			}
+			String sql2 = "insert into map(map_name, x_size, y_size, start_x, start_y, esc_x, esc_y, map) " + "values ('"
 					+ mapName + "'," + this.width + "," + this.height + "," + this.start_x + "," + this.start_y + ","
 					+ this.esc_x + "," + this.esc_y + ",'" + textmap + "')";
-			dbm.executeUpdate(sql);
+			dbm.executeUpdate(sql2);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -137,6 +148,7 @@ public class Maze {
 		// 데이터베이스 접속 해제
 		dbm.disconnectDB();
 
+		return true;
 	}
 
 	public int getWidth() {

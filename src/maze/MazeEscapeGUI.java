@@ -13,7 +13,7 @@ import mice.*;
 
 public class MazeEscapeGUI extends JFrame {
 	private static String appTitle = "Maze Escape";
-	private static String defaultMapFile = "maps/testmap.txt";
+	private static String defaultMapFile = "maps/testmap2.txt";
 	private static String defaultMouseDirectory = "bin/mice";
 	private static String defaultMousePackage = "mice.";
 	private static String defaultMouse = "RightHandMouse";
@@ -119,7 +119,7 @@ public class MazeEscapeGUI extends JFrame {
 
 	public void initWindow() {
 		// window나 panel을 초기화 하는것을 찾아 볼 것
-
+		maze.loadMapFromDB(mapName);
 		int[][] map = maze.getMap();
 //		LoadMouseMenuActionListener loadMouseListener = new LoadMouseMenuActionListener();
 		JMenuBar mousemenubar = new JMenuBar();
@@ -373,6 +373,7 @@ public class MazeEscapeGUI extends JFrame {
 
 			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
 				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+				maze.storeMapToDB(mapName, map);
 				// 랭킹 업로드 메소드
 				LogManager log = new LogManager();
 				int mincount = log.getMinCount(mouseClassName);
@@ -380,6 +381,7 @@ public class MazeEscapeGUI extends JFrame {
 
 				if (count < mincount || mincount < 0) {
 					System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
+					
 					log.putLog(mouseClassName, mapName, count);
 				}
 				finished = true;
