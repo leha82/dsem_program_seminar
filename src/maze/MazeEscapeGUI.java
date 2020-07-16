@@ -64,7 +64,20 @@ public class MazeEscapeGUI extends JFrame {
 		this.count = 0;
 		this.finished = false;
 	}
+	
+	public void loadMap1() {
+		this.start_x = maze.getStart_x();
+		this.start_y = maze.getStart_y();
+		this.esc_x = maze.getEsc_x();
+		this.esc_y = maze.getEsc_y();
 
+		this.curr_x = this.start_x;
+		this.curr_y = this.start_y;
+		
+		this.count = 0;
+		this.finished = false;
+	}
+	
 	public void initMap() {
 		this.start_x = 0;
 		this.start_y = 0;
@@ -97,7 +110,10 @@ public class MazeEscapeGUI extends JFrame {
 
 	public void loadMapList() {
 		// Todo : DB로부터 Map List를 받아 this.mapList로 만든다.
-		
+		LogManager log = new LogManager();
+		this.mapList = log.getMapNameList();
+		for(int i =0; i < mapList.size(); i++)
+			System.out.println(mapList.get(i));
 	}
 	
 	private void changeMouseClass(String mouseName) {
@@ -135,9 +151,15 @@ public class MazeEscapeGUI extends JFrame {
 		mousemenubar.add(mouseMenu);
 
 		// Todo : mapList에 있는 내용을 메뉴로 만들기
+		JMenu mapMenu = new JMenu("Load Map");
+		JMenuItem Mapitem[] = new JMenuItem[mapList.size()];
+		for (int i = 0; i < mapList.size(); i++) {
+			Mapitem[i] = new JMenuItem(mapList.get(i));
+			Mapitem[i].addActionListener(new LoadMapMenuActionListener());
+			mapMenu.add(Mapitem[i]);
+		}
 		
-		
-		
+		mousemenubar.add(mapMenu);
 		setJMenuBar(mousemenubar);
 		setSize(250, 250);
 		setVisible(true);
@@ -310,13 +332,52 @@ public class MazeEscapeGUI extends JFrame {
 //         initWindow();
 		}
 	}
+	public  void paintMap(int map[][]) {
+		mapPanel = new JPanel();
+		mapPanel.setLayout(new GridBagLayout());
+
+		mapLabels = new JLabel[map.length][];
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		for (int i = 0; i < map.length; i++) {
+			mapLabels[i] = new JLabel[map[i].length];
+
+			for (int j = 0; j < map[i].length; j++) {
+				gbc.gridx = j;
+				gbc.gridy = i;
+
+				if (curr_x == j && curr_y == i) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse.jpg"));
+				} else if (esc_x == j && esc_y == i) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal.jpg"));
+				} else if (map[i][j] == 1) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall.jpg"));
+				} else {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/way.jpg"));
+				}
+				mapPanel.add(mapLabels[i][j], gbc);
+			}
+		}
+		mainPanel.add(mapPanel, "North");
+		setSize(map[0].length * 60 + 100, map.length * 60 + 50);
+		lbFileName.setText("맵 이름 : " + mapName + "    ");
+		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
+		lbCount.setText("이동횟수 : " + count);
+	}
 	
 	class LoadMapMenuActionListener implements ActionListener {
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			mapName = e.getActionCommand();
 			// Todo : mapName을 DB로부터 받아와서 maze에 저장될 수 있도록 한다.
-
+			System.out.println("Choice -> " + mapName);
+			loadMap();
+			int[][] map = maze.getMap();
+			mainPanel.remove(mapPanel);
+			paintMap(map);
+			mainPanel.revalidate();
 		}
 	}
 
