@@ -61,12 +61,36 @@ public class LogManager {
       } catch (SQLException e) {
          e.printStackTrace();
       } // 데이터베이스 접속 해제
-      System.out.println(rankList);
       
       dbm.disconnectDB();
       return rankList;
    }
 
+   public ArrayList<String> getMapNameList() {
+	      // Todo : 스트링 arraylist를 LogRank로 수정
+	      ArrayList<String> mapList = new ArrayList<String>();
+
+	      // 데이터베이스 접속
+	      dbm.connectDB();
+
+	      // 테이블의 데이터 획득
+	      try {
+	         // Todo : map이름도 string 혹은 LogRank 타입으로 사용할 수 있도록 변경
+	         String sql = "SELECT distinct map_name FROM maze.log;";
+	         ResultSet rs = dbm.executeQuery(sql);
+
+	         while (rs.next()) {
+	            String map_name = rs.getString("map_name");
+	            mapList.add(map_name);
+	         }
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } // 데이터베이스 접속 해제
+	      
+	      dbm.disconnectDB();
+	      return mapList;
+	   }
+   
    public boolean putLog(String mouseName, String map_name, int count) {
       boolean result = true;
       
