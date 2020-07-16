@@ -14,10 +14,11 @@ import mice.*;
 public class MazeEscapeGUI extends JFrame {
    private static String appTitle = "Maze Escape";
 //   private static String defaultMapFile = "maps/testmap2.txt";
-   private static String defaultMapFile = "maps/samplemap50.txt";
+   private static String defaultMapFile = "maps/testmap2.txt";
    private static String defaultMouseDirectory = "bin/mice";
    private static String defaultMousePackage = "mice.";
    private static String defaultMouse = "RightHandMouse";
+   private static int imgSize;
    
    private JPanel mainPanel;
    private JPanel mapPanel;
@@ -31,6 +32,7 @@ public class MazeEscapeGUI extends JFrame {
    private JLabel lbCount;
    private JLabel lbMouseName;
    private JLabel lbFileName;
+   private JLabel lbRanking;
    private JLabel[][] mapLabels;
    private String mouseClassName;
    private String mapName;
@@ -215,7 +217,7 @@ public class MazeEscapeGUI extends JFrame {
          @Override
          public void actionPerformed(ActionEvent e) {
             // Todo : 초기화 버튼을 눌렀을때 동작 추가
-        	int map[][] = maze.getMap();
+           int map[][] = maze.getMap();
             mapPanel.remove(mapLabels[curr_y][curr_x]);
             mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
             gbc.gridx = curr_x;
