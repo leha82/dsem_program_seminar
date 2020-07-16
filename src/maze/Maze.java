@@ -118,8 +118,7 @@ public class Maze {
 	}
 
 	public void storeMapToDB(String mapName, int[][] newMap) {
-		// Todo : DB에 mapName으로 newMap을 저장한다.
-		// 받아온 2차원 newMap[][]을 db에 저장할 수 있는 포맷으로 바꾸어 저장
+		// Todo : 메소드의 리턴타입을 boolean으로 바꾸고, DB에 동일한 mapName이 존재하는지 확인한 후 저장
 
 		DBManager dbm = new DBManager();
 		// 데이터베이스 접속

@@ -36,7 +36,7 @@ public class LogManager {
       return count;
    }
 
-   public ArrayList<LogRank> getRankingList() {
+   public ArrayList<LogRank> getRankingList(String mapName) {
       // Todo : 스트링 arraylist를 LogRank로 수정
       ArrayList<LogRank> rankList = new ArrayList<LogRank>();
 
@@ -46,7 +46,8 @@ public class LogManager {
       // 테이블의 데이터 획득
       try {
          // Todo : map이름도 string 혹은 LogRank 타입으로 사용할 수 있도록 변경
-         String sql = "select * from maze.log order by count asc;";
+         String sql = "select * from maze.log where map_name='" + mapName 
+        		 	+ "' order by count, timestamp asc;";
          ResultSet rs = dbm.executeQuery(sql);
 
          while (rs.next()) {
@@ -99,12 +100,12 @@ public class LogManager {
 
       try {
 
-         String sql = "select count as min_count from maze.log "
+         String sql = "select count from maze.log "
                + "where mouse_name='" + mouseName + "';";
          ResultSet rs = dbm.executeQuery(sql);
 
          while (rs.next()) {
-            min_count = rs.getInt("count");
+            min_count = rs.getInt(1);
          }
          System.out.println(min_count);
       } catch (SQLException e) {
