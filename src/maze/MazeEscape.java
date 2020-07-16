@@ -30,6 +30,7 @@ public class MazeEscape {
 		
 		this.curr_x = this.start_x;
 		this.curr_y = this.start_y;
+		
 
 	}
 
