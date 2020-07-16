@@ -311,6 +311,15 @@ public class MazeEscapeGUI extends JFrame {
             LogManager log = new LogManager();
             int mincount = log.getMinCount(mouseClassName);
             if (count < mincount || mincount < 0) {
+               ArrayList<String> rankList = log.getRankingList();
+               for(int k=0;k<rankList.size();k++) {
+            	   if(rankList.get(k).contains(mouseClassName)){
+            		   String[] arr=rankList.get(k).split(",");
+            		   int id=Integer.parseInt(arr[0]);
+            		   log.deleteLog(id);
+            		   break;
+            	   }
+               }
                log.putLog(mouseClassName, count);
             }
 

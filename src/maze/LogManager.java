@@ -158,6 +158,25 @@ public class LogManager {
 		// 单捞磐海捞胶 立加 秦力
 		disconnectDB();
 		return min_count;
+	} 
+	
+	public boolean deleteLog(int id) {
+		boolean result = true;
+		
+		connectDB();
+		
+		try {
+			String sql = "delete from Log(mouse_name, timestamp, count) where (" + id + ")";
+			stmt.executeUpdate(sql);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = false;
+		}
+		
+		disconnectDB();
+		return result;
+
 	}
 
 //	public static void main(String[] args) {
