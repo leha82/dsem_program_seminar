@@ -1,5 +1,9 @@
 package maze.mazemaker;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class RandomMapCreator {
 	private String mapName;
 	private int x_size;
@@ -27,6 +31,7 @@ public class RandomMapCreator {
 
 	public void createMap() {
 		// Todo: 여기에서 map을 생성한다.
+		
 	}
 
 	public static void main(String[] args) {
@@ -41,7 +46,41 @@ public class RandomMapCreator {
 	// Todo : 맵 파일로 생성 testmap.txt와 동일한 형식으로.
 	// 파일로 저장할때 maps 폴더에 .txt확장자를 붙여서 파일로 저장할 것
 		// this.mapName 활용
-	
+		
+		File f = new File("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
+		if (f.exists()) {
+			int index = 1;
+			mapName = mapName + "_" + index;
+			
+			while(true) {
+				f = new File("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
+				if (f.exists()) {
+					index++;
+					mapName = mapName.substring(0, mapName.lastIndexOf("_"));
+					mapName = mapName + "_" + index;
+				} else {
+					break;
+				}
+			}
+		}
+		
+		try {
+			FileWriter w = new FileWriter("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
+			
+			w.write(x_size + " " + y_size + "\n");
+			w.write(start_x + " " + start_y + "\n");
+			w.write(esc_x + " " + esc_y + "\n");
+			for (int i=0;i<y_size;i++) {
+				for (int j=0;j<x_size;j++) {
+					w.write(map[j][i] + " ");
+				}
+				w.write("\n");
+			}
+			w.close();
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void printMap() {
