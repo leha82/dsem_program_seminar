@@ -10,7 +10,7 @@ public class Maze {
 	private int width, height;
 	private int start_x, start_y;
 	public int esc_x;
-	private int esc_y;
+	public int esc_y;
 	private int[][] map;
 //	private static int[][] map;
 
