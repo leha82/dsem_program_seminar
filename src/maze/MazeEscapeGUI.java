@@ -18,7 +18,9 @@ public class MazeEscapeGUI extends JFrame {
    private static String defaultMouseDirectory = "bin/mice";
    private static String defaultMousePackage = "mice.";
    private static String defaultMouse = "RightHandMouse";
-   private static int imgSize;
+   private static int imgSize = 10;
+   private static int setX = 10;
+   private static int setY = 10;
    
    private JPanel mainPanel;
    private JPanel mapPanel;
@@ -164,13 +166,13 @@ public class MazeEscapeGUI extends JFrame {
             gbc.gridy = i;
 
             if (curr_x == j && curr_y == i) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse"+map.length+".jpg"));
+               mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
             } else if (esc_x == j && esc_y == i) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/goal"+map.length+".jpg"));
+               mapLabels[i][j] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
             } else if (map[i][j] == 1) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/wall"+map.length+".jpg"));
+               mapLabels[i][j] = new JLabel(new ImageIcon("res/wall"+imgSize+".jpg"));
             } else {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
+               mapLabels[i][j] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
             }
             mapPanel.add(mapLabels[i][j], gbc);
          }
@@ -216,7 +218,7 @@ public class MazeEscapeGUI extends JFrame {
             // Todo : 초기화 버튼을 눌렀을때 동작 추가
            int map[][] = maze.getMap();
             mapPanel.remove(mapLabels[curr_y][curr_x]);
-            mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
+            mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+ imgSize +".jpg"));
             gbc.gridx = curr_x;
             gbc.gridy = curr_y;
             mapPanel.add(mapLabels[curr_y][curr_x], gbc);
@@ -224,13 +226,13 @@ public class MazeEscapeGUI extends JFrame {
             initMap();
 
             mapPanel.remove(mapLabels[curr_y][curr_x]);
-            mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+map.length+".jpg"));
+            mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
             gbc.gridx = curr_x;
             gbc.gridy = curr_y;
             mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
             mapPanel.remove(mapLabels[esc_y][esc_x]);
-            mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+map.length+".jpg"));
+            mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
             gbc.gridx = esc_x;
             gbc.gridy = esc_y;
             mapPanel.add(mapLabels[esc_y][esc_x], gbc);
@@ -273,7 +275,7 @@ public class MazeEscapeGUI extends JFrame {
       mainPanel.add(infoPanel, "South");
 
       add(mainPanel);
-      setSize(map[0].length * 60 + 100, map.length * 60 + 50);
+      setSize(setX * 60 + 100, setY * 60 + 50);
       setVisible(true);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    }
@@ -291,7 +293,7 @@ public class MazeEscapeGUI extends JFrame {
          
          int map[][] = maze.getMap();
          mapPanel.remove(mapLabels[curr_y][curr_x]);
-         mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
+         mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way"+ imgSize +".jpg"));
          gbc.gridx = curr_x;
          gbc.gridy = curr_y;
          mapPanel.add(mapLabels[curr_y][curr_x], gbc);
@@ -299,13 +301,13 @@ public class MazeEscapeGUI extends JFrame {
          initMap();
 
          mapPanel.remove(mapLabels[curr_y][curr_x]);
-         mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+map.length+".jpg"));
+         mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
          gbc.gridx = curr_x;
          gbc.gridy = curr_y;
          mapPanel.add(mapLabels[curr_y][curr_x], gbc);
 
          mapPanel.remove(mapLabels[esc_y][esc_x]);
-         mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+map.length+".jpg"));
+         mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
          gbc.gridx = esc_x;
          gbc.gridy = esc_y;
          mapPanel.add(mapLabels[esc_y][esc_x], gbc);
@@ -335,20 +337,20 @@ public class MazeEscapeGUI extends JFrame {
              gbc.gridy = i;
 
              if (curr_x == j && curr_y == i) {
-                mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse"+map.length+".jpg"));
+                mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse"+imgSize+".jpg"));
              } else if (esc_x == j && esc_y == i) {
-                mapLabels[i][j] = new JLabel(new ImageIcon("res/goal"+map.length+".jpg"));
+                mapLabels[i][j] = new JLabel(new ImageIcon("res/goal"+imgSize+".jpg"));
              } else if (map[i][j] == 1) {
-                mapLabels[i][j] = new JLabel(new ImageIcon("res/wall"+map.length+".jpg"));
+                mapLabels[i][j] = new JLabel(new ImageIcon("res/wall"+imgSize+".jpg"));
              } else {
-                mapLabels[i][j] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
+                mapLabels[i][j] = new JLabel(new ImageIcon("res/way"+imgSize+".jpg"));
              }
              mapPanel.add(mapLabels[i][j], gbc);
           }
        }
       
       mainPanel.add(mapPanel, "North");
-      setSize(map[0].length * 60 + 100, map.length * 60 + 50);
+      setSize(setX * 60 + 100, setY * 60 + 50);
       lbFileName.setText("맵 이름 : " + mapName + "    ");
       lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
       lbCount.setText("이동횟수 : " + count);
@@ -362,6 +364,21 @@ public class MazeEscapeGUI extends JFrame {
          // Todo : mapName을 DB로부터 받아와서 maze에 저장될 수 있도록 한다.
          loadMap();
          int[][] map = maze.getMap();
+         
+         if(map.length <= 10 ) {
+        	 imgSize = 10;
+        	 setX = 10;
+        	 setY = 10;
+         }else if(map.length <= 50 ) {
+        	 imgSize = 50;
+        	 setX = 15;
+        	 setY = 15;		 
+         }else {
+        	 imgSize = 100;
+        	 setX = 15;
+        	 setY = 10;		
+         }
+         
          mainPanel.remove(mapPanel);
          paintMap(map);
          mainPanel.revalidate();
@@ -372,13 +389,13 @@ public class MazeEscapeGUI extends JFrame {
       GridBagConstraints gbc = new GridBagConstraints();
 
       mapPanel.remove(mapLabels[prev_y][prev_x]);
-      mapLabels[prev_y][prev_x] = new JLabel(new ImageIcon("res/way"+map.length+".jpg"));
+      mapLabels[prev_y][prev_x] = new JLabel(new ImageIcon("res/way"+ imgSize+ ".jpg"));
       gbc.gridx = prev_x;
       gbc.gridy = prev_y;
       mapPanel.add(mapLabels[prev_y][prev_x], gbc);
 
       mapPanel.remove(mapLabels[curr_y][curr_x]);
-      mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+map.length+".jpg"));
+      mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse"+ imgSize +".jpg"));
       gbc.gridx = curr_x;
       gbc.gridy = curr_y;
       mapPanel.add(mapLabels[curr_y][curr_x], gbc);
