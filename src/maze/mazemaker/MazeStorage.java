@@ -16,12 +16,11 @@ public class MazeStorage {
 // 데이터베이스에 저장할 때 폴더명과 확장자는 없애고 순수 파일명만으로 maze이름을 만들 것
 	private static String dirname =  "maps/";
 	private static String extension = ".txt";
-	private static String filename = "random1_2";
+	private static String filename = "testmap3";
 	private int width, height;
 	private int start_x, start_y;
-	public int esc_x;
-	private int esc_y;
-	private static int[][] map;
+	private int esc_x, esc_y;
+	private int[][] map;
 
 	
 	public void readFile(String filename) {
@@ -67,13 +66,12 @@ public class MazeStorage {
 
 	}
 	
-	public boolean fileToDB(String mapName, int[][] newMap) {
+	public boolean fileToDB(String mapName) {
 		DBManager dbm = new DBManager();
 		// 데이터베이스 접속
 		dbm.connectDB();
-		String map = "";
 
-		String textmap = Arrays.deepToString(newMap);
+		String textmap = Arrays.deepToString(map);
 		try {
 			String sql = "select map_name from map";
 			ResultSet rs = dbm.executeQuery(sql);
@@ -85,8 +83,8 @@ public class MazeStorage {
 					return false;
 				}
 			}
-			String sql2 = "insert into map(map_name, x_size, y_size, start_x, start_y, esc_x, esc_y, map) " + "values ('"
-					+ mapName + "'," + width + "," + height + "," + start_x + "," + start_y + ","
+			String sql2 = "insert into map(map_name, x_size, y_size, start_x, start_y, esc_x, esc_y, map) " 
+					+ "values ('" + mapName + "'," + width + "," + height + "," + start_x + "," + start_y + ","
 					+ esc_x + "," + esc_y + ",'" + textmap + "')";
 			dbm.executeUpdate(sql2);
 			System.out.println(mapName + " DB에 저장 완료");
@@ -103,6 +101,6 @@ public class MazeStorage {
 	public static void main(String[] args) {
 		MazeStorage ms = new MazeStorage();
 		ms.readFile(dirname+filename+extension);
-		ms.fileToDB(filename, map);
+		ms.fileToDB(filename);
 	}
 }

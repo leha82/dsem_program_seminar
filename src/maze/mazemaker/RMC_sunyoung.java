@@ -5,29 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class RMC_sunyoung {
-	private String mapName;
-	private int x_size;
-	private int y_size;
-	private int start_x, start_y;
-	private int esc_x, esc_y;
-
-	private int[][] map;
-
+public class RMC_sunyoung extends RandomMapCreator{
 	public RMC_sunyoung() {
 		this("", 0, 0);
 	}
 
 	public RMC_sunyoung(String mapName, int x_size, int y_size) {
-		this.mapName = mapName;
-		this.x_size = x_size;
-		this.y_size = y_size;
-		this.map = new int[y_size][x_size];
-
-		this.start_x = 0;
-		this.start_y = 0;
-		this.esc_x = x_size - 1;
-		this.esc_y = y_size - 1;
+		super(mapName, x_size, y_size);
 	}
 
 	public void createMap() {
@@ -228,69 +212,4 @@ public class RMC_sunyoung {
 		}
 		System.out.println();
 	}
-
-	public String getMapName() {
-		return mapName;
-	}
-
-	public void setMapName(String mapName) {
-		this.mapName = mapName;
-	}
-
-	public int getX_size() {
-		return x_size;
-	}
-
-	public void setX_size(int x_size) {
-		this.x_size = x_size;
-	}
-
-	public int getY_size() {
-		return y_size;
-	}
-
-	public void setY_size(int y_size) {
-		this.y_size = y_size;
-	}
-
-	public int getStart_x() {
-		return start_x;
-	}
-
-	public void setStart_x(int start_x) {
-		this.start_x = start_x;
-	}
-
-	public int getStart_y() {
-		return start_y;
-	}
-
-	public void setStart_y(int start_y) {
-		this.start_y = start_y;
-	}
-
-	public int getEsc_x() {
-		return esc_x;
-	}
-
-	public void setEsc_x(int esc_x) {
-		this.esc_x = esc_x;
-	}
-
-	public int getEsc_y() {
-		return esc_y;
-	}
-
-	public void setEsc_y(int esc_y) {
-		this.esc_y = esc_y;
-	}
-
-	public int[][] getMap() {
-		return map;
-	}
-
-	public void setMap(int[][] map) {
-		this.map = map;
-	}
-
 }
