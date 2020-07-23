@@ -24,7 +24,7 @@ public class MazeValidator {
 // 0 1 0 0 1 0 0
 // 0 1 1 1 1 0 0
 // 0 0 0 0 0 0 0
-	public void find(int x, int y) {
+	public int find(int x, int y) {
 		if (x == maze.esc_x && y == maze.esc_y) {
 			cnt++;
 		}
@@ -52,7 +52,7 @@ public class MazeValidator {
 			}
 		}
 		map[y][x] = 0;
-
+		return cnt;
 	}
 
 	public void print(int[][] maze) {
@@ -69,12 +69,19 @@ public class MazeValidator {
 			return true;
 		return false;
 	}
-
+	
+	public boolean mapxy() {
+		if(map[maze.getStart_y()][maze.getStart_x()] == 0 && map[maze.esc_y][maze.esc_x]==0)
+			return true;
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		MazeValidator mv = new MazeValidator();
 		mv.print(map);
-		mv.find(0, 0);
-		System.out.println("탈출 가능한 미로: " + mv.root(cnt));
-		System.out.println("경로 개수: " + cnt);
+		if(mv.mapxy() && mv.root(mv.find(0, 0))) {
+			System.out.println("탈출 가능한 미로");
+			System.out.println("경로 개수: " + cnt);
+		}
 	}
 }

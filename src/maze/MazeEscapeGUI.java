@@ -34,7 +34,6 @@ public class MazeEscapeGUI extends JFrame {
 	private JLabel lbCount;
 	private JLabel lbMouseName;
 	private JLabel lbFileName;
-	private JLabel lbRanking;
 	private JLabel[][] mapLabels;
 	private String mouseClassName;
 	private String mapName;
