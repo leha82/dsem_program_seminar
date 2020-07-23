@@ -3,8 +3,14 @@
 6 6
 0 0 0 0 0 0 1
 1 1 0 1 1 0 1
+<<<<<<< HEAD
 1 1 0 1 1 1 1
 0 0 0 0 0 0 1
 1 1 0 1 1 0 1
+=======
+0 1 0 1 1 0 1
+0 0 0 1 1 0 1
+0 1 0 1 1 0 1
+>>>>>>> branch 'mazemaker' of https://github.com/leha82/dsem_program_seminar.git
 0 1 0 0 0 0 1
-0 0 0 1 1 0 0
+1 0 0 1 1 0 0
