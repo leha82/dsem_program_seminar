@@ -4,7 +4,7 @@ import maze.Maze;
 
 public class MazeValidator {
 	static int cnt = 0;
-	static Maze maze = new Maze("maps/test.txt");
+	static Maze maze = new Maze("maps/random1_12.txt");
 	static int map[][] = maze.getMap();
 //Todo : 다음 규칙에 따라 미로가 제대로 완성되었는지를 확인하는 코드를 만든다.
 // 1. (0,0)과 (size_x-1, size_y-1)은 0이 되어야 한다. (시작점, 끝점)
@@ -82,6 +82,8 @@ public class MazeValidator {
 		if(mv.mapxy() && mv.root(mv.find(0, 0))) {
 			System.out.println("탈출 가능한 미로");
 			System.out.println("경로 개수: " + cnt);
+		}else {
+			System.out.println("탈출x");
 		}
 	}
 }

@@ -5,13 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class RandomMapCreator {
-	private String mapName;
-	private int x_size;
-	private int y_size;
-	private int start_x, start_y;
-	private int esc_x, esc_y;
+	protected String mapName;
+	protected int x_size;
+	protected int y_size;
+	protected int start_x, start_y;
+	protected int esc_x, esc_y;
 
-	private int[][] map;
+	protected int[][] map;
 
 	public RandomMapCreator() {
 		this("", 0, 0);
@@ -46,26 +46,22 @@ public class RandomMapCreator {
 	// Todo : 맵 파일로 생성 testmap.txt와 동일한 형식으로.
 	// 파일로 저장할때 maps 폴더에 .txt확장자를 붙여서 파일로 저장할 것
 		// this.mapName 활용
-		
-		File f = new File("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
-		if (f.exists()) {
-			int index = 1;
-			mapName = mapName + "_" + index;
-			
-			while(true) {
-				f = new File("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
-				if (f.exists()) {
-					index++;
-					mapName = mapName.substring(0, mapName.lastIndexOf("_"));
-					mapName = mapName + "_" + index;
-				} else {
-					break;
-				}
+		String filename = "maps\\" + mapName + ".txt";
+
+		int index = 0;
+		boolean loop = true;
+		while(loop) {
+			File f = new File(filename);
+			if (f.exists()) {
+				index++;
+				filename = "maps\\" + mapName + "_" + index + ".txt";
+			} else {
+				loop = false;
 			}
 		}
 		
 		try {
-			FileWriter w = new FileWriter("C:\\dsem_seminar\\dsem_program_seminar\\maps\\" + mapName + ".txt");
+			FileWriter w = new FileWriter(filename);
 			
 			w.write(x_size + " " + y_size + "\n");
 			w.write(start_x + " " + start_y + "\n");
