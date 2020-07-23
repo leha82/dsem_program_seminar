@@ -4,20 +4,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class RandomMapCreator {
+public class RandomMapCreator_sojin {
+	private static boolean find;
 	private String mapName;
 	private int x_size;
 	private int y_size;
 	private int start_x, start_y;
 	private int esc_x, esc_y;
 
-	private int[][] map;
+	private static int[][] map;
 
-	public RandomMapCreator() {
+	public RandomMapCreator_sojin() {
 		this("", 0, 0);
 	}
 
-	public RandomMapCreator(String mapName, int x_size, int y_size) {
+	public RandomMapCreator_sojin(String mapName, int x_size, int y_size) {
 		this.mapName = mapName;
 		this.x_size = x_size;
 		this.y_size = y_size;
@@ -29,6 +30,19 @@ public class RandomMapCreator {
 		this.esc_y = y_size-1;
 	}
 	
+	public static int[][] fill_2(int map[][]) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if (i == 0 && j == 0)
+					map[i][j] = 0;
+				else if (i == map.length - 1 && j == map[0].length - 1)
+					map[i][j] = 0;
+				else
+					map[i][j] = (int) (Math.random() * 2);
+			}
+		}
+		return map;
+	}
 	
 	public void createMap() {
 		// Todo: 여기에서 map을 생성한다.
@@ -36,11 +50,22 @@ public class RandomMapCreator {
 	}
 
 	public static void main(String[] args) {
-		RandomMapCreator rmc = new RandomMapCreator("NewMap", 10, 10);
-
-		rmc.createMap();
-		rmc.printMap();
-		rmc.makeMapFile();
+		RandomMapCreator_sojin rmc = new RandomMapCreator_sojin("NewMap", 10, 10);
+		MazeValidator mv = new MazeValidator();
+		while (!find) {
+			mv.map = fill_2(map);
+			if (mv.mapxy() && mv.root(mv.find(0, 0))) {
+				rmc.printMap();
+				System.out.println();
+				System.out.println("탈출 가능한 미로");
+				System.out.println("경로 개수: " + mv.find(0, 0));
+				find = true;
+			}
+		}
+		
+//		rmc.createMap();
+//		rmc.printMap();
+//		rmc.makeMapFile();
 	}
 
 	public void makeMapFile() {
