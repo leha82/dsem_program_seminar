@@ -16,7 +16,7 @@ public class MazeStorage {
 // 데이터베이스에 저장할 때 폴더명과 확장자는 없애고 순수 파일명만으로 maze이름을 만들 것
 	private static String dirname =  "maps/";
 	private static String extension = ".txt";
-	private static String filename = "testmap3";
+	private static String filename = "RMCSH01";
 	private int width, height;
 	private int start_x, start_y;
 	private int esc_x, esc_y;
