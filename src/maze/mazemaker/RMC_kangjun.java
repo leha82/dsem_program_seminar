@@ -131,7 +131,7 @@ public class RMC_kangjun {
 						if (j % 2 == 0) {
 							m[i][j] = 1;
 						}
-					//xÀÎµ¦½º = Â¦¼ö, yÀÎµ¦½º = È¦¼ö
+					//xÀÎµ¦½º = Â¦¼ö
 					} else {
 						m[i][j] = 1;
 					}
@@ -186,5 +186,7 @@ public class RMC_kangjun {
 		rmc.makeRoom();
 		rmc.makeMap();
 		rmc.printMap();
+
+
 	}
 }
