@@ -18,7 +18,6 @@ public class RMC_kangjun {
 				map[i][j] = new block(i, j, false);
 			}
 		}
-		randomRoad();
 	}
 
 	class block {
@@ -118,7 +117,6 @@ public class RMC_kangjun {
 			}
 			list.remove(index);
 		}
-
 	}
 
 	// i = x인덱스, j = y인덱스
@@ -140,7 +138,6 @@ public class RMC_kangjun {
 		}
 	}
 
-	
 	public void makeMap() {
 		//테두리 벽
 		for (int i = 0; i < MAPSIZE; i++) {
@@ -183,10 +180,9 @@ public class RMC_kangjun {
 	public static void main(String[] args) {
 		RMC_kangjun rmc = new RMC_kangjun();
 		rmc.init();
+		rmc.randomRoad();
 		rmc.makeRoom();
 		rmc.makeMap();
 		rmc.printMap();
-
-
 	}
 }
