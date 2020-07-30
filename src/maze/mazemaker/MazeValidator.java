@@ -68,6 +68,7 @@ public class MazeValidator {
 				}
 			}
 		}
+		
 	}
 
 	public int find(int x, int y) {
