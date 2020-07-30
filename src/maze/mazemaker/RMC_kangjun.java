@@ -2,20 +2,26 @@ package maze.mazemaker;
 
 import java.util.ArrayList;
 
-public class RMC_kangjun {
-	static final int N = 20;
+public class RMC_kangjun extends RandomMapCreator {
+	static final int N = 50;
 	static final int MAPSIZE = N * 2 + 1;
-	static block[][] map = new block[MAPSIZE][MAPSIZE];
-	static int[][] m = new int[MAPSIZE][MAPSIZE];
+	static block[][] mapBlock = new block[MAPSIZE][MAPSIZE];
+//	static int[][] map = new int[MAPSIZE][MAPSIZE];
 	ArrayList<block> list = new ArrayList<block>();
 
 	public RMC_kangjun() {
+		mapName = "RMCKangjun101";
+
+		x_size = MAPSIZE;
+		y_size = MAPSIZE;
+		
+		map = new int[MAPSIZE][MAPSIZE];
 	}
 
 	public void init() {
 		for (int i = 0; i < MAPSIZE; i++) {
 			for (int j = 0; j < MAPSIZE; j++) {
-				map[i][j] = new block(i, j, false);
+				mapBlock[i][j] = new block(i, j, false);
 			}
 		}
 	}
@@ -38,19 +44,19 @@ public class RMC_kangjun {
 		int randY = (int) (Math.random() * N) * 2 + 1;
 //		map[randY][randX].visited = true;
 
-		System.out.println(randX + "  " + randY + "  " + map.length + " " + N);
+		System.out.println(randX + "  " + randY + "  " + mapBlock.length + " " + N);
 
 		if (randX - 1 != 0) {
-			list.add(map[randY][randX - 1]);
+			list.add(mapBlock[randY][randX - 1]);
 		}
 		if (randX + 1 != MAPSIZE) {
-			list.add(map[randY][randX + 1]);
+			list.add(mapBlock[randY][randX + 1]);
 		}
 		if (randY - 1 != 0) {
-			list.add(map[randY - 1][randX]);
+			list.add(mapBlock[randY - 1][randX]);
 		}
 		if (randY + 1 != MAPSIZE) {
-			list.add(map[randY + 1][randX]);
+			list.add(mapBlock[randY + 1][randX]);
 		}
 
 		while (!list.isEmpty()) {
@@ -59,59 +65,59 @@ public class RMC_kangjun {
 			block wall = list.get(index);
 
 			if (wall.y % 2 == 1) { // 2nd row	xÃà ·£´ý
-				if (wall.x - 1 != 0 && map[wall.y][wall.x - 1].visited == false) {
-					map[wall.y][wall.x - 1].visited = true;
-					map[wall.y][wall.x].visited = true;
+				if (wall.x - 1 != 0 && mapBlock[wall.y][wall.x - 1].visited == false) {
+					mapBlock[wall.y][wall.x - 1].visited = true;
+					mapBlock[wall.y][wall.x].visited = true;
 
 					if (wall.x - 2 != 0) {
-						list.add(map[wall.y][wall.x - 2]);
+						list.add(mapBlock[wall.y][wall.x - 2]);
 					}
 					if (wall.y - 1 != 0) {
-						list.add(map[wall.y - 1][wall.x - 1]);
+						list.add(mapBlock[wall.y - 1][wall.x - 1]);
 					}
 					if (wall.y + 1 != 0) {
-						list.add(map[wall.y + 1][wall.x - 1]);
+						list.add(mapBlock[wall.y + 1][wall.x - 1]);
 					}
-				} else if (wall.x + 1 <= MAPSIZE - 1 && map[wall.y][wall.x + 1].visited == false) {
-					map[wall.y][wall.x + 1].visited = true;
-					map[wall.y][wall.x].visited = true;
+				} else if (wall.x + 1 <= MAPSIZE - 1 && mapBlock[wall.y][wall.x + 1].visited == false) {
+					mapBlock[wall.y][wall.x + 1].visited = true;
+					mapBlock[wall.y][wall.x].visited = true;
 
 					if (wall.x + 2 != 0) {
-						list.add(map[wall.y][wall.x + 2]);
+						list.add(mapBlock[wall.y][wall.x + 2]);
 					}
 					if (wall.y - 1 != 0) {
-						list.add(map[wall.y - 1][wall.x + 1]);
+						list.add(mapBlock[wall.y - 1][wall.x + 1]);
 					}
 					if (wall.y + 1 != 0) {
-						list.add(map[wall.y + 1][wall.x + 1]);
+						list.add(mapBlock[wall.y + 1][wall.x + 1]);
 					}
 				}
 			} else { // 3rd row  yÃà ·£´ý
-				if (wall.y - 1 != 0 && map[wall.y - 1][wall.x].visited == false) {
-					map[wall.y - 1][wall.x].visited = true;
-					map[wall.y][wall.x].visited = true;
+				if (wall.y - 1 != 0 && mapBlock[wall.y - 1][wall.x].visited == false) {
+					mapBlock[wall.y - 1][wall.x].visited = true;
+					mapBlock[wall.y][wall.x].visited = true;
 
 					if (wall.y - 2 != 0) {
-						list.add(map[wall.y - 2][wall.x]);
+						list.add(mapBlock[wall.y - 2][wall.x]);
 					}
 					if (wall.x - 1 != 0) {
-						list.add(map[wall.y - 1][wall.x - 1]);
+						list.add(mapBlock[wall.y - 1][wall.x - 1]);
 					}
 					if (wall.x + 1 != 0) {
-						list.add(map[wall.y - 1][wall.x + 1]);
+						list.add(mapBlock[wall.y - 1][wall.x + 1]);
 					}
-				} else if (wall.y + 1 <= MAPSIZE - 1 && map[wall.y + 1][wall.x].visited == false) {
-					map[wall.y + 1][wall.x].visited = true;
-					map[wall.y][wall.x].visited = true;
+				} else if (wall.y + 1 <= MAPSIZE - 1 && mapBlock[wall.y + 1][wall.x].visited == false) {
+					mapBlock[wall.y + 1][wall.x].visited = true;
+					mapBlock[wall.y][wall.x].visited = true;
 
 					if (wall.y + 2 != 0) {
-						list.add(map[wall.y + 2][wall.x]);
+						list.add(mapBlock[wall.y + 2][wall.x]);
 					}
 					if (wall.x - 1 != 0) {
-						list.add(map[wall.y + 1][wall.x - 1]);
+						list.add(mapBlock[wall.y + 1][wall.x - 1]);
 					}
 					if (wall.x + 1 != 0) {
-						list.add(map[wall.y + 1][wall.x + 1]);
+						list.add(mapBlock[wall.y + 1][wall.x + 1]);
 					}
 				}
 			}
@@ -121,40 +127,61 @@ public class RMC_kangjun {
 
 	// i = yÀÎµ¦½º, j = xÀÎµ¦½º
 	public void makeRoom() {
+		System.out.println();
+		System.out.println("Make Room");
+
+		
 		for (int i = 0; i < MAPSIZE; i++) {
 			for (int j = 0; j < MAPSIZE; j++) {
-				if (map[i][j].visited == false) {
+				if (mapBlock[i][j].visited == false) {
+					System.out.print("¡á ");
+				} else {
+					System.out.print(". ");
+				}
+					
+				if (mapBlock[i][j].visited == false) {
+					map[i][j] = 1;
+					
 					//yÀÎµ¦½º = È¦¼ö, xÀÎµ¦½º = Â¦¼ö
-					if (i % 2 == 1) {
-						if (j % 2 == 0) {
-							m[i][j] = 1;
-						}
+//					if (i % 2 == 1) {
+//						if (j % 2 == 0) {
+//							m[i][j] = 1;
+//						}
 					//yÀÎµ¦½º = Â¦¼ö
-					} else {
-						m[i][j] = 1;
-					}
+//					} else {
+//						m[i][j] = 1;
+//					}
 				}
 			}
+			System.out.println();
 		}
 	}
 
 	public void makeMap() {
 		//Å×µÎ¸® º®
-		for (int i = 0; i < MAPSIZE; i++) {
-			m[i][MAPSIZE - 1] = 1;			//¿ìÃø¸é
-			m[i][0] = 1;					//ÁÂÃø¸é
+//		for (int i = 0; i < MAPSIZE; i++) {
+//			m[i][MAPSIZE - 1] = 1;			//¿ìÃø¸é
+//			m[i][0] = 1;					//ÁÂÃø¸é
+//
+//			m[MAPSIZE - 1][i] = 1;			//¹Ø¸é
+//			m[0][i] = 1;					//À­¸é
+//		}
 
-			m[MAPSIZE - 1][i] = 1;			//¹Ø¸é
-			m[0][i] = 1;					//À­¸é
-		}
+		map[0][1] = 0;						//½ÃÀÛÁ¡
+		map[MAPSIZE - 1][MAPSIZE - 2] = 0;	//³¡Á¡
 
-		m[0][1] = 0;						//½ÃÀÛÁ¡
-		m[MAPSIZE - 1][MAPSIZE - 2] = 0;	//³¡Á¡
-
+		start_x = 1;
+		start_y = 0;
+		esc_x = MAPSIZE - 2;
+		esc_y = MAPSIZE - 1;
+				
+		System.out.println();
+		System.out.println("Make Map");
+		
 		//0°ú 1·Î Áöµµ ³ªÅ¸³»±â
 		for (int i = 0; i < MAPSIZE; i++) {
 			for (int j = 0; j < MAPSIZE; j++) {
-				System.out.print(m[i][j] + " ");
+				System.out.print(map[i][j] + " ");
 			}
 			System.out.println();
 		}
@@ -164,11 +191,11 @@ public class RMC_kangjun {
 		String road = "¡¤";
 		String block = "¡á";
 
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				if (m[i][j] == 0) {
+		for (int i = 0; i < mapBlock.length; i++) {
+			for (int j = 0; j < mapBlock[i].length; j++) {
+				if (map[i][j] == 0) {
 					System.out.print(road);
-				} else if (m[i][j] == 1) {
+				} else if (map[i][j] == 1) {
 					System.out.print(block);
 				}
 				System.out.print(" ");
@@ -184,5 +211,6 @@ public class RMC_kangjun {
 		rmc.makeRoom();
 		rmc.makeMap();
 		rmc.printMap();
+		rmc.makeMapFile();
 	}
 }

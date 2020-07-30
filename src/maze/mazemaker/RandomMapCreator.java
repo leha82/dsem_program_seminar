@@ -69,7 +69,7 @@ public class RandomMapCreator {
 			w.write(esc_x + " " + esc_y + "\n");
 			for (int i=0;i<y_size;i++) {
 				for (int j=0;j<x_size;j++) {
-					w.write(map[j][i] + " ");
+					w.write(map[i][j] + " ");
 				}
 				w.write("\n");
 			}

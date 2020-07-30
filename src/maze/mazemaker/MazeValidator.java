@@ -20,7 +20,7 @@ public class MazeValidator {
 		cnt = 0;
 		n = 0;
 		m = 0;
-		maze = new Maze("maps/samplemap100_2.txt");
+		maze = new Maze("maps/RMCSHsmpl100.txt");
 		map = maze.getMap();
 		scanner = new Scanner(System.in);
 		visit =  map;
@@ -177,7 +177,7 @@ public class MazeValidator {
 		if (!mv.mapxy() || !mv.visited()) {
 			System.out.println("경로가 없습니다.");
 		}
-		mv.print();
+		//mv.print();
 	
 	}
 }
