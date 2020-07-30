@@ -9,21 +9,19 @@ public class RMC_YBH {
 	protected int start_x, start_y;
 	protected int esc_x, esc_y;
 
-	
 	protected int[][] map;
-	
+
 	public RMC_YBH(String mapName, int x_size, int y_size) {
 		this.mapName = mapName;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.map = new int[y_size][x_size];
-		
+
 		this.start_x = 0;
 		this.start_y = 0;
-		this.esc_x = x_size-1;
-		this.esc_y = y_size-1;
+		this.esc_x = x_size - 1;
+		this.esc_y = y_size - 1;
 	}
-
 
 	static Random rd = new Random();
 
@@ -31,16 +29,16 @@ public class RMC_YBH {
 		if (x <= 2 || y <= 2)
 			return c_map;
 		// 십자선을 못 그을 정도로작으면 리턴
-		boolean WC=true;
 		int[][] a;
-		int rdn_x=x/2,rdn_y=y/2;
+		int mid_x=x/2,mid_y=y/2;
+//		boolean WC=true;
 //		do {
 //		rdn_x = rd.nextInt(x-1); // 미로의 가로벽 중간 지점
-//		rdn_y = rd.nextInt(y-1); // 미로의 세로벽 중간 지점
+//		rdn_y = rd.nextInt(y-1); // 미로의 세로벽 중간 지점 
 //		if(rdn_x!=0 && rdn_y!=0)
 //			WC=false;
 //		}while(WC);
-//		
+		
 		int i, j; // 미로비워두기
 		for (i = 0; i < c_map.length; i++) {
 			for (j = 0; j < c_map[i].length; j++)
@@ -48,82 +46,84 @@ public class RMC_YBH {
 		}
 		// 십자모양 벽만들기
 		for (i = 0; i < c_map[0].length; i++) {
-			c_map[rdn_y][i] = 1;
+			c_map[mid_y][i] = 1;
 		}
 		for (i = 0; i < c_map.length; i++) {
-			c_map[i][rdn_x] = 1;
+			c_map[i][mid_x] = 1;
 		}
+		
 		// 생긴 벽 중에 3개 선택후 구멍 뚫기
-		WC=true;
-		do
-		{
 		int rdn=rd.nextInt(4);
-			if(rdn==0&& rdn_x!=0){ // 제2 사분면과 제 3사분면 벽을 제외하고 뚫기
-				rdn = rd.nextInt(rdn_y);
-				c_map[rdn][rdn_x]=0; // 1,2 wall
-				rdn = rd.nextInt(x-rdn_x-1)+1;
-				c_map[rdn_y][rdn+rdn_x]=0; // 1,4 wall
-				rdn = rd.nextInt(y-rdn_y-1)+1;
-				c_map[rdn+rdn_y][rdn_x]=0; // 3,4 wall
-				WC=false;
+		switch(rdn) {
+		case(0):{ // 제2 사분면과 제 3사분면 벽을 제외하고 뚫기
+				rdn = rd.nextInt(mid_y);
+				c_map[rdn][mid_x]=0; // 1,2 wall
+				rdn = rd.nextInt(x-mid_x-1)+1;
+				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
+				rdn = rd.nextInt(y-mid_y-1)+1;
+				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
+				break;
 			}
-			else if(rdn==1&&rdn_y!=y-1){ // 제 3사분면과 제4사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(rdn_x);
-				c_map[rdn_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(rdn_y);
-				c_map[rdn][rdn_x]=0; // 1,2 wall
-				rdn = rd.nextInt(x-rdn_x-1)+1;
-				c_map[rdn_y][rdn+rdn_x]=0; // 1,4 wall
-				WC=false;
+		case(1):{ // 제 3사분면과 제4사분면 벽을 제외하고 뚫기
+				rdn =rd.nextInt(mid_x);
+				c_map[mid_y][rdn]=0; // 2,3 wall
+				rdn = rd.nextInt(mid_y);
+				c_map[rdn][mid_x]=0; // 1,2 wall
+				rdn = rd.nextInt(x-mid_x-1)+1;
+				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
+				break;
 			}
-			else if(rdn==2&&rdn_x!=x-1){// 제 4사분면과 제 1사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(rdn_x);
-				c_map[rdn_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(rdn_y);
-				c_map[rdn][rdn_x]=0; // 1,2 wall
-				rdn = rd.nextInt(y-rdn_y-1)+1;
-				c_map[rdn+rdn_y][rdn_x]=0; // 3,4 wall
-				WC=false;
+		case(2):{// 제 4사분면과 제 1사분면 벽을 제외하고 뚫기
+				rdn =rd.nextInt(mid_x);
+				c_map[mid_y][rdn]=0; // 2,3 wall
+				rdn = rd.nextInt(mid_y);
+				c_map[rdn][mid_x]=0; // 1,2 wall
+				rdn = rd.nextInt(y-mid_y-1)+1;
+				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
+				break;
 			}
-			else if(rdn==3&&rdn_y!=0){// 제 2사분면과 제 1사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(rdn_x);
-				c_map[rdn_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(x-rdn_x-1)+1;
-				c_map[rdn_y][rdn+rdn_x]=0; // 1,4 wall
-				rdn = rd.nextInt(y-rdn_y-1)+1;
-				c_map[rdn+rdn_y][rdn_x]=0; // 3,4 wall
-				WC=false;
+		case(3):{// 제 2사분면과 제 1사분면 벽을 제외하고 뚫기
+				rdn =rd.nextInt(mid_x);
+				c_map[mid_y][rdn]=0; // 2,3 wall
+				rdn = rd.nextInt(x-mid_x-1)+1;
+				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
+				rdn = rd.nextInt(y-mid_y-1)+1;
+				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
+				break;
 			}
-		}while(WC); // switch로 바꾸기
+		}
+		
 		// 작게 잘라서 다시
-		a = chamber( x - rdn_x - 1 , rdn_y , new int[ rdn_y][ x- rdn_x - 1 ]); // 제 1분면
+		a = chamber( x - mid_x - 1 , mid_y , new int[ mid_y][ x- mid_x - 1 ]); // 제 1분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
-				c_map[i][rdn_x + j + 1] = a[i][j];
+				c_map[i][mid_x + j + 1] = a[i][j];
 		} // 합치기
-		a = chamber( rdn_x, rdn_y, new int[ rdn_y ][ rdn_x]); // 제 2사분면
+		a = chamber( mid_x, mid_y, new int[ mid_y ][ mid_x]); // 제 2사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
 				c_map[i][j] = a[i][j];
 		}
 		// 합치기
-		a = chamber( rdn_x , y - rdn_y - 1 , new int[ y- rdn_y - 1 ][ rdn_x]); // 제 3사분면
+		a = chamber( mid_x , y - mid_y - 1 , new int[ y- mid_y - 1 ][ mid_x]); // 제 3사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
-				c_map[rdn_y + i + 1 ][j] = a[i][j];
+				c_map[mid_y + i + 1 ][j] = a[i][j];
 		} // 합치기
-		a = chamber( x - rdn_x - 1 , y - rdn_y - 1 , new int[ y - rdn_y - 1 ][ x - rdn_x - 1 ]); // 제 4사분면
+		a = chamber( x - mid_x - 1 , y - mid_y - 1 , new int[ y - mid_y - 1 ][ x - mid_x - 1 ]); // 제 4사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
-				c_map[rdn_y + i + 1][ rdn_x + j + 1 ] = a[i][j];
+				c_map[mid_y + i + 1][ mid_x + j + 1 ] = a[i][j];
 		}
 		// 합치기
 		return c_map;
 	}
+
 	public void createMap() {
-		map=chamber(this.x_size,this.y_size,map);
-		
+		map = chamber(this.x_size, this.y_size, map);
+
 	}
+
 	public void printMap() {
 		String road = "·";
 		String block = "■";
@@ -140,12 +140,12 @@ public class RMC_YBH {
 			System.out.println();
 		}
 	}
+
 	public static void main(String[] args) {
-		RMC_YBH rmc = new RMC_YBH("NewMap",20, 20);
+		RMC_YBH rmc = new RMC_YBH("NewMap", 30, 30);
 
 		rmc.createMap();
 		rmc.printMap();
 	}
-
 
 }
