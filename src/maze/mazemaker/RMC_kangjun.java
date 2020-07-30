@@ -58,7 +58,7 @@ public class RMC_kangjun {
 
 			block wall = list.get(index);
 
-			if (wall.y % 2 == 1) { // 2nd row
+			if (wall.y % 2 == 1) { // 2nd row	x√‡ ∑£¥˝
 				if (wall.x - 1 != 0 && map[wall.y][wall.x - 1].visited == false) {
 					map[wall.y][wall.x - 1].visited = true;
 					map[wall.y][wall.x].visited = true;
@@ -86,7 +86,7 @@ public class RMC_kangjun {
 						list.add(map[wall.y + 1][wall.x + 1]);
 					}
 				}
-			} else { // 3rd row
+			} else { // 3rd row  y√‡ ∑£¥˝
 				if (wall.y - 1 != 0 && map[wall.y - 1][wall.x].visited == false) {
 					map[wall.y - 1][wall.x].visited = true;
 					map[wall.y][wall.x].visited = true;
@@ -119,17 +119,17 @@ public class RMC_kangjun {
 		}
 	}
 
-	// i = x¿Œµ¶Ω∫, j = y¿Œµ¶Ω∫
+	// i = y¿Œµ¶Ω∫, j = x¿Œµ¶Ω∫
 	public void makeRoom() {
 		for (int i = 0; i < MAPSIZE; i++) {
 			for (int j = 0; j < MAPSIZE; j++) {
 				if (map[i][j].visited == false) {
-					//x¿Œµ¶Ω∫ = »¶ºˆ, y¿Œµ¶Ω∫ = ¬¶ºˆ
+					//y¿Œµ¶Ω∫ = »¶ºˆ, x¿Œµ¶Ω∫ = ¬¶ºˆ
 					if (i % 2 == 1) {
 						if (j % 2 == 0) {
 							m[i][j] = 1;
 						}
-					//x¿Œµ¶Ω∫ = ¬¶ºˆ
+					//y¿Œµ¶Ω∫ = ¬¶ºˆ
 					} else {
 						m[i][j] = 1;
 					}
