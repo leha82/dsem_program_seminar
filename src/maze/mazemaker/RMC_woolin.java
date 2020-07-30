@@ -106,7 +106,7 @@ public class RMC_woolin extends RandomMapCreator {
 
 		rmc.createMap();
 		rmc.printMap();
-		rmc.makeMapFile();
+//		rmc.makeMapFile();
 	}
 
 }

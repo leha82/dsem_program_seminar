@@ -138,7 +138,7 @@ public class RMC_YBH {
 		}
 	}
 	public static void main(String[] args) {
-		RMC_YBH rmc = new RMC_YBH("NewMap", 20, 20);
+		RMC_YBH rmc = new RMC_YBH("NewMap", 32, 32);
 
 		rmc.createMap();
 		rmc.printMap();
