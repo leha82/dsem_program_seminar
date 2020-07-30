@@ -20,7 +20,7 @@ public class MazeValidator {
 		cnt = 0;
 		n = 0;
 		m = 0;
-		maze = new Maze("maps/TestMap_sojin.txt");
+		maze = new Maze("maps/samplemap100_2.txt");
 		map = maze.getMap();
 		scanner = new Scanner(System.in);
 		visit =  map;
@@ -126,9 +126,9 @@ public class MazeValidator {
 			}
 			System.out.println();
 		}
-//		System.out.println("size : " + maze.getWidth() + ", " + maze.getHeight());
-//		System.out.println("start : " + maze.getStart_x() + ", " + maze.getStart_y());
-//		System.out.println("start : " + maze.getEsc_x() + ", " + maze.getEsc_y());
+		System.out.println("size : " + maze.getWidth() + ", " + maze.getHeight());
+		System.out.println("start : " + maze.getStart_x() + ", " + maze.getStart_y());
+		System.out.println("end : " + maze.getEsc_x() + ", " + maze.getEsc_y());
 	}
 
 	public boolean root(int cnt) {
@@ -144,25 +144,40 @@ public class MazeValidator {
 	}
 
 	public boolean visited() {
-		bfs(0,0);
+		bfs(0, 0);
 		int cnt1 = 0;
-	      for (int i = 0; i < visit.length; i++) {
-	         for (int j = 0; j < visit.length; j++) {
-	            if(visit[i][j]==0)
-	            	cnt1++;
-	         }
-	      }
-	      if(cnt1==0)
-	    	  return true;
-	      
-	      return false;
-	   }
+		
+		System.out.println("(" + maze.getStart_x() + "," + maze.getStart_y() + ") 에서 도달할 수 없는 곳은 :"  );
+		
+		for (int i = 0; i < visit.length; i++) {
+			for (int j = 0; j < visit.length; j++) {
+				if (visit[i][j] == 0) {
+					cnt1++;
+					System.out.print("(" + j + "," + i + ") ");
+				}
+			}
+		}
+		if (cnt1 == 0) {
+			System.out.println("없습니다.");
+			return true;
+		}
+
+		System.out.println("입니다.");
+		return false;
+	}
 
 	public static void main(String[] args) {
 		MazeValidator mv = new MazeValidator();
 		mv.print();
-		if (mv.mapxy() && mv.root(mv.find(0, 0)) && mv.visited()) {
-			System.out.println("경로 개수: " + mv.cnt);
+//		if (mv.mapxy() && mv.root(mv.find(0, 0)) && mv.visited()) {
+//			System.out.println("경로 개수: " + mv.cnt);
+//		} else {
+//			System.out.println("경로가 없습니다.");
+//		}
+		if (!mv.mapxy() || !mv.visited()) {
+			System.out.println("경로가 없습니다.");
 		}
+		mv.print();
+	
 	}
 }
