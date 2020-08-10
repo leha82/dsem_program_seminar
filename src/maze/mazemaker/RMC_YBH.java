@@ -30,15 +30,8 @@ public class RMC_YBH {
 			return c_map;
 		// 십자선을 못 그을 정도로작으면 리턴
 		int[][] a;
-		int mid_x=x/2,mid_y=y/2;
-//		boolean WC=true;
-//		do {
-//		rdn_x = rd.nextInt(x-1); // 미로의 가로벽 중간 지점
-//		rdn_y = rd.nextInt(y-1); // 미로의 세로벽 중간 지점 
-//		if(rdn_x!=0 && rdn_y!=0)
-//			WC=false;
-//		}while(WC);
-		
+		int mid_x = x / 2, mid_y = y / 2;
+
 		int i, j; // 미로비워두기
 		for (i = 0; i < c_map.length; i++) {
 			for (j = 0; j < c_map[i].length; j++)
@@ -51,69 +44,85 @@ public class RMC_YBH {
 		for (i = 0; i < c_map.length; i++) {
 			c_map[i][mid_x] = 1;
 		}
-		
+
 		// 생긴 벽 중에 3개 선택후 구멍 뚫기
-		int rdn=rd.nextInt(4);
-		switch(rdn) {
-		case(0):{ // 제2 사분면과 제 3사분면 벽을 제외하고 뚫기
-				rdn = rd.nextInt(mid_y);
-				c_map[rdn][mid_x]=0; // 1,2 wall
-				rdn = rd.nextInt(x-mid_x-1)+1;
-				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
-				rdn = rd.nextInt(y-mid_y-1)+1;
-				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
-				break;
-			}
-		case(1):{ // 제 3사분면과 제4사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(mid_x);
-				c_map[mid_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(mid_y);
-				c_map[rdn][mid_x]=0; // 1,2 wall
-				rdn = rd.nextInt(x-mid_x-1)+1;
-				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
-				break;
-			}
-		case(2):{// 제 4사분면과 제 1사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(mid_x);
-				c_map[mid_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(mid_y);
-				c_map[rdn][mid_x]=0; // 1,2 wall
-				rdn = rd.nextInt(y-mid_y-1)+1;
-				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
-				break;
-			}
-		case(3):{// 제 2사분면과 제 1사분면 벽을 제외하고 뚫기
-				rdn =rd.nextInt(mid_x);
-				c_map[mid_y][rdn]=0; // 2,3 wall
-				rdn = rd.nextInt(x-mid_x-1)+1;
-				c_map[mid_y][rdn+mid_x]=0; // 1,4 wall
-				rdn = rd.nextInt(y-mid_y-1)+1;
-				c_map[rdn+mid_y][mid_x]=0; // 3,4 wall
-				break;
-			}
+		int rdn = rd.nextInt(4);
+		int n;
+		switch (rdn) {
+		case (0): {
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_y - 1;
+			c_map[n][mid_x] = 0;
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_x - 1;
+			c_map[mid_y][n] = 0;
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? mid_y + 1 : y - 1;
+			c_map[n][mid_x] = 0;
+			break;
 		}
-		
+		case (1): {// 제 3사분면과 제4사분면 벽을 제외하고 뚫기
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_x - 1;
+			c_map[mid_y][n] = 0; // 2,3 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_y - 1;
+			c_map[n][mid_x] = 0; // 1,2 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? mid_x + 1 : x - 1;
+			c_map[mid_y][n] = 0; // 1,4 wall
+			break;
+
+		}
+		case (2): {// 제 4사분면과 제 1사분면 벽을 제외하고 뚫기
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_x - 1;
+			c_map[mid_y][n] = 0; // 2,3 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_y - 1;
+			c_map[n][mid_x] = 0; // 1,2 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? mid_y + 1 : y - 1;
+			c_map[n][mid_x] = 0; // 3,4 wall
+			break;
+
+		}
+		case (3): {
+			// 제 2사분면과 제 1사분면 벽을제외하고 뚫기
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? 0 : mid_x - 1;
+			c_map[mid_y][n] = 0; // 2,3 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? mid_x + 1 : x - 1;
+			c_map[mid_y][n] = 0; // 1,4 wall
+			rdn = rd.nextInt(2);
+			n = rdn == 0 ? mid_y + 1 : y - 1;
+			c_map[n][mid_x] = 0; // 3,4 wall break;
+
+		}
+		}
+
 		// 작게 잘라서 다시
-		a = chamber( x - mid_x - 1 , mid_y , new int[ mid_y][ x- mid_x - 1 ]); // 제 1분면
+		a = chamber(x - mid_x - 1, mid_y, new int[mid_y][x - mid_x - 1]); // 제 1분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
 				c_map[i][mid_x + j + 1] = a[i][j];
 		} // 합치기
-		a = chamber( mid_x, mid_y, new int[ mid_y ][ mid_x]); // 제 2사분면
+		a = chamber(mid_x, mid_y, new int[mid_y][mid_x]); // 제 2사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
 				c_map[i][j] = a[i][j];
 		}
 		// 합치기
-		a = chamber( mid_x , y - mid_y - 1 , new int[ y- mid_y - 1 ][ mid_x]); // 제 3사분면
+		a = chamber(mid_x, y - mid_y - 1, new int[y - mid_y - 1][mid_x]); // 제 3사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
-				c_map[mid_y + i + 1 ][j] = a[i][j];
+				c_map[mid_y + i + 1][j] = a[i][j];
 		} // 합치기
-		a = chamber( x - mid_x - 1 , y - mid_y - 1 , new int[ y - mid_y - 1 ][ x - mid_x - 1 ]); // 제 4사분면
+		a = chamber(x - mid_x - 1, y - mid_y - 1, new int[y - mid_y - 1][x - mid_x - 1]); // 제 4사분면
 		for (i = 0; i < a.length; i++) {
 			for (j = 0; j < a[i].length; j++)
-				c_map[mid_y + i + 1][ mid_x + j + 1 ] = a[i][j];
+				c_map[mid_y + i + 1][mid_x + j + 1] = a[i][j];
 		}
 		// 합치기
 		return c_map;
