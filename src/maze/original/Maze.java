@@ -1,4 +1,4 @@
-package maze;
+package maze.original;
 
 import java.io.*;
 import java.sql.ResultSet;

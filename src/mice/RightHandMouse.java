@@ -1,6 +1,6 @@
 package mice;
 
-import maze.Mouse;
+import maze.original.Mouse;
 
 public class RightHandMouse extends Mouse {
 	private int dir;

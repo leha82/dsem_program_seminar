@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import maze.DBManager;
+import maze.original.DBManager;
 
 public class MazeStorage {
 // Todo : 파일명을 string으로 설정하면 해당 파일을 읽어 DB에 저장

@@ -1,7 +1,9 @@
-package maze;
+
 
 import java.util.*;
 
+import maze.original.Maze;
+import maze.original.Mouse;
 import mice.*;
 
 public class MazeEscape {

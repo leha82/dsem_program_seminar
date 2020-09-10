@@ -1,7 +1,8 @@
 package maze.mazemaker;
 
-import maze.Maze;
 import java.util.*;
+
+import maze.original.Maze;
 
 public class MazeValidator {
 	public int cnt;

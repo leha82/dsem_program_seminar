@@ -1,4 +1,4 @@
-package maze;
+package maze.original;
 
 import java.util.*;
 import java.sql.*;

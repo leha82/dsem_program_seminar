@@ -1,125 +1,44 @@
-package maze;
+package maze.challengemode;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import mice.*;
+import MazeEscapeChallenge;
+import maze.original.MazeEscapeGUI.LoadMapMenuActionListener;
+import maze.original.MazeEscapeGUI.LoadMouseMenuActionListener;
+import maze.original.MazeEscapeGUI.ShowRanking;
 
-public class MazeEscapeGUI extends JFrame {
-	private static String appTitle = "Maze Escape";
-//   private static String defaultMapFile = "maps/testmap2.txt";
-	private static String defaultMap = "testmap2";
-	private static String defaultMouseDirectory = "bin/mice";
-	private static String defaultMousePackage = "mice.";
-	private static String defaultMouse = "RightHandMouse";
-	private static int imgSize;
-	private static int setX;
-	private static int setY;
-
-	private JPanel mainPanel;
-	private JPanel mapPanel;
-	private JPanel infoPanel;
-	private JPanel infoPanel2;
-	private JButton btnNext;
-	private JButton btnNext10;
-	private JButton btnNextAll;
-	private JButton btnInit;
-	private JButton btnShowRanking;
-	private JLabel lbCount;
-	private JLabel lbMouseName;
-	private JLabel lbFileName;
-	private JLabel[][] mapLabels;
-	private String mouseClassName;
-	private String mapName;
-	private int count;
-	private Maze maze;
-	private ArrayList<String> miceList;
-	private ArrayList<String> mapList;
-	private Mouse mouse;
-	private int start_x, start_y;
-	private int curr_x, curr_y;
-	private int esc_x, esc_y;
-
-	private boolean finished;
-
-	public MazeEscapeGUI() {
-		super(appTitle);
-		this.mouseClassName = defaultMouse;
-		this.mapName = defaultMap;
+public class ChallengeModeGUI extends JFrame {
+	MazeEscapeChallenge mec;
+	
+	public ChallengeModeGUI() {
+	}
+	
+	public ChallengeModeGUI(MazeEscapeChallenge mec) {
+		this.mec = mec;
 	}
 
-	public void loadMap() {
-		this.maze = new Maze();
-		this.maze.loadMapFromDB(mapName);
-		this.start_x = maze.getStart_x();
-		this.start_y = maze.getStart_y();
-		this.esc_x = maze.getEsc_x();
-		this.esc_y = maze.getEsc_y();
-
-		this.curr_x = this.start_x;
-		this.curr_y = this.start_y;
-
-		this.count = 0;
-		this.finished = false;
-	}
-
-	public void initMap() {
-		this.start_x = 0;
-		this.start_y = 0;
-		this.esc_x = maze.getEsc_x();
-		this.esc_y = maze.getEsc_y();
-
-		this.curr_x = this.start_x;
-		this.curr_y = this.start_y;
-
-		this.count = 0;
-		this.finished = false;
-	}
-
-	public void loadMiceList() {
-		miceList = new ArrayList<String>();
-
-		File folder = new File(defaultMouseDirectory);
-		File[] listOfFiles = folder.listFiles();
-		String name;
-		for (int i = 0; i < listOfFiles.length; i++) {
-			if (listOfFiles[i].isFile()) {
-//            name = defaultMousePackage + listOfFiles[i].getName().replaceAll(".class", "");
-				name = listOfFiles[i].getName().replaceAll(".class", "");
-				miceList.add(name);
-			}
-		}
-
-		changeMouseClass(defaultMousePackage + mouseClassName);
-	}
-
-	public void loadMapList() {
-		// Todo : DB로부터 Map List를 받아 this.mapList로 만든다.
-		LogManager log = new LogManager();
-		this.mapList = log.getMapNameList();
-	}
-
-	private void changeMouseClass(String mouseName) {
-		try {
-			Class<?> cls = Class.forName(mouseName);
-			Object obj = cls.newInstance();
-
-			mouse = (Mouse) obj;
-			mouse.printClassName();
-			// setWindow(curr_x, curr_y, map);
-
-		} catch (Exception e1) {
-			System.out.println("Error: " + e1.getMessage());
-			e1.printStackTrace();
-		}
-	}
-
+	
 	public void initWindow() {
 		// window나 panel을 초기화 하는것을 찾아 볼 것
 //      maze.loadMapFromDB(mapName);
@@ -182,8 +101,27 @@ public class MazeEscapeGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!finished) {
-					if (e.getSource() == btnNext)
-						play(1);
+					if (e.getSource() == btnNext) {
+						int prev_x = mec.getCurr_x();
+						int prev_y = mec.getCurr_y();
+						mec.play(1);
+						this.setWindow(prev_x, prev_y, mec.getCurr_x(), mec.getCurr_y(), map);
+						
+						if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
+							JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+							// maze.storeMapToDB(mapName, map);
+							// 랭킹 업로드 메소드
+							LogManager log = new LogManager();
+							int mincount = log.getMinCount(mouseClassName, mapName);
+							System.out.println(mincount);
+
+							if (count < mincount || mincount <= 0) {
+								mec.putLog();
+							}
+							finished = true;
+						}
+					}
+						
 				}
 			}
 		});
@@ -193,8 +131,28 @@ public class MazeEscapeGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!finished) {
-					if (e.getSource() == btnNext10)
-						play(10);
+					if (e.getSource() == btnNext10) {
+						for (int i=0; i<10; i++) {
+							int prev_x = mec.getCurr_x();
+							int prev_y = mec.getCurr_y();
+							mec.play(1);
+							this.setWindow(prev_x, prev_y, mec.getCurr_x(), mec.getCurr_y(), map);
+	
+							if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
+								JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
+								// maze.storeMapToDB(mapName, map);
+								// 랭킹 업로드 메소드
+								LogManager log = new LogManager();
+								int mincount = log.getMinCount(mouseClassName, mapName);
+								System.out.println(mincount);
+	
+								if (count < mincount || mincount <= 0) {
+									mec.putLog();
+								}
+								finished = true;
+							}
+						}
+					}
 				}
 			}
 		});
@@ -205,6 +163,7 @@ public class MazeEscapeGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!finished) {
 					if (e.getSource() == btnNextAll)
+						// 10번 이동 버튼 참조
 						play(-1);
 				}
 			}
@@ -410,64 +369,7 @@ public class MazeEscapeGUI extends JFrame {
 		revalidate();
 		repaint();
 	}
-
-	public void play(int move) {
-		int[][] map = maze.getMap();
-		int prev_x = curr_x;
-		int prev_y = curr_y;
-
-		int i = 0;
-		while (!finished && (i < move || move == -1)) {
-			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y));
-
-			if (dir == 1 && curr_y > 0) {
-				if (map[curr_y - 1][curr_x] == 0)
-					curr_y--;
-			} else if (dir == 2 && curr_x < maze.getWidth() - 1) {
-				if (map[curr_y][curr_x + 1] == 0)
-					curr_x++;
-			} else if (dir == 3 && curr_y < maze.getHeight() - 1) {
-				if (map[curr_y + 1][curr_x] == 0)
-					curr_y++;
-			} else if (dir == 4 && curr_x > 0) {
-				if (map[curr_y][curr_x - 1] == 0)
-					curr_x--;
-			}
-
-			count++;
-			this.setWindow(prev_x, prev_y, map);
-			prev_x = curr_x;
-			prev_y = curr_y;
-
-			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-				// maze.storeMapToDB(mapName, map);
-				// 랭킹 업로드 메소드
-				LogManager log = new LogManager();
-				int mincount = log.getMinCount(mouseClassName, mapName);
-				System.out.println(mincount);
-
-				if (count < mincount || mincount <= 0) {
-					System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
-					ArrayList<LogRank> rankList = log.getRankingList(mapName);
-
-					for (int k = 0; k < rankList.size(); k++) {
-						LogRank lr = rankList.get(k);
-						if (lr.getMouse().contains(mouseClassName)) {
-							log.deleteLog(lr.getId());
-						}
-					}
-
-					log.putLog(mouseClassName, mapName, count);
-				}
-				finished = true;
-
-			}
-			i++;
-		}
-
-	}
-
+	
 	class ShowRanking extends JFrame {
 		public ShowRanking() {
 			LogManager log = new LogManager();
@@ -504,12 +406,6 @@ public class MazeEscapeGUI extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		MazeEscapeGUI me = new MazeEscapeGUI();
-		me.loadMap();
-		me.loadMiceList();
-		me.loadMapList();
-		me.initWindow();
-	}
+
 
 }

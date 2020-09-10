@@ -1,6 +1,6 @@
 package mice;
 
-import maze.Mouse;
+import maze.original.Mouse;
 
 public class Mouse_seungyeon extends Mouse{	
 	private int dir;

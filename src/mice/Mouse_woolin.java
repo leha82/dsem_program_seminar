@@ -1,6 +1,6 @@
 package mice;
 
-import maze.Mouse;
+import maze.original.Mouse;
 
 public class Mouse_woolin extends Mouse {
 	private int dir = 1;  // 처음 방향성 (1)

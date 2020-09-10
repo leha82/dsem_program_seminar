@@ -1,6 +1,6 @@
 package mice;
-import maze.Mouse;
-import maze.Maze;
+import maze.original.Maze;
+import maze.original.Mouse;
 
 public class Mouse_kangjun extends Mouse {
 	public static int move;
