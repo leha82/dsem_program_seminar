@@ -17,6 +17,77 @@ public class RandomMapCreator {
 		this.map = new int[y_size][x_size];
 	}
 	
+<<<<<<< HEAD
+=======
+	
+	public void createMap() {
+		// Todo: 여기에서 map을 생성한다.
+		
+	}
+
+	public static void main(String[] args) {
+		RandomMapCreator rmc = new RandomMapCreator("NewMap", 10, 10);
+
+		rmc.createMap();
+		rmc.printMap();
+		rmc.makeMapFile();
+	}
+
+	public void makeMapFile() {
+	// Todo : 맵 파일로 생성 testmap.txt와 동일한 형식으로.
+	// 파일로 저장할때 maps 폴더에 .txt확장자를 붙여서 파일로 저장할 것
+		// this.mapName 활용
+		String filename = "maps\\" + mapName + ".txt";
+
+		int index = 0;
+		boolean loop = true;
+		while(loop) {
+			File f = new File(filename);
+			if (f.exists()) {
+				index++;
+				filename = "maps\\" + mapName + "_" + index + ".txt";
+			} else {
+				loop = false;
+			}
+		}
+		
+		try {
+			FileWriter w = new FileWriter(filename);
+			
+			w.write(x_size + " " + y_size + "\n");
+			w.write(start_x + " " + start_y + "\n");
+			w.write(esc_x + " " + esc_y + "\n");
+			for (int i=0;i<y_size;i++) {
+				for (int j=0;j<x_size;j++) {
+					w.write(map[i][j] + " ");
+				}
+				w.write("\n");
+			}
+			w.close();
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void printMap() {
+		String road = "·";
+		String block = "■";
+
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j] == 0) {
+					System.out.print(road);
+				} else if (map[i][j] == 1) {
+					System.out.print(block);
+				}
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+	}
+
+>>>>>>> branch 'master' of https://github.com/leha82/dsem_program_seminar.git
 	public String getMapName() {
 		return mapName;
 	}
