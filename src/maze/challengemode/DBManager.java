@@ -67,6 +67,7 @@ public class DBManager {
 		dbm.connectDB();
 		// log, map 테이블 생성
 		dbm.createLogTable();
+		dbm.createChallengeTable();
 		dbm.createMapTable();
 		dbm.disconnectDB();
 	}
@@ -111,6 +112,32 @@ public class DBManager {
 					+ "start_y INT,"
 					+ "esc_x INT,"
 					+ "esc_y INT,"
+					+ "PRIMARY KEY(id))";
+			stmt.execute(sql);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnectDB();
+	}
+	
+	public void createChallengeTable() {
+		connectDB();			
+		
+		try {
+			// 테이블 생성
+			// Todo : 테이블 생성 쿼리 수정 -> 맵이름이 추가되도록, Map 테이블 생성
+			// id, map_name, x_size, y_size, map
+			
+			String sql = "CREATE TABLE maze.cmLog("
+					+ "id INT AUTO_INCREMENT,"
+					+ "mouse_name VARCHAR(200),"
+					+ "map_name VARCHAR(200),"
+					+ "timestamp DATETIME,"
+					+ "search_count INT,"
+					+ "search_time INT,"
+					+ "search_moves INT,"
+					+ "record_time INT,"
+					+ "moves INT,"
 					+ "PRIMARY KEY(id))";
 			stmt.execute(sql);
 		}catch (SQLException e) {

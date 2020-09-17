@@ -9,8 +9,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import maze.original.LogManager;
-import maze.original.LogRank;
+import maze.challengemode.LogManager;
+import maze.challengemode.LogRank;
 import maze.original.Maze;
 import maze.original.Mouse;
 import mice.*;
@@ -448,13 +448,16 @@ public class MazeEscapeGUI extends JFrame {
 				// maze.storeMapToDB(mapName, map);
 				// 랭킹 업로드 메소드
 				LogManager log = new LogManager();
-				int mincount = log.getMinCount(mouseClassName, mapName);
-				System.out.println(mincount);
+				int[] rankArray = log.getRank(mouseClassName, mapName);
+				System.out.println(rankArray[5]);
 
-				if (count < mincount || mincount <= 0) {
+				if (count <= rankArray[5] || rankArray[5] <= 0) {
 					System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
 					ArrayList<LogRank> rankList = log.getRankingList(mapName);
-
+//					if(count == rankArray[5] && record_time <= rankArray[4]) {
+//						
+//					}
+					//랭킹안에 이미 마우스가 있으면 삭제
 					for (int k = 0; k < rankList.size(); k++) {
 						LogRank lr = rankList.get(k);
 						if (lr.getMouse().contains(mouseClassName)) {
@@ -477,15 +480,19 @@ public class MazeEscapeGUI extends JFrame {
 			LogManager log = new LogManager();
 			ArrayList<LogRank> rankList = log.getRankingList(mapName);
 
-			String[] column = { "Rank", "Mouse", "Map", "Record time", "Moves" };
-			String[][] row = new String[rankList.size()][5];
+			String[] column = { "Rank", "Mouse", "Map", "Registered time", "Searching count", "Searching time", "Searching moves","Record time", "Moves" };
+			String[][] row = new String[rankList.size()][9];
 			for (int i = 0; i < rankList.size(); i++) {
 				LogRank listline = rankList.get(i);
 				row[i][0] = Integer.toString(i + 1);
 				row[i][1] = listline.getMouse();
 				row[i][2] = listline.getMapname();
 				row[i][3] = listline.getTimestamp();
-				row[i][4] = Integer.toString(listline.getCount());
+				row[i][4] = Integer.toString(listline.getSearch_count());
+				row[i][5] = Integer.toString(listline.getSearch_time());
+				row[i][6] = Integer.toString(listline.getSearch_moves());
+				row[i][7] = Integer.toString(listline.getRecord_time());
+				row[i][8] = Integer.toString(listline.getMoves());
 			}
 			setTitle("랭킹보기");
 			DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
@@ -494,8 +501,8 @@ public class MazeEscapeGUI extends JFrame {
 			DefaultTableModel model = new DefaultTableModel(row, column);
 			JTable table = new JTable(model);
 			table.setRowHeight(25);
-			table.getColumnModel().getColumn(0).setPreferredWidth(10);
-			table.getColumnModel().getColumn(4).setPreferredWidth(10);
+//			table.getColumnModel().getColumn(0).setPreferredWidth(10);
+//			table.getColumnModel().getColumn(4).setPreferredWidth(10);
 			for (int i = 0; i < column.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(dtcr);
 			}
@@ -503,7 +510,7 @@ public class MazeEscapeGUI extends JFrame {
 			JScrollPane sc = new JScrollPane(table);
 			Container c = getContentPane();
 			c.add(sc);
-			setSize(700, 600);
+			setSize(1000, 600);
 			setVisible(true);
 		}
 	}
