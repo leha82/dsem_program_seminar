@@ -1,5 +1,6 @@
 package maze.challengemode;
 
+
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -9,29 +10,29 @@ import maze.original.LogRank;
 import maze.original.Maze;
 import maze.original.Mouse;
 
-public class SearchMode {
+public class ChallengeMode {
 	private static Mouse mouse;
 	private static Maze maze;
 
-	public SearchMode(Maze maze, Mouse mouse) {
+	public ChallengeMode(Maze maze, Mouse mouse) {
 		this.maze=maze;
 		this.mouse=mouse;
 	};
 	public static void main(String[] agrs) {
-		SearchModeContainer smc = new SearchModeContainer();
-		SearchPlayThread spt = new SearchPlayThread(maze, mouse, smc);
-		SearchTimeThread stt = new SearchTimeThread(smc);
+		ChallengeModeContainer cmc = new ChallengeModeContainer();
+		ChallengePlayThread spt = new ChallengePlayThread(maze, mouse, cmc);
+		ChallengeTimeThread stt = new ChallengeTimeThread(cmc);
 		spt.start();
 		stt.start();
 		while(true) {
 			if(!stt.isAlive()) {
 				spt.timeover();
-				smc.addTotalSearch();
+				cmc.addTotalSearch();
 				break;
 			}
 			else if(!spt.isAlive()) {
 				System.out.println("탐색 종료");
-				smc.addTotalSearch();
+				cmc.addTotalSearch();
 				break;
 			}
 		}
@@ -39,7 +40,7 @@ public class SearchMode {
 	}
 }
 
-class SearchPlayThread extends Thread {
+class ChallengePlayThread extends Thread {
 	private Mouse mouse;			//mouse객체
 	private int start_x, start_y;	//시작 점
 	private int curr_x, curr_y;		//현 위치
@@ -48,11 +49,11 @@ class SearchPlayThread extends Thread {
 	private int count;				//몇번 갔는지 확인하는 변수
 	private boolean finished;		//도착해쓴지 확인하는 변수
 	private boolean flag;			//쓰래드 종류하기 위한 변수
-	private SearchModeContainer smc;
-	public SearchPlayThread(Maze maze,Mouse mouse, SearchModeContainer smc) {
+	private ChallengeModeContainer cmc;
+	public ChallengePlayThread(Maze maze,Mouse mouse, ChallengeModeContainer cmc) {
 		this.maze = maze;
 		this.mouse = mouse;
-		this.smc=smc;
+		this.cmc=cmc;
 		this.start_x = maze.getStart_x();
 		this.start_y = maze.getStart_y();
 		this.esc_x = maze.getEsc_x();
@@ -120,17 +121,17 @@ class SearchPlayThread extends Thread {
 				return;
 			}
 			play(1); // 1번 실행
-			smc.addTotalMove();
+			cmc.addTotalMove();
 		}
 	}
 }
 
-class SearchTimeThread extends Thread {
-	private SearchModeContainer smc;
+class ChallengeTimeThread extends Thread {
+	private ChallengeModeContainer cmc;
 	private boolean flag = false;
 
-	public SearchTimeThread(SearchModeContainer smc) {
-		this.smc = smc;
+	public ChallengeTimeThread(ChallengeModeContainer cmc) {
+		this.cmc = cmc;
 	}
 
 	public void finish() {
@@ -138,16 +139,16 @@ class SearchTimeThread extends Thread {
 	}
 
 	public void run() {
-		smc.start();
-		long t=smc.check();
+		cmc.start();
+		long t=cmc.check();
 		while (true) {
 			try {
-				t=smc.check();
-				if(t>5000)
+				t=cmc.check();
+				if(t>120000)
 					return;
 				sleep(10);
 				if (flag == true)
-					smc.check();
+					cmc.check();
 				return;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -156,14 +157,14 @@ class SearchTimeThread extends Thread {
 	}
 }
 // 탐색모드에 필요한 정보들 모음집
-class SearchModeContainer {
+class ChallengeModeContainer {
 	private long elapsedTime; // 경과된 시간
 	private long startTime; // 시작 시간
 	private int totalSearch;
 	private int totalMove;
 	
 	// 선언 및 초기화
-	public SearchModeContainer() {
+	public ChallengeModeContainer() {
 		totalSearch=0;
 		totalMove=0;
 		this.init_time();
