@@ -274,7 +274,7 @@ public class MazeEscapeGUI extends JFrame {
       mainPanel.add(infoPanel, "South");
 
       add(mainPanel);
-      setSize(setX * 60 + 100, setY * 60 + 50);
+      setSize(setX , setY);
       setVisible(true);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    }
@@ -321,58 +321,59 @@ public class MazeEscapeGUI extends JFrame {
       }
    }
 
-   public void paintMap(int map[][]) {
-      mapPanel = new JPanel();
-      mapPanel.setLayout(new GridBagLayout());
+	public void paintMap(int map[][]) {
+		mapPanel = new JPanel();
 
-      mapLabels = new JLabel[map.length][];
+		mapPanel.setLayout(new GridBagLayout());
 
-      GridBagConstraints gbc = new GridBagConstraints();
+		mapLabels = new JLabel[map.length][];
 
-      for (int i = 0; i < map.length; i++) {
-         mapLabels[i] = new JLabel[map[i].length];
+		GridBagConstraints gbc = new GridBagConstraints();
 
-         for (int j = 0; j < map[i].length; j++) {
-            gbc.gridx = j;
-            gbc.gridy = i;
+		for (int i = 0; i < map.length; i++) {
+			mapLabels[i] = new JLabel[map[i].length];
 
-            if (curr_x == j && curr_y == i) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-            } else if (esc_x == j && esc_y == i) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
-            } else if (map[i][j] == 1) {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/wall" + imgSize + ".jpg"));
-            } else {
-               mapLabels[i][j] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
-            }
-            mapPanel.add(mapLabels[i][j], gbc);
-         }
-      }
+			for (int j = 0; j < map[i].length; j++) {
+				gbc.gridx = j;
+				gbc.gridy = i;
 
-      mainPanel.add(mapPanel, "North");
-      setSize(setX * 60 + 100, setY * 60 + 50);
-      lbFileName.setText("맵 이름 : " + mapName + "    ");
-      lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
-      lbCount.setText("이동횟수 : " + count);
-   }
+				if (curr_x == j && curr_y == i) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
+				} else if (esc_x == j && esc_y == i) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
+				} else if (map[i][j] == 1) {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall" + imgSize + ".jpg"));
+				} else {
+					mapLabels[i][j] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
+				}
+				mapPanel.add(mapLabels[i][j], gbc);
+			}
+		}
+
+		mainPanel.add(mapPanel, "North");
+		setSize(setX, setY);
+		lbFileName.setText("맵 이름 : " + mapName + "    ");
+		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
+		lbCount.setText("이동횟수 : " + count);
+	}
 
    public void changeImageSize(int[][] map) {
       if (map.length <= 10) {
          imgSize = 50;
-         setX = 10;
-         setY = 10;
+         setX = 10 * 60 + 100;
+         setY = 10 * 60 + 50;
       } else if (map.length <= 50) {
          imgSize = 16;
-         setX = 15;
-         setY = 15;
+         setX = 15 * 60 + 100;
+         setY = 15 * 60 + 50;
       } else {
          imgSize = 9;
-         setX = 15;
-         setY = 16;
+         setX = 15 * 60 + 100;
+         setY = 16 * 60 + 50;
       }
    }
 
-   class LoadMapMenuActionListener implements ActionListener {
+	class LoadMapMenuActionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -382,17 +383,15 @@ public class MazeEscapeGUI extends JFrame {
 			int[][] map = maze.getMap();
 			changeImageSize(map);
 			mainPanel.remove(mapPanel);
-			if (map.length >= 100) {
-				JScrollPane sp = new JScrollPane(mainPanel);
-				Container ct = getContentPane();
-				ct.removeAll();
-				ct.revalidate();
-				ct.repaint();
+			JScrollPane sp = new JScrollPane(mainPanel);
+			Container ct = getContentPane();
+			ct.removeAll();
+			ct.revalidate();
+			ct.repaint();
 
-				ct.add(sp);
-				ct.setSize(200,200);
-				ct.setVisible(true);
-			}
+			ct.add(sp);
+			//ct.setSize(200, 200);
+			ct.setVisible(true);
 			paintMap(map);
 			mainPanel.revalidate();
 			mainPanel.repaint();
