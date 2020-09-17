@@ -1,9 +1,19 @@
 package maze.mazemaker;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+
+import maze.DBManager;
+
+import java.io.*;
 
 public class MazeStorage {
 // Todo : 파일명을 string으로 설정하면 해당 파일을 읽어 DB에 저장
-<<<<<<< HEAD
-=======
 // 데이터베이스에 저장할 때 폴더명과 확장자는 없애고 순수 파일명만으로 maze이름을 만들 것
 	private static String dirname =  "maps/";
 	private static String extension = ".txt";
@@ -94,5 +104,4 @@ public class MazeStorage {
 		ms.readFile(dirname+filename+extension);
 		ms.fileToDB(filename);
 	}
->>>>>>> branch 'master' of https://github.com/leha82/dsem_program_seminar.git
 }
