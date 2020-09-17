@@ -1,17 +1,31 @@
-
-
+package boot;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import maze.challengemode.ChallengeModeGUI;
-import maze.challengemode.LogManager;
-import maze.challengemode.LogRank;
-import maze.challengemode.Maze;
-import maze.challengemode.Mouse;
+import maze.challengemode.*;
 
 public class MazeEscapeChallenge {
+	private static String appTitle = "Maze Escape Challenge mode";
+//  private static String defaultMapFile = "maps/testmap2.txt";
+	private static String defaultMap = "testmap2";
+	private static String defaultMouseDirectory = "bin/mice";
+	private static String defaultMousePackage = "mice.";
+	private static String defaultMouse = "RightHandMouse";
+	
+	public String mouseClassName;
+	public String mapName;
+	public int count;
+	public Maze maze;
+	public ArrayList<String> miceList;
+	public ArrayList<String> mapList;
+	public Mouse mouse;
+	public int start_x, start_y;
+	public int curr_x, curr_y;
+	public int esc_x, esc_y;
+
+	private boolean finished;
 	
 	public MazeEscapeChallenge() {
 		// TODO Auto-generated constructor stub

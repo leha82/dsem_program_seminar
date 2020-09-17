@@ -115,10 +115,10 @@ class SearchPlayThread extends Thread {
 	}
 	public void timeover() {flag=true;}
 	public void run() {
-		while(true) {
-			if(flag==true) {
-				return;
-			}
+		while(!flag) {
+//			if(flag) {
+//				return;
+//			}
 			play(1); // 1¹ø ½ÇÇà
 			smc.addTotalMove();
 		}

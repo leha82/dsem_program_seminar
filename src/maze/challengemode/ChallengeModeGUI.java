@@ -8,28 +8,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import MazeEscapeChallenge;
-import maze.original.MazeEscapeGUI.LoadMapMenuActionListener;
-import maze.original.MazeEscapeGUI.LoadMouseMenuActionListener;
-import maze.original.MazeEscapeGUI.ShowRanking;
+import javax.swing.*;
+import boot.*;
+import maze.challengemode.*;
 
 public class ChallengeModeGUI extends JFrame {
 	MazeEscapeChallenge mec;
+	
+	private static int imgSize;
+	private static int setX;
+	private static int setY;
+
+	private JPanel mainPanel;
+	private JPanel mapPanel;
+	private JPanel infoPanel;
+	private JPanel infoPanel2;
+	private JButton btnNext;
+	private JButton btnNext10;
+	private JButton btnNextAll;
+	private JButton btnInit;
+	private JButton btnShowRanking;
+	private JLabel lbCount;
+	private JLabel lbMouseName;
+	private JLabel lbFileName;
+	private JLabel[][] mapLabels;	
 	
 	public ChallengeModeGUI() {
 	}
@@ -42,7 +44,8 @@ public class ChallengeModeGUI extends JFrame {
 	public void initWindow() {
 		// window나 panel을 초기화 하는것을 찾아 볼 것
 //      maze.loadMapFromDB(mapName);
-		int[][] map = maze.getMap();
+		int[][] map = mec.maze.getMap();
+		ArrayList<String> miceList = mec.miceList;
 //      LoadMouseMenuActionListener loadMouseListener = new LoadMouseMenuActionListener();
 		JMenuBar mousemenubar = new JMenuBar();
 
@@ -56,6 +59,7 @@ public class ChallengeModeGUI extends JFrame {
 		}
 		mousemenubar.add(mouseMenu);
 
+		ArrayList<String> mapList = mec.mapList;
 		JMenu mapMenu = new JMenu("Load Map");
 		JMenuItem Mapitem[] = new JMenuItem[mapList.size()];
 		for (int i = 0; i < mapList.size(); i++) {
