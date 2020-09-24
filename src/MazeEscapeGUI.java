@@ -9,10 +9,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import boot.Mouse;
 import maze.challengemode.LogManager;
 import maze.challengemode.LogRank;
 import maze.original.Maze;
-import maze.original.Mouse;
 import mice.*;
 
 public class MazeEscapeGUI extends JFrame {

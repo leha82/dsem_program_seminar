@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 //import javax.swing.JFrame;
 import javax.swing.*;
-import maze.original.Mouse;
 import maze.challengemode.*;
 
 public class MazeEscapeChallenge extends JFrame{

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import boot.Mouse;
 import maze.original.LogManager;
 import maze.original.LogRank;
 import maze.original.Maze;
-import maze.original.Mouse;
 
 public class ChallengeMode {
 	private static Mouse mouse;

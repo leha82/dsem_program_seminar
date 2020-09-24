@@ -1,6 +1,6 @@
 package mice;
 
-import maze.original.Mouse;
+import boot.Mouse;
 
 public class Sunyoung_Mouse extends Mouse {
 	int foward = 2;

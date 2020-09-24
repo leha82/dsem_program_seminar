@@ -18,7 +18,7 @@ import maze.challengemode.*;
 
 public class ChallengeModeGUI extends JFrame {
 	MazeEscapeChallenge mec;
-	
+
 	private static int imgSize;
 	private static int setX;
 	private static int setY;
@@ -34,22 +34,21 @@ public class ChallengeModeGUI extends JFrame {
 	private JLabel lbFileName;
 	private JLabel lbMouseName;
 	private JLabel[][] mapLabels;
-	
+
 	private JLabel challengeResult;
 	private JLabel challengeTime;
 	private JLabel moveCount;
-	
+
 //	private JScrollPane scroll;
-	
+
 	public ChallengeModeGUI() {
-		
+
 	}
-	
+
 	public ChallengeModeGUI(MazeEscapeChallenge mec) {
 		this.mec = mec;
 	}
 
-	
 	public void initWindow() {
 		// window나 panel을 초기화 하는것을 찾아 볼 것
 //      maze.loadMapFromDB(mapName);
@@ -161,9 +160,33 @@ public class ChallengeModeGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				SearchMode sm = new SearchMode(mec.maze, mec.mouse);
+				SearchModeContainer smc = sm.runSearchMode();
+				try {
+					int prev_x = sm.getCurr_x();
+					int prev_y = sm.getCurr_y();
+					while (sm.isAlive()) {
+						mec.curr_x = sm.getCurr_x();
+						mec.curr_y = sm.getCurr_y();
+						setWindow(prev_x, prev_y, mec.maze.getMap());
+
+						prev_x = mec.curr_x;
+						prev_y = mec.curr_y;
+						Thread.sleep(100);
+					}
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+
+				System.out.println("Total Move : " + smc.getTotalMove());
+				System.out.println("Total Search : " + smc.getTotalSearch());
+				System.out.println("Total ElapsedTime : " + smc.getElapsedTime());
+				
+				// label에 표시하도록
+				
 			}
 		});
-		
+
 		btnChallenge = new JButton("도전");
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
@@ -171,13 +194,16 @@ public class ChallengeModeGUI extends JFrame {
 				challengeResult.setText("    도전 결과");
 				challengeTime.setText("    도전 시간:  ms");
 				moveCount.setText("    도전 이동 수: ");
+				
+				
+				// rank 에 넣도록
+				
 			}
 		});
-		
-		
+
 		lbFileName = new JLabel("    맵 이름 : " + mec.mapName + "    ");
 		lbMouseName = new JLabel("    마우스 이름 : " + mec.mouseClassName + "    ");
-		
+
 		infoPanel = new JPanel();
 		infoPanel2 = new JPanel();
 		infoPanel2.add(lbFileName);
@@ -333,13 +359,14 @@ public class ChallengeModeGUI extends JFrame {
 		revalidate();
 		repaint();
 	}
-	
+
 	class ShowRanking extends JFrame {
 		public ShowRanking() {
 			LogManager log = new LogManager();
 			ArrayList<LogRank> rankList = log.getRankingList(mec.mapName);
 
-			String[] column = { "Rank", "Mouse", "Map", "Registered time", "Searching count", "Searching time", "Searching moves","Record time", "Moves" };
+			String[] column = { "Rank", "Mouse", "Map", "Registered time", "Searching count", "Searching time",
+					"Searching moves", "Record time", "Moves" };
 			String[][] row = new String[rankList.size()][9];
 			for (int i = 0; i < rankList.size(); i++) {
 				LogRank listline = rankList.get(i);
