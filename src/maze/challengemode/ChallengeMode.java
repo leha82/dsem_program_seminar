@@ -18,7 +18,7 @@ public class ChallengeMode {
 		this.maze=maze;
 		this.mouse=mouse;
 	};
-	public static void main(String[] agrs) {
+	public void run() {
 		ChallengeModeContainer cmc = new ChallengeModeContainer();
 		ChallengePlayThread spt = new ChallengePlayThread(maze, mouse, cmc);
 		ChallengeTimeThread stt = new ChallengeTimeThread(cmc);
@@ -31,25 +31,25 @@ public class ChallengeMode {
 				break;
 			}
 			else if(!spt.isAlive()) {
-				System.out.println("탐색 종료");
+				System.out.println("챌린지 종료");
 				cmc.addTotalSearch();
+				stt.finish();
 				break;
 			}
 		}
-
 	}
 }
 
 class ChallengePlayThread extends Thread {
 	private Mouse mouse;			//mouse객체
-	private int start_x, start_y;	//시작 점
-	private int curr_x, curr_y;		//현 위치
-	private int esc_x, esc_y;		//탈출 좌표
-	private Maze maze;				//maze 객체
-	private int count;				//몇번 갔는지 확인하는 변수
-	private boolean finished;		//도착해쓴지 확인하는 변수
-	private boolean flag;			//쓰래드 종류하기 위한 변수
-	private ChallengeModeContainer cmc;
+	public int start_x, start_y;	//시작 점
+	public int curr_x, curr_y;		//현 위치
+	public int esc_x, esc_y;		//탈출 좌표
+	public Maze maze;				//maze 객체
+	public int count;				//몇번 갔는지 확인하는 변수
+	public boolean finished;		//도착해쓴지 확인하는 변수
+	public boolean flag;			//쓰래드 종류하기 위한 변수
+	public ChallengeModeContainer cmc;
 	public ChallengePlayThread(Maze maze,Mouse mouse, ChallengeModeContainer cmc) {
 		this.maze = maze;
 		this.mouse = mouse;
@@ -116,10 +116,7 @@ class ChallengePlayThread extends Thread {
 	}
 	public void timeover() {flag=true;}
 	public void run() {
-		while(true) {
-			if(flag==true) {
-				return;
-			}
+		while(!flag) {
 			play(1); // 1번 실행
 			cmc.addTotalMove();
 		}
@@ -140,20 +137,11 @@ class ChallengeTimeThread extends Thread {
 
 	public void run() {
 		cmc.start();
-		long t=cmc.check();
-		while (true) {
-			try {
-				t=cmc.check();
-				if(t>120000)
-					return;
-				sleep(10);
-				if (flag == true)
-					cmc.check();
+		while (!flag) {
+			if(cmc.check()>120000)
 				return;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
+		cmc.check();
 	}
 }
 // 탐색모드에 필요한 정보들 모음집
