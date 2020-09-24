@@ -2,6 +2,7 @@ package maze.challengemode;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+//import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import boot.*;
 import maze.challengemode.*;
 
@@ -23,17 +27,22 @@ public class ChallengeModeGUI extends JFrame {
 	private JPanel mapPanel;
 	private JPanel infoPanel;
 	private JPanel infoPanel2;
-	private JButton btnNext;
-	private JButton btnNext10;
-	private JButton btnNextAll;
 	private JButton btnInit;
 	private JButton btnShowRanking;
-	private JLabel lbCount;
-	private JLabel lbMouseName;
+	private JButton btnSearch;
+	private JButton btnChallenge;
 	private JLabel lbFileName;
-	private JLabel[][] mapLabels;	
+	private JLabel lbMouseName;
+	private JLabel[][] mapLabels;
+	
+	private JLabel challengeResult;
+	private JLabel challengeTime;
+	private JLabel moveCount;
+	
+//	private JScrollPane scroll;
 	
 	public ChallengeModeGUI() {
+		
 	}
 	
 	public ChallengeModeGUI(MazeEscapeChallenge mec) {
@@ -75,7 +84,6 @@ public class ChallengeModeGUI extends JFrame {
 
 		mapPanel = new JPanel();
 		mapPanel.setLayout(new GridBagLayout());
-
 		mapLabels = new JLabel[map.length][];
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -87,9 +95,9 @@ public class ChallengeModeGUI extends JFrame {
 				gbc.gridx = j;
 				gbc.gridy = i;
 				changeImageSize(map);
-				if (curr_x == j && curr_y == i) {
+				if (mec.curr_x == j && mec.curr_y == i) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-				} else if (esc_x == j && esc_y == i) {
+				} else if (mec.esc_x == j && mec.esc_y == i) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
 				} else if (map[i][j] == 1) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall" + imgSize + ".jpg"));
@@ -99,110 +107,44 @@ public class ChallengeModeGUI extends JFrame {
 				mapPanel.add(mapLabels[i][j], gbc);
 			}
 		}
-
-		btnNext = new JButton("다음 이동");
-		btnNext.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNext) {
-						int prev_x = mec.getCurr_x();
-						int prev_y = mec.getCurr_y();
-						mec.play(1);
-						this.setWindow(prev_x, prev_y, mec.getCurr_x(), mec.getCurr_y(), map);
-						
-						if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-							JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-							// maze.storeMapToDB(mapName, map);
-							// 랭킹 업로드 메소드
-							LogManager log = new LogManager();
-							int mincount = log.getMinCount(mouseClassName, mapName);
-							System.out.println(mincount);
-
-							if (count < mincount || mincount <= 0) {
-								mec.putLog();
-							}
-							finished = true;
-						}
-					}
-						
-				}
-			}
-		});
-
-		btnNext10 = new JButton("다음 10번 이동");
-		btnNext10.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNext10) {
-						for (int i=0; i<10; i++) {
-							int prev_x = mec.getCurr_x();
-							int prev_y = mec.getCurr_y();
-							mec.play(1);
-							this.setWindow(prev_x, prev_y, mec.getCurr_x(), mec.getCurr_y(), map);
-	
-							if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-								JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-								// maze.storeMapToDB(mapName, map);
-								// 랭킹 업로드 메소드
-								LogManager log = new LogManager();
-								int mincount = log.getMinCount(mouseClassName, mapName);
-								System.out.println(mincount);
-	
-								if (count < mincount || mincount <= 0) {
-									mec.putLog();
-								}
-								finished = true;
-							}
-						}
-					}
-				}
-			}
-		});
-
-		btnNextAll = new JButton("끝까지 이동");
-		btnNextAll.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!finished) {
-					if (e.getSource() == btnNextAll)
-						// 10번 이동 버튼 참조
-						play(-1);
-				}
-			}
-		});
+//		scroll = new JScrollPane();
+//		Dimension size = new Dimension();
+//		size.setSize(500,500);
+//		mapPanel.setPreferredSize(size);
+//		scroll.setViewportView(mapPanel);
 
 		btnInit = new JButton("초기화");
 		btnInit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Todo : 초기화 버튼을 눌렀을때 동작 추가
-				int map[][] = maze.getMap();
-				mapPanel.remove(mapLabels[curr_y][curr_x]);
-				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
-				gbc.gridx = curr_x;
-				gbc.gridy = curr_y;
-				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+				int map[][] = mec.maze.getMap();
+				mapPanel.remove(mapLabels[mec.curr_y][mec.curr_x]);
+				mapLabels[mec.curr_y][mec.curr_x] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
+				gbc.gridx = mec.curr_x;
+				gbc.gridy = mec.curr_y;
+				mapPanel.add(mapLabels[mec.curr_y][mec.curr_x], gbc);
 
-				initMap();
+				mec.initMap();
 
-				mapPanel.remove(mapLabels[curr_y][curr_x]);
-				mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-				gbc.gridx = curr_x;
-				gbc.gridy = curr_y;
-				mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+				mapPanel.remove(mapLabels[mec.curr_y][mec.curr_x]);
+				mapLabels[mec.curr_y][mec.curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
+				gbc.gridx = mec.curr_x;
+				gbc.gridy = mec.curr_y;
+				mapPanel.add(mapLabels[mec.curr_y][mec.curr_x], gbc);
 
-				mapPanel.remove(mapLabels[esc_y][esc_x]);
-				mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
-				gbc.gridx = esc_x;
-				gbc.gridy = esc_y;
-				mapPanel.add(mapLabels[esc_y][esc_x], gbc);
+				mapPanel.remove(mapLabels[mec.esc_y][mec.esc_x]);
+				mapLabels[mec.esc_y][mec.esc_x] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
+				gbc.gridx = mec.esc_x;
+				gbc.gridy = mec.esc_y;
+				mapPanel.add(mapLabels[mec.esc_y][mec.esc_x], gbc);
 
-				lbFileName.setText("맵 이름 : " + mapName + "    ");
-				lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
-				lbCount.setText("이동횟수 : " + count);
+				lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
+				lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
 
+				challengeResult.setText("");
+				challengeTime.setText("");
+				moveCount.setText("");
 				revalidate();
 				repaint();
 			}
@@ -215,27 +157,48 @@ public class ChallengeModeGUI extends JFrame {
 				new ShowRanking();
 			}
 		});
-
-		lbFileName = new JLabel("맵 이름 : " + mapName + "    ");
-		lbMouseName = new JLabel("마우스 이름 : " + mouseClassName + "    ");
-		lbCount = new JLabel("이동횟수 : " + count);
-
+		btnSearch = new JButton("탐색");
+		btnSearch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		
+		btnChallenge = new JButton("도전");
+		btnChallenge.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				challengeResult.setText("    도전 결과");
+				challengeTime.setText("    도전 시간:  ms");
+				moveCount.setText("    도전 이동 수: ");
+			}
+		});
+		
+		
+		lbFileName = new JLabel("    맵 이름 : " + mec.mapName + "    ");
+		lbMouseName = new JLabel("    마우스 이름 : " + mec.mouseClassName + "    ");
+		
 		infoPanel = new JPanel();
 		infoPanel2 = new JPanel();
 		infoPanel2.add(lbFileName);
 		infoPanel2.add(lbMouseName);
-		infoPanel2.add(lbCount);
+		BoxLayout boxLayout = new BoxLayout(infoPanel2, BoxLayout.Y_AXIS);
+		infoPanel2.setLayout(boxLayout);
 		infoPanel.add(btnInit);
-		infoPanel.add(btnNext);
-		infoPanel.add(btnNext10);
-		infoPanel.add(btnNextAll);
+		infoPanel.add(btnSearch);
+		infoPanel.add(btnChallenge);
 		infoPanel.add(btnShowRanking);
+		challengeResult = new JLabel("");
+		challengeTime = new JLabel("");
+		moveCount = new JLabel("");
+		infoPanel2.add(challengeResult);
+		infoPanel2.add(challengeTime);
+		infoPanel2.add(moveCount);
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mapPanel, "North");
-		mainPanel.add(infoPanel2, "Center");
+		mainPanel.add(infoPanel2, "West");
 		mainPanel.add(infoPanel, "South");
-
 		add(mainPanel);
 		setSize(setX * 60 + 100, setY * 60 + 50);
 		setVisible(true);
@@ -246,37 +209,36 @@ public class ChallengeModeGUI extends JFrame {
 	class LoadMouseMenuActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mouseClassName = e.getActionCommand();
-			System.out.println("Choice -> " + mouseClassName);
+			mec.mouseClassName = e.getActionCommand();
+			System.out.println("Choice -> " + mec.mouseClassName);
 
-			changeMouseClass(defaultMousePackage + mouseClassName);
+			mec.changeMouseClass(mec.defaultMousePackage + mec.mouseClassName);
 
 			GridBagConstraints gbc = new GridBagConstraints();
 
-			int map[][] = maze.getMap();
-			mapPanel.remove(mapLabels[curr_y][curr_x]);
-			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
-			gbc.gridx = curr_x;
-			gbc.gridy = curr_y;
-			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+			int map[][] = mec.maze.getMap();
+			mapPanel.remove(mapLabels[mec.curr_y][mec.curr_x]);
+			mapLabels[mec.curr_y][mec.curr_x] = new JLabel(new ImageIcon("res/way" + imgSize + ".jpg"));
+			gbc.gridx = mec.curr_x;
+			gbc.gridy = mec.curr_y;
+			mapPanel.add(mapLabels[mec.curr_y][mec.curr_x], gbc);
 
-			initMap();
+			mec.initMap();
 
-			mapPanel.remove(mapLabels[curr_y][curr_x]);
-			mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-			gbc.gridx = curr_x;
-			gbc.gridy = curr_y;
-			mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+			mapPanel.remove(mapLabels[mec.curr_y][mec.curr_x]);
+			mapLabels[mec.curr_y][mec.curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
+			gbc.gridx = mec.curr_x;
+			gbc.gridy = mec.curr_y;
+			mapPanel.add(mapLabels[mec.curr_y][mec.curr_x], gbc);
 
-			mapPanel.remove(mapLabels[esc_y][esc_x]);
-			mapLabels[esc_y][esc_x] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
-			gbc.gridx = esc_x;
-			gbc.gridy = esc_y;
-			mapPanel.add(mapLabels[esc_y][esc_x], gbc);
+			mapPanel.remove(mapLabels[mec.esc_y][mec.esc_x]);
+			mapLabels[mec.esc_y][mec.esc_x] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
+			gbc.gridx = mec.esc_x;
+			gbc.gridy = mec.esc_y;
+			mapPanel.add(mapLabels[mec.esc_y][mec.esc_x], gbc);
 
-			lbFileName.setText("맵 이름 : " + mapName + "    ");
-			lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
-			lbCount.setText("이동횟수 : " + count);
+			lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
+			lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
 
 			revalidate();
 			repaint();
@@ -299,9 +261,9 @@ public class ChallengeModeGUI extends JFrame {
 				gbc.gridx = j;
 				gbc.gridy = i;
 
-				if (curr_x == j && curr_y == i) {
+				if (mec.curr_x == j && mec.curr_y == i) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-				} else if (esc_x == j && esc_y == i) {
+				} else if (mec.esc_x == j && mec.esc_y == i) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/goal" + imgSize + ".jpg"));
 				} else if (map[i][j] == 1) {
 					mapLabels[i][j] = new JLabel(new ImageIcon("res/wall" + imgSize + ".jpg"));
@@ -314,9 +276,8 @@ public class ChallengeModeGUI extends JFrame {
 
 		mainPanel.add(mapPanel, "North");
 		setSize(setX * 60 + 100, setY * 60 + 50);
-		lbFileName.setText("맵 이름 : " + mapName + "    ");
-		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
-		lbCount.setText("이동횟수 : " + count);
+		lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
+		lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
 	}
 
 	public void changeImageSize(int[][] map) {
@@ -339,10 +300,10 @@ public class ChallengeModeGUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mapName = e.getActionCommand();
+			mec.mapName = e.getActionCommand();
 			// Todo : mapName을 DB로부터 받아와서 maze에 저장될 수 있도록 한다.
-			loadMap();
-			int[][] map = maze.getMap();
+			mec.loadMap();
+			int[][] map = mec.maze.getMap();
 			changeImageSize(map);
 
 			mainPanel.remove(mapPanel);
@@ -360,15 +321,14 @@ public class ChallengeModeGUI extends JFrame {
 		gbc.gridy = prev_y;
 		mapPanel.add(mapLabels[prev_y][prev_x], gbc);
 
-		mapPanel.remove(mapLabels[curr_y][curr_x]);
-		mapLabels[curr_y][curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
-		gbc.gridx = curr_x;
-		gbc.gridy = curr_y;
-		mapPanel.add(mapLabels[curr_y][curr_x], gbc);
+		mapPanel.remove(mapLabels[mec.curr_y][mec.curr_x]);
+		mapLabels[mec.curr_y][mec.curr_x] = new JLabel(new ImageIcon("res/mouse" + imgSize + ".jpg"));
+		gbc.gridx = mec.curr_x;
+		gbc.gridy = mec.curr_y;
+		mapPanel.add(mapLabels[mec.curr_y][mec.curr_x], gbc);
 
-		lbFileName.setText("맵 이름 : " + mapName + "    ");
-		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
-		lbCount.setText("이동횟수 : " + count);
+		lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
+		lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
 
 		revalidate();
 		repaint();
@@ -377,17 +337,21 @@ public class ChallengeModeGUI extends JFrame {
 	class ShowRanking extends JFrame {
 		public ShowRanking() {
 			LogManager log = new LogManager();
-			ArrayList<LogRank> rankList = log.getRankingList(mapName);
+			ArrayList<LogRank> rankList = log.getRankingList(mec.mapName);
 
-			String[] column = { "Rank", "Mouse", "Map", "Record time", "Moves" };
-			String[][] row = new String[rankList.size()][5];
+			String[] column = { "Rank", "Mouse", "Map", "Registered time", "Searching count", "Searching time", "Searching moves","Record time", "Moves" };
+			String[][] row = new String[rankList.size()][9];
 			for (int i = 0; i < rankList.size(); i++) {
 				LogRank listline = rankList.get(i);
 				row[i][0] = Integer.toString(i + 1);
 				row[i][1] = listline.getMouse();
 				row[i][2] = listline.getMapname();
 				row[i][3] = listline.getTimestamp();
-				row[i][4] = Integer.toString(listline.getCount());
+				row[i][4] = Integer.toString(listline.getSearch_count());
+				row[i][5] = Integer.toString(listline.getSearch_time());
+				row[i][6] = Integer.toString(listline.getSearch_moves());
+				row[i][7] = Integer.toString(listline.getRecord_time());
+				row[i][8] = Integer.toString(listline.getMoves());
 			}
 			setTitle("랭킹보기");
 			DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
@@ -396,8 +360,8 @@ public class ChallengeModeGUI extends JFrame {
 			DefaultTableModel model = new DefaultTableModel(row, column);
 			JTable table = new JTable(model);
 			table.setRowHeight(25);
-			table.getColumnModel().getColumn(0).setPreferredWidth(10);
-			table.getColumnModel().getColumn(4).setPreferredWidth(10);
+//			table.getColumnModel().getColumn(0).setPreferredWidth(10);
+//			table.getColumnModel().getColumn(4).setPreferredWidth(10);
 			for (int i = 0; i < column.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(dtcr);
 			}
@@ -405,11 +369,9 @@ public class ChallengeModeGUI extends JFrame {
 			JScrollPane sc = new JScrollPane(table);
 			Container c = getContentPane();
 			c.add(sc);
-			setSize(700, 600);
+			setSize(1000, 600);
 			setVisible(true);
 		}
 	}
-
-
 
 }

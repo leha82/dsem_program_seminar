@@ -2,16 +2,17 @@ package boot;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
+//import javax.swing.JFrame;
+import javax.swing.*;
+import maze.original.Mouse;
 import maze.challengemode.*;
 
-public class MazeEscapeChallenge {
+public class MazeEscapeChallenge extends JFrame{
 	private static String appTitle = "Maze Escape Challenge mode";
 //  private static String defaultMapFile = "maps/testmap2.txt";
 	private static String defaultMap = "testmap2";
 	private static String defaultMouseDirectory = "bin/mice";
-	private static String defaultMousePackage = "mice.";
+	public static String defaultMousePackage = "mice.";
 	private static String defaultMouse = "RightHandMouse";
 	
 	public String mouseClassName;
@@ -25,10 +26,13 @@ public class MazeEscapeChallenge {
 	public int curr_x, curr_y;
 	public int esc_x, esc_y;
 
-	private boolean finished;
+	public boolean finished;
 	
 	public MazeEscapeChallenge() {
 		// TODO Auto-generated constructor stub
+		super(appTitle);
+		this.mouseClassName = defaultMouse;
+		this.mapName = defaultMap;
 	}
 	
 	public void loadMap() {
@@ -82,7 +86,7 @@ public class MazeEscapeChallenge {
 		this.mapList = log.getMapNameList();
 	}
 
-	private void changeMouseClass(String mouseName) {
+	public void changeMouseClass(String mouseName) {
 		try {
 			Class<?> cls = Class.forName(mouseName);
 			Object obj = cls.newInstance();
@@ -98,6 +102,7 @@ public class MazeEscapeChallenge {
 	}
 	
 	public void putLog() {
+		LogManager log = new LogManager();
 		System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
 		ArrayList<LogRank> rankList = log.getRankingList(mapName);
 
@@ -171,9 +176,9 @@ public class MazeEscapeChallenge {
 	public static void main(String[] args) {
 		MazeEscapeChallenge mec = new MazeEscapeChallenge();
 		ChallengeModeGUI cm = new ChallengeModeGUI(mec);
-//		cm.loadMap();
-//		cm.loadMiceList();
-//		cm.loadMapList();
-//		cm.initWindow();
+		mec.loadMap();
+		mec.loadMiceList();
+		mec.loadMapList();
+		cm.initWindow();
 	}
 }
