@@ -18,7 +18,7 @@ public class ChallengeMode {
 		this.maze=maze;
 		this.mouse=mouse;
 	};
-	public static void main(String[] agrs) {
+	public void run() {
 		ChallengeModeContainer cmc = new ChallengeModeContainer();
 		ChallengePlayThread spt = new ChallengePlayThread(maze, mouse, cmc);
 		ChallengeTimeThread stt = new ChallengeTimeThread(cmc);
@@ -31,8 +31,9 @@ public class ChallengeMode {
 				break;
 			}
 			else if(!spt.isAlive()) {
-				System.out.println("탐색 종료");
+				System.out.println("챌린지 종료");
 				cmc.addTotalSearch();
+				stt.finish();
 				break;
 			}
 		}
@@ -116,10 +117,7 @@ class ChallengePlayThread extends Thread {
 	}
 	public void timeover() {flag=true;}
 	public void run() {
-		while(true) {
-			if(flag==true) {
-				return;
-			}
+		while(!flag) {
 			play(1); // 1번 실행
 			cmc.addTotalMove();
 		}
@@ -140,20 +138,11 @@ class ChallengeTimeThread extends Thread {
 
 	public void run() {
 		cmc.start();
-		long t=cmc.check();
-		while (true) {
-			try {
-				t=cmc.check();
-				if(t>120000)
-					return;
-				sleep(10);
-				if (flag == true)
-					cmc.check();
+		while (!flag) {
+			if(cmc.check()>120000)
 				return;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
+		cmc.check();
 	}
 }
 // 탐색모드에 필요한 정보들 모음집
