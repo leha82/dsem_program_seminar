@@ -7,51 +7,52 @@ import javax.swing.JOptionPane;
 import boot.Mouse;
 import maze.challengemode.*;
 
-public class SearchMode extends Thread{
-	private SearchModeContainer smc;
-	public SearchPlayThread spt;
-	public SearchTimeThread stt; 
-	
-	public SearchMode() {
-		this.smc = new SearchModeContainer();
-//		this.spt = new SearchPlayThread(maze, mouse);// , smc);
-//		this.stt = new SearchTimeThread();// smc);
+public class ModeThread extends Thread {
+	private ModeContainer mc;
+	public PlayThread pt;
+	public TimeThread tt; 
+
+	public ModeThread() {
+		this.mc = new ModeContainer();
+		//		this.spt = new SearchPlayThread(maze, mouse);// , mc);
+		//		this.stt = new SearchTimeThread();// mc);
 	}
-	
-	public SearchMode(Maze maze, Mouse mouse) {
-		this.smc = new SearchModeContainer();
-		this.spt = new SearchPlayThread(maze, mouse);// , smc);
-		this.stt = new SearchTimeThread();// smc);
+
+	public ModeThread(Maze maze, Mouse mouse) {
+		this.mc = new ModeContainer();
+		this.pt = new PlayThread(maze, mouse);// , mc);
+		this.tt = new TimeThread();// mc);
 	}
 
 	public int getCurr_x() {
-		return spt.curr_x;
+		return pt.curr_x;
 	}
-	
-	public int getCurr_y() {
-		return spt.curr_y;
-	}
-	
-	public SearchModeContainer runSearchMode() {
-//		SearchModeContainer smc = new SearchModeContainer();
 
-		spt.start();
-		stt.start();
+	public int getCurr_y() {
+		return pt.curr_y;
+	}
+
+	public ModeContainer runMode() {
+		//		ModeContatiner mc = new ModeContatiner();
+
+		pt.start();
+		tt.start();
 		while (true) {
-			if (!stt.isAlive()) {
-				spt.timeover();
-				smc.addTotalSearch();
+			if (!tt.isAlive()) {
+				pt.timeover();
+				mc.addTotalSearch();
+				System.out.println("시간초과");
 				break;
-			} else if (!spt.isAlive()) {
-				System.out.println("탐색 종료");
-				smc.addTotalSearch();
+			} else if (!pt.isAlive()) {
+				System.out.println("종료");
+				mc.addTotalSearch();
 				break;
 			}
 		}
-		return smc;
+		return mc;
 	}
 
-	class SearchPlayThread extends Thread {
+	class PlayThread extends Thread {
 		private Mouse mouse; // mouse객체
 		private int start_x, start_y; // 시작 점
 		public int curr_x, curr_y; // 현 위치
@@ -60,12 +61,12 @@ public class SearchMode extends Thread{
 		private int count; // 몇번 갔는지 확인하는 변수
 		private boolean finished; // 도착해쓴지 확인하는 변수
 		private boolean flag; // 쓰래드 종류하기 위한 변수
-		// private SearchModeContainer smc;
+		// private ModeContatiner mc;
 
-		public SearchPlayThread(Maze maze, Mouse mouse) {// , SearchModeContainer smc) {
+		public PlayThread(Maze maze, Mouse mouse) {// , ModeContatiner mc) {
 			this.maze = maze;
 			this.mouse = mouse;
-//			this.smc = smc;
+			//		this.mc = mc;
 			this.start_x = maze.getStart_x();
 			this.start_y = maze.getStart_y();
 			this.esc_x = maze.getEsc_x();
@@ -74,7 +75,7 @@ public class SearchMode extends Thread{
 			count = 0;
 			finished = false;
 		}
-		
+
 
 		public void play(int move) {
 			int[][] map = maze.getMap();
@@ -135,49 +136,53 @@ public class SearchMode extends Thread{
 
 		public void run() {
 			while (!flag) {
-//			if(flag) {
-//				return;
-//			}
+				//			if(flag) {
+				//				return;
+				//			}
 				play(1); // 1번 실행
-				smc.addTotalMove();
+				mc.addTotalMove();
 			}
 		}
 	}
 
-	class SearchTimeThread extends Thread {
-//		private SearchModeContainer smc;
+	class TimeThread extends Thread {
+		//		private ModeContatiner mc;
 		private boolean flag = false;
+		private int LimitTime;
 
-		public SearchTimeThread() {
+		public TimeThread() {
+			LimitTime=0;
 		}
 
-//		public SearchTimeThread(SearchModeContainer smc) {
-//			this.smc = smc;
-//		}
+		//		public SearchTimeThread(ModeContatiner mc) {
+		//			this.mc = mc;
+		//		}
 
 		public void finish() {
 			flag = true;
 		}
+		public void setTime(int time) {
+			LimitTime=time;
+		}
 
 		public void run() {
-			smc.start();
-			long t = smc.check();
+			mc.start();
+			long t = mc.check();
 			while (true) {
-//				try {
-				t = smc.check();
-				if (t > 5000) {
+				//				try {
+				t = mc.check();
+				if (t > LimitTime) {
 					break;
 				}
-//					sleep(10);
+				//					sleep(10);
 				if (flag == true) {
-					smc.check();
+					mc.check();
 					break;
 				}
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+				//				} catch (InterruptedException e) {
+				//					e.printStackTrace();
+				//				}
 			}
 		}
 	}
-
 }
