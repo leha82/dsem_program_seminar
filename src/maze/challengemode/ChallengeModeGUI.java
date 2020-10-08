@@ -158,8 +158,8 @@ public class ChallengeModeGUI extends JFrame {
 				challengeTime.setText("");
 				challengemoveCount.setText("");
 				
+				mec.ci.initialize();
 				for(int i = 0; i<3; i++) {
-					mec.ci.initialize();
 					searchTimeArray[i] = 0;
 					searchMoveArray[i] = 0;
 					searchCount[i].setText("");
@@ -216,7 +216,6 @@ public class ChallengeModeGUI extends JFrame {
 					
 				} else {
 					
-					// 
 					searchMoveArray[0] = searchMoveArray[1];
 					searchMoveArray[1] = searchMoveArray[2];
 					searchTimeArray[0] = searchTimeArray[1];
@@ -269,7 +268,7 @@ public class ChallengeModeGUI extends JFrame {
 				
 				
 				// rank 에 넣도록
-				
+				mec.putLog();
 			}
 		});
 		totalSearchTime = 0;
@@ -331,8 +330,16 @@ public class ChallengeModeGUI extends JFrame {
 		mainPanel.add(infoPanel2, "West");
 		mainPanel.add(infoPanel, "South");
 		mainPanel.add(infoPanel3, "East");
-		add(mainPanel);
-		setSize(setX * 60 + 100, setY * 60 + 50);
+		
+		Container ct = getContentPane();
+		ct.removeAll();
+		ct.revalidate();
+		ct.repaint();
+		ct.add(new JScrollPane(mapPanel), "North");
+		ct.add(mainPanel);
+		
+//		setSize(setX * 60 + 100, setY * 60 + 50);
+		setSize(setX-190 , setY+30);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -405,26 +412,35 @@ public class ChallengeModeGUI extends JFrame {
 				mapPanel.add(mapLabels[i][j], gbc);
 			}
 		}
+		
+		Container ct = getContentPane();
+		ct.removeAll();
+		ct.revalidate();
+		ct.repaint();
+		ct.add(new JScrollPane(mapPanel), "North");
+		ct.add(mainPanel);
 
-		mainPanel.add(mapPanel, "North");
-		setSize(setX * 60 + 100, setY * 60 + 50);
+//		mainPanel.add(mapPanel, "North");
+//		setSize(setX * 60 + 100, setY * 60 + 50);
 		lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
 		lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
+		
+		setSize(setX-190,setY+30);
 	}
 
 	public void changeImageSize(int[][] map) {
 		if (map.length <= 10) {
 			imgSize = 50;
-			setX = 10;
-			setY = 10;
+			setX = 10 * 60 + 100;
+			setY = 10 * 60 + 50;
 		} else if (map.length <= 50) {
 			imgSize = 16;
-			setX = 15;
-			setY = 15;
+			setX = 15 * 60 + 100;
+			setY = 15 * 60 + 50;
 		} else {
 			imgSize = 9;
-			setX = 15;
-			setY = 16;
+			setX = 15 * 60 + 100;
+			setY = 16 * 60 + 50;
 		}
 	}
 

@@ -19,7 +19,7 @@ public class MazeEscapeChallenge {
 	public ArrayList<String> miceList;
 	public ArrayList<String> mapList;
 	
-	public Mouse mouse;
+	public MouseChallenge mouse;
 	public int start_x, start_y;
 	public int curr_x, curr_y;
 	public int esc_x, esc_y;
@@ -64,6 +64,11 @@ public class MazeEscapeChallenge {
 		this.count = 0;
 		this.finished = false;
 		
+		if (mouse != null) {
+			mouse.setEscapePoint(esc_x, esc_y);
+			mouse.printMouseInfo();
+		}
+		
 		this.ci.initialize();
 	}
 
@@ -91,8 +96,11 @@ public class MazeEscapeChallenge {
 			Class<?> cls = Class.forName(mouseName);
 			Object obj = cls.newInstance();
 
-			mouse = (Mouse) obj;
+			mouse = (MouseChallenge) obj;
+			mouse.setEscapePoint(esc_x, esc_y);
+			
 			mouse.printClassName();
+			mouse.printMouseInfo();
 			// setWindow(curr_x, curr_y, map);
 			this.ci.initialize();
 		} catch (Exception e1) {
@@ -106,14 +114,15 @@ public class MazeEscapeChallenge {
 		System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
 		ArrayList<LogRank> rankList = log.getRankingList(mapName);
 
-		for (int k = 0; k < rankList.size(); k++) {
-			LogRank lr = rankList.get(k);
-			if (lr.getMouse().contains(mouseClassName)) {
-				log.deleteLog(lr.getId());
-			}
-		}
-
-		log.putLog(mouseClassName, mapName, count);
+		//ci를 활용하여 log 생성
+//		for (int k = 0; k < rankList.size(); k++) {
+//			LogRank lr = rankList.get(k);
+//			if (lr.getMouse().contains(mouseClassName)) {
+//				log.deleteLog(lr.getId());
+//			}
+//		}
+//
+//		log.putLog(mouseClassName, mapName, count);
 	}
 	
 //	public void play(int move) {

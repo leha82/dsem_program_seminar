@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import boot.Mouse;
+import boot.MouseChallenge;
 import maze.challengemode.*;
 
 public class ModeThread extends Thread {
@@ -18,7 +18,7 @@ public class ModeThread extends Thread {
 		//		this.stt = new SearchTimeThread();// mc);
 	}
 
-	public ModeThread(Maze maze, Mouse mouse) {
+	public ModeThread(Maze maze, MouseChallenge mouse) {
 		this.mc = new ModeContainer();
 		this.pt = new PlayThread(maze, mouse);// , mc);
 		this.tt = new TimeThread();// mc);
@@ -53,7 +53,7 @@ public class ModeThread extends Thread {
 	}
 	
 	class PlayThread extends Thread {
-		private Mouse mouse; // mouse객체
+		private MouseChallenge mouse; // mouse객체
 		private int start_x, start_y; // 시작 점
 		public int curr_x, curr_y; // 현 위치
 		private int esc_x, esc_y; // 탈출 좌표
@@ -63,7 +63,7 @@ public class ModeThread extends Thread {
 		private boolean flag; // 쓰래드 종류하기 위한 변수
 		// private ModeContatiner mc;
 
-		public PlayThread(Maze maze, Mouse mouse) {// , ModeContatiner mc) {
+		public PlayThread(Maze maze, MouseChallenge mouse) {// , ModeContatiner mc) {
 			this.maze = maze;
 			this.mouse = mouse;
 			//		this.mc = mc;
@@ -76,7 +76,10 @@ public class ModeThread extends Thread {
 			finished = false;
 		}
 
-
+		// 탐색모드일때 mouse.nextSearch가 -1이면 탐색 종료
+		// 탐색 모드일 때 mouse가 goal까지 가도 계속 돌도록 함
+		
+		// 도전 모드일때 mouse가 goal까지 가면 종료
 		public void play(int move) {
 			int[][] map = maze.getMap();
 			int prev_x = curr_x;
