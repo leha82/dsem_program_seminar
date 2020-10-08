@@ -23,7 +23,7 @@ public class ModeThread extends Thread {
 		this.pt = new PlayThread(maze, mouse);// , mc);
 		this.tt = new TimeThread();// mc);
 	}
-
+	
 	public int getCurr_x() {
 		return pt.curr_x;
 	}
@@ -51,7 +51,7 @@ public class ModeThread extends Thread {
 		}
 		return mc;
 	}
-
+	
 	class PlayThread extends Thread {
 		private Mouse mouse; // mouse°´Ã¼
 		private int start_x, start_y; // ½ÃÀÛ Á¡
@@ -167,10 +167,12 @@ public class ModeThread extends Thread {
 
 		public void run() {
 			mc.start();
+			
 			long t = mc.check();
 			while (true) {
 				//				try {
 				t = mc.check();
+				
 				if (t > LimitTime) {
 					break;
 				}

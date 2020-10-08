@@ -58,6 +58,7 @@ public class ChallengeModeGUI extends JFrame {
 	}
 
 	public ChallengeModeGUI(MazeEscapeChallenge mec) {
+		super(mec.appTitle);
 		this.mec = mec;
 	}
 
@@ -158,6 +159,7 @@ public class ChallengeModeGUI extends JFrame {
 				challengemoveCount.setText("");
 				
 				for(int i = 0; i<3; i++) {
+					mec.ci.initialize();
 					searchTimeArray[i] = 0;
 					searchMoveArray[i] = 0;
 					searchCount[i].setText("");
@@ -213,6 +215,8 @@ public class ChallengeModeGUI extends JFrame {
 					totalSearchCount += 1;
 					
 				} else {
+					
+					// 
 					searchMoveArray[0] = searchMoveArray[1];
 					searchMoveArray[1] = searchMoveArray[2];
 					searchTimeArray[0] = searchTimeArray[1];
@@ -340,7 +344,7 @@ public class ChallengeModeGUI extends JFrame {
 			mec.mouseClassName = e.getActionCommand();
 			System.out.println("Choice -> " + mec.mouseClassName);
 
-			mec.changeMouseClass(mec.defaultMousePackage + mec.mouseClassName);
+			mec.loadMouseClass(mec.mouseClassName);
 
 			GridBagConstraints gbc = new GridBagConstraints();
 
