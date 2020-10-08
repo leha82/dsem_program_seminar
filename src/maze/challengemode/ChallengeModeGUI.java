@@ -184,14 +184,15 @@ public class ChallengeModeGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SearchMode sm = new SearchMode(mec.maze, mec.mouse);
-				SearchModeContainer smc = sm.runSearchMode();
+				ModeThread smt = new ModeThread(mec.maze, mec.mouse);
+				smt.tt.setTime(5000);
+				ModeContainer smc = smt.runMode();
 				try {
-					int prev_x = sm.getCurr_x();
-					int prev_y = sm.getCurr_y();
-					while (sm.isAlive()) {
-						mec.curr_x = sm.getCurr_x();
-						mec.curr_y = sm.getCurr_y();
+					int prev_x = smt.getCurr_x();
+					int prev_y = smt.getCurr_y();
+					while (smt.isAlive()) {
+						mec.curr_x = smt.getCurr_x();
+						mec.curr_y = smt.getCurr_y();
 						setWindow(prev_x, prev_y, mec.maze.getMap());
 
 						prev_x = mec.curr_x;
@@ -240,11 +241,27 @@ public class ChallengeModeGUI extends JFrame {
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChallengeMode cm = new ChallengeMode(mec.maze, mec.mouse);
-				ChallengeModeContainer cms = new ChallengeModeContainer();
-				challengeResult.setText("    도전 결과");
-				challengeTime.setText("    도전 시간: " + cms.getElapsedTime()+ " ms");
-				challengemoveCount.setText("    도전 이동 수: "+ cms.getTotalMove());
+				ModeThread cmt = new ModeThread(mec.maze, mec.mouse);
+				cmt.tt.setTime(180000);
+				ModeContainer cmc = cmt.runMode();
+				try {
+					int prev_x = cmt.getCurr_x();
+					int prev_y = cmt.getCurr_y();
+					while (cmt.isAlive()) {
+						mec.curr_x = cmt.getCurr_x();
+						mec.curr_y = cmt.getCurr_y();
+						setWindow(prev_x, prev_y, mec.maze.getMap());
+
+						prev_x = mec.curr_x;
+						prev_y = mec.curr_y;
+						Thread.sleep(100);
+					}
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+				
+				challengeTime.setText("    도전 시간: " + cmc.getElapsedTime()+ " ms");
+				challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
 				
 				
 				// rank 에 넣도록
