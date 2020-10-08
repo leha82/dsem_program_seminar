@@ -272,9 +272,15 @@ public class MazeEscapeGUI extends JFrame {
       mainPanel.add(mapPanel, "North");
       mainPanel.add(infoPanel2, "Center");
       mainPanel.add(infoPanel, "South");
-
-      add(mainPanel);
-      setSize(setX , setY);
+      
+      Container ct = getContentPane();
+      ct.removeAll();
+      ct.revalidate();
+      ct.repaint();
+	  ct.add(new JScrollPane(mapPanel), "North");
+	  ct.add(mainPanel);
+	  
+      setSize(setX-190 , setY+30);
       setVisible(true);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    }
@@ -349,12 +355,19 @@ public class MazeEscapeGUI extends JFrame {
 				mapPanel.add(mapLabels[i][j], gbc);
 			}
 		}
-
-		mainPanel.add(mapPanel, "North");
-		setSize(setX, setY);
+		//스크롤바 수정중
+	
+	    Container ct = getContentPane();
+	    ct.removeAll();
+	    ct.revalidate();
+	    ct.repaint();
+		ct.add(new JScrollPane(mapPanel), "North");
+		ct.add(mainPanel);
+		
 		lbFileName.setText("맵 이름 : " + mapName + "    ");
 		lbMouseName.setText("마우스 이름 : " + mouseClassName + "    ");
 		lbCount.setText("이동횟수 : " + count);
+		setSize(setX-190,setY+30);
 	}
 
    public void changeImageSize(int[][] map) {
@@ -372,7 +385,6 @@ public class MazeEscapeGUI extends JFrame {
          setY = 16 * 60 + 50;
       }
    }
-
 	class LoadMapMenuActionListener implements ActionListener {
 
 		@Override
@@ -383,15 +395,15 @@ public class MazeEscapeGUI extends JFrame {
 			int[][] map = maze.getMap();
 			changeImageSize(map);
 			mainPanel.remove(mapPanel);
-			JScrollPane sp = new JScrollPane(mainPanel);
-			Container ct = getContentPane();
-			ct.removeAll();
-			ct.revalidate();
-			ct.repaint();
-
-			ct.add(sp);
-			//ct.setSize(200, 200);
-			ct.setVisible(true);
+//			JScrollPane sp = new JScrollPane(mainPanel);
+//			Container ct = getContentPane();
+//			ct.removeAll();
+//			ct.revalidate();
+//			ct.repaint();
+//
+//			ct.add(sp);
+//			//ct.setSize(200, 200);
+//			ct.setVisible(true);
 			paintMap(map);
 			mainPanel.revalidate();
 			mainPanel.repaint();
