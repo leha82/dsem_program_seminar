@@ -22,11 +22,19 @@ public class ChallengeModeGUI extends JFrame {
 	private static int imgSize;
 	private static int setX;
 	private static int setY;
-
+	private int totalSearchTime;
+	private int totalMoveCount;
+	private int totalSearchCount;
+	private long[] searchTimeArray;
+	private long[] searchMoveArray;
 	private JPanel mainPanel;
 	private JPanel mapPanel;
 	private JPanel infoPanel;
 	private JPanel infoPanel2;
+	private JPanel infoPanel3;
+	private JPanel search1;
+	private JPanel search2;
+	private JPanel search3;
 	private JButton btnInit;
 	private JButton btnShowRanking;
 	private JButton btnSearch;
@@ -34,11 +42,15 @@ public class ChallengeModeGUI extends JFrame {
 	private JLabel lbFileName;
 	private JLabel lbMouseName;
 	private JLabel[][] mapLabels;
-
 	private JLabel challengeResult;
 	private JLabel challengeTime;
-	private JLabel moveCount;
-
+	private JLabel challengemoveCount;
+	
+	
+	private JLabel[] totalSearch;
+	private JLabel[] searchCount;
+	private JLabel[] searchTime;
+	private JLabel[] searchMoveCount;
 //	private JScrollPane scroll;
 
 	public ChallengeModeGUI() {
@@ -143,7 +155,19 @@ public class ChallengeModeGUI extends JFrame {
 
 				challengeResult.setText("");
 				challengeTime.setText("");
-				moveCount.setText("");
+				challengemoveCount.setText("");
+				
+				for(int i = 0; i<3; i++) {
+					searchTimeArray[i] = 0;
+					searchMoveArray[i] = 0;
+					searchCount[i].setText("");
+					searchTime[i].setText("");
+					searchMoveCount[i].setText("");
+					totalSearch[i].setText("");
+					totalSearchTime = 0;
+					totalMoveCount = 0;
+					totalSearchCount = 0;
+				}
 				revalidate();
 				repaint();
 			}
@@ -182,7 +206,32 @@ public class ChallengeModeGUI extends JFrame {
 				System.out.println("Total Search : " + smc.getTotalSearch());
 				System.out.println("Total ElapsedTime : " + smc.getElapsedTime());
 				
+				if(totalSearchCount<3) {
+					searchMoveArray[totalSearchCount] =  smc.getTotalMove();
+					searchTimeArray[totalSearchCount] = smc.getElapsedTime();
+					totalSearchCount += 1;
+					
+				} else {
+					searchMoveArray[0] = searchMoveArray[1];
+					searchMoveArray[1] = searchMoveArray[2];
+					searchTimeArray[0] = searchTimeArray[1];
+					searchTimeArray[1] = searchTimeArray[2];
+					searchMoveArray[2] = smc.getTotalMove();
+					searchTimeArray [2] = smc.getElapsedTime();
+				}
 				// label에 표시하도록
+
+				for(int i = 0; i< 3; i++) {
+					searchCount[i].setText("탐색 횟수: "+ (i+1) +"         ");
+					searchTime[i].setText("시간: " + searchTimeArray[i]+ " ms         ");
+					searchMoveCount[i].setText("이동수: " + searchMoveArray[i]+"         ");
+				}
+				totalMoveCount += smc.getTotalMove();
+				totalSearchTime += smc.getElapsedTime();
+				totalSearch[0].setText("총 탐색 횟수: " + totalSearchCount);
+				totalSearch[1].setText("총 시간: " + totalSearchTime);
+				totalSearch[2].setText("총 이동수: " + totalMoveCount);
+
 				
 			}
 		});
@@ -191,40 +240,76 @@ public class ChallengeModeGUI extends JFrame {
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ChallengeMode cm = new ChallengeMode(mec.maze, mec.mouse);
+				ChallengeModeContainer cms = new ChallengeModeContainer();
 				challengeResult.setText("    도전 결과");
-				challengeTime.setText("    도전 시간:  ms");
-				moveCount.setText("    도전 이동 수: ");
+				challengeTime.setText("    도전 시간: " + cms.getElapsedTime()+ " ms");
+				challengemoveCount.setText("    도전 이동 수: "+ cms.getTotalMove());
 				
 				
 				// rank 에 넣도록
 				
 			}
 		});
-
+		totalSearchTime = 0;
+		totalMoveCount = 0;
+		totalSearchCount = 0;
+		searchTimeArray = new long[3];
+		searchMoveArray = new long[3];
+		totalSearch = new JLabel[3];
 		lbFileName = new JLabel("    맵 이름 : " + mec.mapName + "    ");
 		lbMouseName = new JLabel("    마우스 이름 : " + mec.mouseClassName + "    ");
 
 		infoPanel = new JPanel();
 		infoPanel2 = new JPanel();
+		infoPanel3 = new JPanel();
+		search1 = new JPanel();
+		search2 = new JPanel();
+		search3 = new JPanel();
 		infoPanel2.add(lbFileName);
 		infoPanel2.add(lbMouseName);
-		BoxLayout boxLayout = new BoxLayout(infoPanel2, BoxLayout.Y_AXIS);
-		infoPanel2.setLayout(boxLayout);
+		BoxLayout boxLayout1 = new BoxLayout(infoPanel2, BoxLayout.Y_AXIS);
+		BoxLayout boxLayout2 = new BoxLayout(search1, BoxLayout.Y_AXIS);
+		BoxLayout boxLayout3 = new BoxLayout(search2, BoxLayout.Y_AXIS);
+		BoxLayout boxLayout4 = new BoxLayout(search3, BoxLayout.Y_AXIS);
+		infoPanel2.setLayout(boxLayout1);
+		search1.setLayout(boxLayout2);
+		search2.setLayout(boxLayout3);
+		search3.setLayout(boxLayout4);
 		infoPanel.add(btnInit);
 		infoPanel.add(btnSearch);
 		infoPanel.add(btnChallenge);
 		infoPanel.add(btnShowRanking);
 		challengeResult = new JLabel("");
 		challengeTime = new JLabel("");
-		moveCount = new JLabel("");
+		challengemoveCount = new JLabel("");
+		searchCount = new JLabel[3];
+		searchMoveCount = new JLabel[3];
+		searchTime = new JLabel[3];
 		infoPanel2.add(challengeResult);
 		infoPanel2.add(challengeTime);
-		infoPanel2.add(moveCount);
+		infoPanel2.add(challengemoveCount);
+		for(int i = 0; i<3; i++) {
+			searchCount[i] = new JLabel("");
+			searchTime[i] = new JLabel("");
+			searchMoveCount[i] = new JLabel("");
+			totalSearch[i] = new JLabel("");
+			search1.add(searchCount[i]);
+			search2.add(searchTime[i]);
+			search3.add(searchMoveCount[i]);
+		}
+		infoPanel3.add(search1);
+		infoPanel3.add(search2);
+		infoPanel3.add(search3);
+		search1.add(totalSearch[0]);
+		search2.add(totalSearch[1]);
+		search3.add(totalSearch[2]);
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mapPanel, "North");
 		mainPanel.add(infoPanel2, "West");
 		mainPanel.add(infoPanel, "South");
+		mainPanel.add(infoPanel3, "East");
 		add(mainPanel);
 		setSize(setX * 60 + 100, setY * 60 + 50);
 		setVisible(true);
@@ -359,7 +444,6 @@ public class ChallengeModeGUI extends JFrame {
 		revalidate();
 		repaint();
 	}
-
 	class ShowRanking extends JFrame {
 		public ShowRanking() {
 			LogManager log = new LogManager();
