@@ -112,6 +112,44 @@ public class LogManager {
 		dbm.disconnectDB();
 		return result;
 	}
+	// 마우스가 이 맵에 도전한 이력이 있는지 확인
+	public boolean checkChallengeLog(String mouseName,String map_name) {
+		boolean result=false;
+		dbm.connectDB();
+		try {
+			String sql = "select * from maze.cmLog where mouse_name=\""+mouseName+"\"AND map_name=\""+map_name+"\" AND record_time IS NOT NULL";
+			ResultSet rs = dbm.executeQuery(sql);
+			if(rs.next())
+				result=true;
+		}catch(SQLException e) {
+			e.printStackTrace();
+			result=false;
+		}
+		dbm.disconnectDB();
+		return result;
+	}
+	// 도전모드 저장
+	public boolean putChallengeLog(String mouseName, String map_name, int record_time, int moves) {
+		boolean result = true;
+
+		// 데이터베이스에 접속
+		dbm.connectDB();
+
+		try {
+			SimpleDateFormat current_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time_stamp = current_time.format(System.currentTimeMillis());
+			String sql = "insert into maze.cmLog(mouse_name, map_name, timestamp, record_time, moves) values ('" + mouseName + "','"
+					+ map_name + "','"+time_stamp+", "+ record_time + ", " + moves + ")";
+			dbm.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = false;
+		}
+
+		// 데이터베이스 접속 해제
+		dbm.disconnectDB();
+		return result;
+	}
 	
 
 	public int getMinCount(String mouseName, String mapName) {

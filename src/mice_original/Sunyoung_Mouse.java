@@ -1,4 +1,4 @@
-package mice;
+package mice_original;
 
 import boot.Mouse;
 

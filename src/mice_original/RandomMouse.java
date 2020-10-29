@@ -1,9 +1,8 @@
-package mice;
+package mice_original;
 
-import boot.MouseChallenge;
+import boot.Mouse;
 
-public class RandomMouse extends MouseChallenge {
-	
+public class RandomMouse extends Mouse {
 	public RandomMouse() {
 		
 	}
@@ -19,12 +18,4 @@ public class RandomMouse extends MouseChallenge {
 		
 		return dir;
 	}
-		
-	public int nextSearch(int x, int y, int[][] smap) {
-		int dir = (int)(Math.random()*100) % 4 + 1;
-		
-		return dir;
-	}
-
-
 }

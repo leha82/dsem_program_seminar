@@ -8,7 +8,7 @@ public abstract class Mouse {
 	// 3: 아래쪽
 	// 4: 왼쪽
 	public abstract int nextMove(int x, int y, int[][] smap);
-	
+
 	public void printClassName() {
 		System.out.println("Mouse");
 	}

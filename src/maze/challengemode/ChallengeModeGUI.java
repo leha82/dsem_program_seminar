@@ -58,6 +58,7 @@ public class ChallengeModeGUI extends JFrame {
 	}
 
 	public ChallengeModeGUI(MazeEscapeChallenge mec) {
+		super(mec.appTitle);
 		this.mec = mec;
 	}
 
@@ -157,6 +158,7 @@ public class ChallengeModeGUI extends JFrame {
 				challengeTime.setText("");
 				challengemoveCount.setText("");
 				
+				mec.ci.initialize();
 				for(int i = 0; i<3; i++) {
 					searchTimeArray[i] = 0;
 					searchMoveArray[i] = 0;
@@ -213,6 +215,7 @@ public class ChallengeModeGUI extends JFrame {
 					totalSearchCount += 1;
 					
 				} else {
+					
 					searchMoveArray[0] = searchMoveArray[1];
 					searchMoveArray[1] = searchMoveArray[2];
 					searchTimeArray[0] = searchTimeArray[1];
@@ -241,6 +244,9 @@ public class ChallengeModeGUI extends JFrame {
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				LogManager log =new LogManager();
+				// 도전한 것이 없는 경우
+				if(!log.checkChallengeLog(mec.mouseClassName, mec.mapName)) {
 				ModeThread cmt = new ModeThread(mec.maze, mec.mouse);
 				cmt.tt.setTime(180000);
 				ModeContainer cmc = cmt.runMode();
@@ -264,8 +270,10 @@ public class ChallengeModeGUI extends JFrame {
 				challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
 				
 				
-				// rank 에 넣도록
-				
+				// cmLog 넣는 부분
+				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)cmc.getElapsedTime(),(int)cmc.getTotalMove());;
+			 }
+			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
 		});
 		totalSearchTime = 0;
@@ -327,8 +335,16 @@ public class ChallengeModeGUI extends JFrame {
 		mainPanel.add(infoPanel2, "West");
 		mainPanel.add(infoPanel, "South");
 		mainPanel.add(infoPanel3, "East");
-		add(mainPanel);
-		setSize(setX * 60 + 100, setY * 60 + 50);
+		
+		Container ct = getContentPane();
+		ct.removeAll();
+		ct.revalidate();
+		ct.repaint();
+		ct.add(new JScrollPane(mapPanel), "North");
+		ct.add(mainPanel);
+		
+//		setSize(setX * 60 + 100, setY * 60 + 50);
+		setSize(setX-190 , setY+30);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -340,7 +356,7 @@ public class ChallengeModeGUI extends JFrame {
 			mec.mouseClassName = e.getActionCommand();
 			System.out.println("Choice -> " + mec.mouseClassName);
 
-			mec.changeMouseClass(mec.defaultMousePackage + mec.mouseClassName);
+			mec.loadMouseClass(mec.mouseClassName);
 
 			GridBagConstraints gbc = new GridBagConstraints();
 
@@ -401,26 +417,35 @@ public class ChallengeModeGUI extends JFrame {
 				mapPanel.add(mapLabels[i][j], gbc);
 			}
 		}
+		
+		Container ct = getContentPane();
+		ct.removeAll();
+		ct.revalidate();
+		ct.repaint();
+		ct.add(new JScrollPane(mapPanel), "North");
+		ct.add(mainPanel);
 
-		mainPanel.add(mapPanel, "North");
-		setSize(setX * 60 + 100, setY * 60 + 50);
+//		mainPanel.add(mapPanel, "North");
+//		setSize(setX * 60 + 100, setY * 60 + 50);
 		lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
 		lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
+		
+		setSize(setX-190,setY+30);
 	}
 
 	public void changeImageSize(int[][] map) {
 		if (map.length <= 10) {
 			imgSize = 50;
-			setX = 10;
-			setY = 10;
+			setX = 10 * 60 + 100;
+			setY = 10 * 60 + 50;
 		} else if (map.length <= 50) {
 			imgSize = 16;
-			setX = 15;
-			setY = 15;
+			setX = 15 * 60 + 100;
+			setY = 15 * 60 + 50;
 		} else {
 			imgSize = 9;
-			setX = 15;
-			setY = 16;
+			setX = 15 * 60 + 100;
+			setY = 16 * 60 + 50;
 		}
 	}
 
