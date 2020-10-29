@@ -91,9 +91,8 @@ public class LogManager {
 		return result;
 	}
 	
-	public boolean putChallengeLog(String mouseName, String map_name, int search_count, int search_time, int search_moves, int record_time, int moves) {
+	public boolean putChallengeLog(String mouseName, String map_name,  int search_time, int search_count, int search_moves, int record_time, int moves) {
 		boolean result = true;
-
 		// 데이터베이스에 접속
 		dbm.connectDB();
 
@@ -117,12 +116,13 @@ public class LogManager {
 		boolean result=false;
 		dbm.connectDB();
 		try {
-			String sql = "select * from maze.cmLog where mouse_name=\""+mouseName+"\"AND map_name=\""+map_name+"\" AND record_time IS NOT NULL";
+			String sql = "select * from maze.cmLog where mouse_name='" + mouseName + "'AND map_name='" + map_name +"'AND record_time IS NOT NULL";
 			ResultSet rs = dbm.executeQuery(sql);
 			if(rs.next())
 				result=true;
 		}catch(SQLException e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 			result=false;
 		}
 		dbm.disconnectDB();
@@ -139,10 +139,11 @@ public class LogManager {
 			SimpleDateFormat current_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String time_stamp = current_time.format(System.currentTimeMillis());
 			String sql = "insert into maze.cmLog(mouse_name, map_name, timestamp, record_time, moves) values ('" + mouseName + "','"
-					+ map_name + "','"+time_stamp+", "+ record_time + ", " + moves + ")";
+					+ map_name + "','"+time_stamp+"', "+ record_time + ", " + moves + ")";
 			dbm.executeUpdate(sql);
+			System.out.println("d");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			result = false;
 		}
 
