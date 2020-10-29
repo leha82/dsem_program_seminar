@@ -24,7 +24,6 @@ public class LogRank {
 		this.moves = moves;
 	}
 
-
 	public int getId() {
 		return id;
 	}

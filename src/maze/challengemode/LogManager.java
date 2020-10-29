@@ -21,7 +21,7 @@ public class LogManager {
 		// 테이블의 데이터 획득
 		try {
 			// Todo : map이름도 string 혹은 LogRank 타입으로 사용할 수 있도록 변경
-			String sql = "select * from maze.cmLog where map_name='" + mapName + "' order by count, timestamp asc;";
+			String sql = "select * from maze.cmLog where map_name='" + mapName + "' order by moves, timestamp asc;";
 			ResultSet rs = dbm.executeQuery(sql);
 
 			while (rs.next()) {
