@@ -7,6 +7,7 @@ public class ChallengeInfo {
 ////	private long totalMove;
 	
 	private int totalSearchCount;
+	private int searchMoveCount;
 
 	private int searchCount;
 	private long searchTime[];
@@ -23,6 +24,7 @@ public class ChallengeInfo {
 	// 선언 및 초기화
 	public ChallengeInfo() {
 		this.totalSearchCount = 3;
+		this.searchMoveCount = 30;
 		this.initialize();
 	}
 	
@@ -143,5 +145,13 @@ public class ChallengeInfo {
 
 	public void setTotalSearchMove(int totalSearchMove) {
 		this.totalSearchMove = totalSearchMove;
+	}
+
+	public int getSearchMoveCount() {
+		return searchMoveCount;
+	}
+
+	public void setSearchMoveCount(int searchMoveCount) {
+		this.searchMoveCount = searchMoveCount;
 	}
 }

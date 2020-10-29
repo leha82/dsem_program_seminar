@@ -179,10 +179,18 @@ public class ChallengeModeGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(mec.ci.getSearchCount()>=3) {
+				// 1. 탐색 시 정해진 move 수 만큼 이동하면 끝나도록 한다.
+				// 2. move수는 n * n / 3으로 일단 정한다.
+				// 3. thread를 돌리면서 return값이 -1일 경우에 탐색을 종료한다.
+				// 4. mouse가 goal에 도착하더라도 종료하지 않는다. (계속 다음 이동함)
+				
+				if(mec.ci.getSearchCount()>=mec.ci.getTotalSearchCount()) {
 					return;
 				}
-				ModeThread smt = new ModeThread(mec.maze, mec.mouse);
+				
+				mec.mouse.initMouse();
+				
+				ModeThread smt = new ModeThread(mec.maze, mec.mouse, 0, mec.ci.getSearchMoveCount());
 				smt.tt.setTime(5000);
 				ModeContainer smc = smt.runMode();
 				try {
@@ -229,39 +237,42 @@ public class ChallengeModeGUI extends JFrame {
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LogManager log =new LogManager();
+				LogManager log = new LogManager();
 				// 도전한 것이 없는 경우
-				
-				if(!log.checkChallengeLog(mec.mouseClassName, mec.mapName)) {
-				ModeThread cmt = new ModeThread(mec.maze, mec.mouse);
-				cmt.tt.setTime(180000);
-				ModeContainer cmc = cmt.runMode();
-				try {
-					int prev_x = cmt.getCurr_x();
-					int prev_y = cmt.getCurr_y();
-					
-					while (cmt.isAlive()) {
-						mec.curr_x = cmt.getCurr_x();
-						mec.curr_y = cmt.getCurr_y();
-						setWindow(prev_x, prev_y, mec.maze.getMap());
 
-						prev_x = mec.curr_x;
-						prev_y = mec.curr_y;
-						Thread.sleep(100);
+//				if (!log.checkChallengeLog(mec.mouseClassName, mec.mapName)) {
+					mec.mouse.initMouse();
+
+					ModeThread cmt = new ModeThread(mec.maze, mec.mouse, 1, 0);
+					cmt.tt.setTime(180000);
+					ModeContainer cmc = cmt.runMode();
+					try {
+						int prev_x = cmt.getCurr_x();
+						int prev_y = cmt.getCurr_y();
+
+						while (cmt.isAlive()) {
+							mec.curr_x = cmt.getCurr_x();
+							mec.curr_y = cmt.getCurr_y();
+							setWindow(prev_x, prev_y, mec.maze.getMap());
+
+							prev_x = mec.curr_x;
+							prev_y = mec.curr_y;
+							Thread.sleep(100);
+						}
+					} catch (Exception e2) {
+						System.out.println(e2.getMessage());
 					}
-				} catch (Exception e2) {
-					System.out.println(e2.getMessage());
-				}
-				mec.ci.setChallengeMove((int)cmc.getTotalMove());
-				mec.ci.setChallengeTime((int)cmc.getElapsedTime());
-				challengeTime.setText("    도전 시간: " + (int)cmc.getElapsedTime()+ " ms");
-				challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
-				
-				
-				// cmLog 넣는 부분
-				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)mec.ci.getChallengeTime(),(int)mec.ci.getSearchCount(), (int)mec.ci.getTotalSearchMove(),(int)cmc.getElapsedTime(), (int)cmc.getTotalMove());;
-			 }
-			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
+					mec.ci.setChallengeMove((int) cmc.getTotalMove());
+					mec.ci.setChallengeTime((int) cmc.getElapsedTime());
+					challengeTime.setText("    도전 시간: " + (int) cmc.getElapsedTime() + " ms");
+					challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
+
+					// cmLog 넣는 부분
+					log.putChallengeLog(mec.mouseClassName, mec.mapName, (int) mec.ci.getChallengeTime(),
+							(int) mec.ci.getSearchCount(), (int) mec.ci.getTotalSearchMove(),
+							(int) cmc.getElapsedTime(), (int) cmc.getTotalMove());
+//				}
+				// 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
 		});
 		totalSearchC = new JLabel("총 탐색 횟수: ");

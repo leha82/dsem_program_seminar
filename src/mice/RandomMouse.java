@@ -14,13 +14,13 @@ public class RandomMouse extends MouseChallenge {
 	// 2: 오른쪽
 	// 3: 아래쪽
 	// 4: 왼쪽
-	public int nextMove(int x, int y, int[][] smap) {
+	public int nextMove(int[][] smap) {
 		int dir = (int)(Math.random()*100) % 4 + 1;
 		
 		return dir;
 	}
 		
-	public int nextSearch(int x, int y, int[][] smap) {
+	public int nextSearch(int[][] smap) {
 		int dir = (int)(Math.random()*100) % 4 + 1;
 		
 		return dir;

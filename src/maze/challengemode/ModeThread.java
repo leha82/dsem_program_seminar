@@ -18,9 +18,9 @@ public class ModeThread extends Thread {
 		//		this.stt = new SearchTimeThread();// mc);
 	}
 
-	public ModeThread(Maze maze, MouseChallenge mouse) {
+	public ModeThread(Maze maze, MouseChallenge mouse, int mode, int searchCount) {
 		this.mc = new ModeContainer();
-		this.pt = new PlayThread(maze, mouse);// , mc);
+		this.pt = new PlayThread(maze, mouse, mode, searchCount);// , mc);
 		this.tt = new TimeThread();// mc);
 	}
 	
@@ -31,7 +31,7 @@ public class ModeThread extends Thread {
 	public int getCurr_y() {
 		return pt.curr_y;
 	}
-
+	
 	public ModeContainer runMode() {
 		//		ModeContatiner mc = new ModeContatiner();
 
@@ -62,9 +62,11 @@ public class ModeThread extends Thread {
 		private int count; // 몇번 갔는지 확인하는 변수
 		private boolean finished; // 도착해쓴지 확인하는 변수
 		private boolean flag; // 쓰래드 종류하기 위한 변수
+		private int mode; // 0: 탐색 모드, 1: 도전 모드
+		private int searchCount; // 탐색 모드의 이동 수 제한
 		// private ModeContatiner mc;
 
-		public PlayThread(Maze maze, MouseChallenge mouse) {// , ModeContatiner mc) {
+		public PlayThread(Maze maze, MouseChallenge mouse, int mode, int searchCount) {// , ModeContatiner mc) {
 			this.maze = maze;
 			this.mouse = mouse;
 			//		this.mc = mc;
@@ -72,7 +74,9 @@ public class ModeThread extends Thread {
 			this.start_y = maze.getStart_y();
 			this.esc_x = maze.getEsc_x();
 			this.esc_y = maze.getEsc_y();
-
+			this.mode = mode;
+			this.searchCount = searchCount;
+			
 			count = 0;
 			finished = false;
 		}
@@ -88,7 +92,7 @@ public class ModeThread extends Thread {
 
 			int i = 0;
 			while (!finished && (i < move || move == -1)) {
-				int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y));
+				int dir = mouse.nextMove(maze.getArea(curr_x, curr_y));
 
 				if (dir == 1 && curr_y > 0) {
 					if (map[curr_y - 1][curr_x] == 0)
@@ -108,10 +112,17 @@ public class ModeThread extends Thread {
 				prev_x = curr_x;
 				prev_y = curr_y;
 
-				if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
+				if ((curr_x == this.esc_x) && (curr_y == this.esc_y) && mode == 1) {
 					finished = true;
 					flag = true;
 				}
+				
+				if (count >= searchCount && mode == 0) {
+					finished = true;
+					flag = true;
+				}
+				
+				
 				i++;
 			}
 

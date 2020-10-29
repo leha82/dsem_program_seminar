@@ -145,16 +145,18 @@ public class Maze {
 			for (int j = 0; j < smap[0].length; j++) {
 				if (x + index[j] < 0 || y + index[i] < 0 || x + index[j] > this.width - 1
 						|| y + index[i] > this.height - 1) {
-					smap[i][j] = -1;
+					smap[i][j] = 1;
+				} else if ((y + index[i] == esc_y) && (x + index[j] == esc_x)) {
+					smap[i][j] = 2;
 				} else {
 					smap[i][j] = map[y + index[i]][x + index[j]];
 				}
 
-				// System.out.print(smap[i][j] + " ");
+//				 System.out.print(smap[i][j] + " ");
 			}
-			// System.out.println();
+//			 System.out.println();
 		}
-		// System.out.print(smap[x+1][y+1] + " ");
+//		 System.out.print(smap[x+1][y+1] + " ");
 		return smap;
 	}
 

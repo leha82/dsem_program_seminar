@@ -64,12 +64,14 @@ public class MazeEscapeChallenge {
 		this.count = 0;
 		this.finished = false;
 		
-		if (mouse != null) {
-			mouse.setEscapePoint(esc_x, esc_y);
-			mouse.printMouseInfo();
-		}
+//		if (mouse != null) {
+//			mouse.setEscapePoint(esc_x, esc_y);
+//			mouse.printMouseInfo();
+//		}
 		
 		this.ci.initialize();
+		this.ci.setSearchMoveCount(this.maze.getHeight()*this.maze.getWidth()/3);
+
 	}
 
 	
@@ -97,12 +99,13 @@ public class MazeEscapeChallenge {
 			Object obj = cls.newInstance();
 
 			mouse = (MouseChallenge) obj;
-			mouse.setEscapePoint(esc_x, esc_y);
+//			mouse.setEscapePoint(esc_x, esc_y);
 			
 			mouse.printClassName();
-			mouse.printMouseInfo();
+//			mouse.printMouseInfo();
 			// setWindow(curr_x, curr_y, map);
 			this.ci.initialize();
+			this.ci.setSearchMoveCount(this.maze.getHeight()*this.maze.getWidth()/3);
 		} catch (Exception e1) {
 			System.out.println("Error: " + e1.getMessage());
 			e1.printStackTrace();
