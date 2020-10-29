@@ -22,11 +22,6 @@ public class ChallengeModeGUI extends JFrame {
 	private static int imgSize;
 	private static int setX;
 	private static int setY;
-	private int totalSearchTime;
-	private int totalMoveCount;
-	private int totalSearchCount;
-	private long[] searchTimeArray;
-	private long[] searchMoveArray;
 	private JPanel mainPanel;
 	private JPanel mapPanel;
 	private JPanel infoPanel;
@@ -46,8 +41,9 @@ public class ChallengeModeGUI extends JFrame {
 	private JLabel challengeTime;
 	private JLabel challengemoveCount;
 	
-	
-	private JLabel[] totalSearch;
+	private JLabel totalSearchC;
+	private JLabel totalSearchT;
+	private JLabel totalSearchM;
 	private JLabel[] searchCount;
 	private JLabel[] searchTime;
 	private JLabel[] searchMoveCount;
@@ -154,21 +150,18 @@ public class ChallengeModeGUI extends JFrame {
 				lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
 				lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
 
-				challengeResult.setText("");
-				challengeTime.setText("");
-				challengemoveCount.setText("");
+				challengeResult.setText("    도전 결과");
+				challengeTime.setText("    도전 시간: ms");
+				challengemoveCount.setText("    도전 이동 수: ");
 				
 				mec.ci.initialize();
 				for(int i = 0; i<3; i++) {
-					searchTimeArray[i] = 0;
-					searchMoveArray[i] = 0;
-					searchCount[i].setText("");
-					searchTime[i].setText("");
-					searchMoveCount[i].setText("");
-					totalSearch[i].setText("");
-					totalSearchTime = 0;
-					totalMoveCount = 0;
-					totalSearchCount = 0;
+					searchCount[i].setText("탐색 횟수:          ");
+					searchTime[i].setText("시간:  ms         ");
+					searchMoveCount[i].setText("이동수:          ");
+					totalSearchC.setText("총 탐색 횟수: ");
+					totalSearchT.setText("총 시간: ");
+					totalSearchM.setText("총 이동수: ");
 				}
 				revalidate();
 				repaint();
@@ -186,6 +179,9 @@ public class ChallengeModeGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(mec.ci.getSearchCount()>=3) {
+					return;
+				}
 				ModeThread smt = new ModeThread(mec.maze, mec.mouse);
 				smt.tt.setTime(5000);
 				ModeContainer smc = smt.runMode();
@@ -209,32 +205,21 @@ public class ChallengeModeGUI extends JFrame {
 				System.out.println("Total Search : " + smc.getTotalSearch());
 				System.out.println("Total ElapsedTime : " + smc.getElapsedTime());
 				
-				if(totalSearchCount<3) {
-					searchMoveArray[totalSearchCount] =  smc.getTotalMove();
-					searchTimeArray[totalSearchCount] = smc.getElapsedTime();
-					totalSearchCount += 1;
-					
-				} else {
-					
-					searchMoveArray[0] = searchMoveArray[1];
-					searchMoveArray[1] = searchMoveArray[2];
-					searchTimeArray[0] = searchTimeArray[1];
-					searchTimeArray[1] = searchTimeArray[2];
-					searchMoveArray[2] = smc.getTotalMove();
-					searchTimeArray [2] = smc.getElapsedTime();
-				}
 				// label에 표시하도록
+				
+				mec.ci.setSearchTime((long)smc.getElapsedTime());
+				mec.ci.setSearchMove((int)smc.getTotalMove());
+				mec.ci.setTotalSearchMove(mec.ci.getTotalSearchMove()+(int)smc.getTotalMove());
+				long time = mec.ci.getTotalSearchTime();
+				mec.ci.setTotalSearchTime(time+(long)smc.getElapsedTime());
+				searchCount[mec.ci.getSearchCount()].setText("탐색 횟수: "+ (mec.ci.getSearchCount()+1) +"         ");
+				searchTime[mec.ci.getSearchCount()].setText("시간: " + mec.ci.getSearchTime()+ " ms         ");
+				searchMoveCount[mec.ci.getSearchCount()].setText("이동수: " + mec.ci.getSearchMove() +"         ");
 
-				for(int i = 0; i< 3; i++) {
-					searchCount[i].setText("탐색 횟수: "+ (i+1) +"         ");
-					searchTime[i].setText("시간: " + searchTimeArray[i]+ " ms         ");
-					searchMoveCount[i].setText("이동수: " + searchMoveArray[i]+"         ");
-				}
-				totalMoveCount += smc.getTotalMove();
-				totalSearchTime += smc.getElapsedTime();
-				totalSearch[0].setText("총 탐색 횟수: " + totalSearchCount);
-				totalSearch[1].setText("총 시간: " + totalSearchTime);
-				totalSearch[2].setText("총 이동수: " + totalMoveCount);
+				totalSearchC.setText("총 탐색 횟수: " + (mec.ci.getSearchCount()+1));
+				totalSearchT.setText("총 시간: " + mec.ci.getTotalSearchTime());
+				totalSearchM.setText("총 이동수: " + mec.ci.getTotalSearchMove());
+				mec.ci.setSearchCount(mec.ci.getSearchCount()+1);
 
 				
 			}
@@ -265,8 +250,9 @@ public class ChallengeModeGUI extends JFrame {
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
 				}
-				
-				challengeTime.setText("    도전 시간: " + cmc.getElapsedTime()+ " ms");
+				mec.ci.setChallengeMove((int)cmc.getTotalMove());
+				mec.ci.setChallengeTime((int)cmc.getElapsedTime());
+				challengeTime.setText("    도전 시간: " + (int)cmc.getElapsedTime()+ " ms");
 				challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
 				
 				
@@ -276,12 +262,9 @@ public class ChallengeModeGUI extends JFrame {
 			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
 		});
-		totalSearchTime = 0;
-		totalMoveCount = 0;
-		totalSearchCount = 0;
-		searchTimeArray = new long[3];
-		searchMoveArray = new long[3];
-		totalSearch = new JLabel[3];
+		totalSearchC = new JLabel("총 탐색 횟수: ");
+		totalSearchT = new JLabel("총 시간: ");
+		totalSearchM = new JLabel("총 이동수: ");
 		lbFileName = new JLabel("    맵 이름 : " + mec.mapName + "    ");
 		lbMouseName = new JLabel("    마우스 이름 : " + mec.mouseClassName + "    ");
 
@@ -305,9 +288,9 @@ public class ChallengeModeGUI extends JFrame {
 		infoPanel.add(btnSearch);
 		infoPanel.add(btnChallenge);
 		infoPanel.add(btnShowRanking);
-		challengeResult = new JLabel("");
-		challengeTime = new JLabel("");
-		challengemoveCount = new JLabel("");
+		challengeResult = new JLabel("    도전 결과");
+		challengeTime = new JLabel("    도전 시간: ms");
+		challengemoveCount = new JLabel("    도전 이동 수: ");
 		searchCount = new JLabel[3];
 		searchMoveCount = new JLabel[3];
 		searchTime = new JLabel[3];
@@ -315,10 +298,9 @@ public class ChallengeModeGUI extends JFrame {
 		infoPanel2.add(challengeTime);
 		infoPanel2.add(challengemoveCount);
 		for(int i = 0; i<3; i++) {
-			searchCount[i] = new JLabel("");
-			searchTime[i] = new JLabel("");
-			searchMoveCount[i] = new JLabel("");
-			totalSearch[i] = new JLabel("");
+			searchCount[i] = new JLabel("탐색 횟수:          ");
+			searchTime[i] = new JLabel("시간:  ms         ");
+			searchMoveCount[i] = new JLabel("이동수:          ");
 			search1.add(searchCount[i]);
 			search2.add(searchTime[i]);
 			search3.add(searchMoveCount[i]);
@@ -326,9 +308,9 @@ public class ChallengeModeGUI extends JFrame {
 		infoPanel3.add(search1);
 		infoPanel3.add(search2);
 		infoPanel3.add(search3);
-		search1.add(totalSearch[0]);
-		search2.add(totalSearch[1]);
-		search3.add(totalSearch[2]);
+		search1.add(totalSearchC);
+		search2.add(totalSearchT);
+		search3.add(totalSearchM);
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mapPanel, "North");

@@ -129,12 +129,12 @@ public class ChallengeInfo {
 		this.searchCount = searchCount;
 	}
 
-	public void setSearchTime(long[] searchTime) {
-		this.searchTime = searchTime;
+	public void setSearchTime(long searchTime) {
+		this.searchTime[searchCount] = searchTime;
 	}
 
-	public void setSearchMove(int[] searchMove) {
-		this.searchMove = searchMove;
+	public void setSearchMove(int searchMove) {
+		this.searchMove[searchCount] = searchMove;
 	}
 
 	public void setTotalSearchTime(long totalSearchTime) {
