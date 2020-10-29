@@ -259,7 +259,7 @@ public class ChallengeModeGUI extends JFrame {
 				
 				
 				// cmLog 넣는 부분
-				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)totalSearchTime,(int)totalSearchCount, (int)totalMoveCount,(int)cmc.getElapsedTime(), (int)cmc.getTotalMove());;
+				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)mec.ci.getChallengeTime(),(int)mec.ci.getSearchCount(), (int)mec.ci.getTotalSearchMove(),(int)cmc.getElapsedTime(), (int)cmc.getTotalMove());;
 			 }
 			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
