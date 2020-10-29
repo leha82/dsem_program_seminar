@@ -246,6 +246,7 @@ public class ChallengeModeGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				LogManager log =new LogManager();
 				// 도전한 것이 없는 경우
+				
 				if(!log.checkChallengeLog(mec.mouseClassName, mec.mapName)) {
 				ModeThread cmt = new ModeThread(mec.maze, mec.mouse);
 				cmt.tt.setTime(180000);
@@ -253,6 +254,7 @@ public class ChallengeModeGUI extends JFrame {
 				try {
 					int prev_x = cmt.getCurr_x();
 					int prev_y = cmt.getCurr_y();
+					
 					while (cmt.isAlive()) {
 						mec.curr_x = cmt.getCurr_x();
 						mec.curr_y = cmt.getCurr_y();
@@ -271,7 +273,7 @@ public class ChallengeModeGUI extends JFrame {
 				
 				
 				// cmLog 넣는 부분
-				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)cmc.getElapsedTime(),(int)cmc.getTotalMove());;
+				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)totalSearchTime,(int)totalSearchCount, (int)totalMoveCount,(int)cmc.getElapsedTime(), (int)cmc.getTotalMove());;
 			 }
 			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
