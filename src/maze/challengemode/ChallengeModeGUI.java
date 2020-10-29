@@ -244,6 +244,9 @@ public class ChallengeModeGUI extends JFrame {
 		btnChallenge.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				LogManager log =new LogManager();
+				// 도전한 것이 없는 경우
+				if(!log.checkChallengeLog(mec.mouseClassName, mec.mapName)) {
 				ModeThread cmt = new ModeThread(mec.maze, mec.mouse);
 				cmt.tt.setTime(180000);
 				ModeContainer cmc = cmt.runMode();
@@ -267,8 +270,10 @@ public class ChallengeModeGUI extends JFrame {
 				challengemoveCount.setText("    도전 이동 수: " + cmc.getTotalMove());
 				
 				
-				// rank 에 넣도록
-				mec.putLog();
+				// cmLog 넣는 부분
+				log.putChallengeLog(mec.mouseClassName,mec.mapName,(int)cmc.getElapsedTime(),(int)cmc.getTotalMove());;
+			 }
+			 // 도전로그에 이미 도전한 이력이 있으면 안 될 경우 만들기
 			}
 		});
 		totalSearchTime = 0;

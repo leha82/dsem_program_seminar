@@ -45,6 +45,7 @@ public class ModeThread extends Thread {
 				break;
 			} else if (!pt.isAlive()) {
 				System.out.println("종료");
+				tt.finish();
 				mc.addTotalSearch();
 				break;
 			}
@@ -104,27 +105,10 @@ public class ModeThread extends Thread {
 				}
 
 				count++;
-				// this.setWindow(prev_x, prev_y, map); // 나중에 실시간으로 보여줄때 필요
 				prev_x = curr_x;
 				prev_y = curr_y;
 
 				if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-					// 성공 할 시 머할지 상의해서 할 것
-					/*
-					 * JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count); //
-					 * maze.storeMapToDB(mapName, map); // 랭킹 업로드 메소드 LogManager log = new
-					 * LogManager(); int mincount = log.getMinCount(mouseClassName, mapName);
-					 * System.out.println(mincount);
-					 * 
-					 * if (count < mincount || mincount <= 0) { System.out.println("putlog:" +
-					 * mouseClassName + " / " + mapName + " / " + count); ArrayList<LogRank>
-					 * rankList = log.getRankingList(mapName);
-					 * 
-					 * for (int k = 0; k < rankList.size(); k++) { LogRank lr = rankList.get(k); if
-					 * (lr.getMouse().contains(mouseClassName)) { log.deleteLog(lr.getId()); } }
-					 * 
-					 * log.putLog(mouseClassName, mapName, count); }
-					 */
 					finished = true;
 					flag = true;
 				}
@@ -172,21 +156,11 @@ public class ModeThread extends Thread {
 			mc.start();
 			
 			long t = mc.check();
-			while (true) {
-				//				try {
+			while (!flag) {
 				t = mc.check();
-				
 				if (t > LimitTime) {
-					break;
+					flag=true;
 				}
-				//					sleep(10);
-				if (flag == true) {
-					mc.check();
-					break;
-				}
-				//				} catch (InterruptedException e) {
-				//					e.printStackTrace();
-				//				}
 			}
 		}
 	}
