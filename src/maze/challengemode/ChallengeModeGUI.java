@@ -367,7 +367,8 @@ public class ChallengeModeGUI extends JFrame {
 
 			lbFileName.setText("    맵 이름 : " + mec.mapName + "    ");
 			lbMouseName.setText("    마우스 이름 : " + mec.mouseClassName + "    ");
-
+			
+			
 			revalidate();
 			repaint();
 //         initWindow();
@@ -439,7 +440,18 @@ public class ChallengeModeGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			mec.mapName = e.getActionCommand();
 			// Todo : mapName을 DB로부터 받아와서 maze에 저장될 수 있도록 한다.
-			mec.loadMap();
+			mec.loadMap();mec.ci.initialize();
+			challengeResult.setText("    도전 결과");
+			challengeTime.setText("    도전 시간: ms");
+			challengemoveCount.setText("    도전 이동 수: ");
+			for(int i = 0; i<3; i++) {
+				searchCount[i].setText("탐색 횟수:          ");
+				searchTime[i].setText("시간:  ms         ");
+				searchMoveCount[i].setText("이동수:          ");
+				totalSearchC.setText("총 탐색 횟수: ");
+				totalSearchT.setText("총 시간: ");
+				totalSearchM.setText("총 이동수: ");
+			}
 			int[][] map = mec.maze.getMap();
 			changeImageSize(map);
 
