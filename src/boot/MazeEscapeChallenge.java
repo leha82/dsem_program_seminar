@@ -1,4 +1,5 @@
 package boot;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -14,7 +15,6 @@ public class MazeEscapeChallenge {
 	
 	public String mouseClassName;
 	public String mapName;
-	public int count;
 	public Maze maze;
 	public ArrayList<String> miceList;
 	public ArrayList<String> mapList;
@@ -26,8 +26,6 @@ public class MazeEscapeChallenge {
 	
 	public ChallengeInfo ci;
 	
-	public boolean finished;
-	
 	public MazeEscapeChallenge() {
 		// TODO Auto-generated constructor stub
 		this.mouseClassName = defaultMouse;
@@ -35,6 +33,10 @@ public class MazeEscapeChallenge {
 		this.ci = new ChallengeInfo();
 	}
 	
+	public void initChallengeInfo() {
+		this.ci.initialize();
+		this.ci.setLimitSearchMove(this.maze.getHeight()*this.maze.getWidth()/3);
+	}
 
 	public void loadMapList() {
 		// Todo : DB로부터 Map List를 받아 this.mapList로 만든다.
@@ -48,11 +50,15 @@ public class MazeEscapeChallenge {
 		this.maze.loadMapFromDB(mapName);
 		initMap();
 	}
-
+	
+	public void loadMap(String mapName) {
+		this.mapName = mapName;
+		this.maze = new Maze();
+		this.maze.loadMapFromDB(mapName);
+		initMap();
+	}
 	
 	public void initMap() {
-//		this.start_x = 0;
-//		this.start_y = 0;
 		this.start_x = maze.getStart_x();
 		this.start_y = maze.getStart_y();
 		this.esc_x = maze.getEsc_x();
@@ -61,16 +67,8 @@ public class MazeEscapeChallenge {
 		this.curr_x = this.start_x;
 		this.curr_y = this.start_y;
 
-		this.count = 0;
-		this.finished = false;
-		
-//		if (mouse != null) {
-//			mouse.setEscapePoint(esc_x, esc_y);
-//			mouse.printMouseInfo();
-//		}
-		
-		this.ci.initialize();
-		this.ci.setSearchMoveCount(this.maze.getHeight()*this.maze.getWidth()/3);
+//		this.ci.initialize();
+//		this.ci.setLimitSearchMove(this.maze.getHeight()*this.maze.getWidth()/3);
 
 	}
 
@@ -99,13 +97,11 @@ public class MazeEscapeChallenge {
 			Object obj = cls.newInstance();
 
 			mouse = (MouseChallenge) obj;
-//			mouse.setEscapePoint(esc_x, esc_y);
 			
 			mouse.printClassName();
-//			mouse.printMouseInfo();
-			// setWindow(curr_x, curr_y, map);
+
 			this.ci.initialize();
-			this.ci.setSearchMoveCount(this.maze.getHeight()*this.maze.getWidth()/3);
+			this.ci.setLimitSearchMove(this.maze.getHeight()*this.maze.getWidth()/3);
 		} catch (Exception e1) {
 			System.out.println("Error: " + e1.getMessage());
 			e1.printStackTrace();
@@ -114,7 +110,7 @@ public class MazeEscapeChallenge {
 	
 	public void putLog() {
 		LogManager log = new LogManager();
-		System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
+		System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + ci.getChallengeMove());
 		ArrayList<LogRank> rankList = log.getRankingList(mapName);
 
 		//ci를 활용하여 log 생성
@@ -127,63 +123,83 @@ public class MazeEscapeChallenge {
 //
 //		log.putLog(mouseClassName, mapName, count);
 	}
+
+	public void putLog2() {
+		LogManager log = new LogManager();
+		System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + ci.getChallengeMove());
+
+		// 완료되면 주석 풀 것
+//		log.putChallengeLog(this.mouseClassName, this.mapName, (int) ci.getChallengeTime(),
+//				(int) ci.getSearchCount(), (int) ci.getTotalSearchMove(),
+//				(int) ci.getChallengeTime(), (int) ci.getChallengeMove());
+	}
 	
-//	public void play(int move) {
-//		int[][] map = maze.getMap();
-////		int prev_x = curr_x;
-////		int prev_y = curr_y;
-//
-//		int i = 0;
-//		while (!finished && (i < move || move == -1)) {
-//			int dir = mouse.nextMove(curr_x, curr_y, maze.getArea(curr_x, curr_y));
-//
-//			if (dir == 1 && curr_y > 0) {
-//				if (map[curr_y - 1][curr_x] == 0)
-//					curr_y--;
-//			} else if (dir == 2 && curr_x < maze.getWidth() - 1) {
-//				if (map[curr_y][curr_x + 1] == 0)
-//					curr_x++;
-//			} else if (dir == 3 && curr_y < maze.getHeight() - 1) {
-//				if (map[curr_y + 1][curr_x] == 0)
-//					curr_y++;
-//			} else if (dir == 4 && curr_x > 0) {
-//				if (map[curr_y][curr_x - 1] == 0)
-//					curr_x--;
-//			}
-//
+	
+	public void readySearch() {
+//		count = 0;
+		
+		curr_x = start_x;
+		curr_y = start_y;
+		
+		ci.addSearchCount();
+	}
+	
+	public boolean playSearch(int move) {
+		int[][] map = maze.getMap();
+
+		for (int i=0; i<move; i++) {
+			int dir = mouse.nextSearch(maze.getArea(curr_x, curr_y));
+
+			if (dir == 1 && curr_y > 0) {
+				if (map[curr_y - 1][curr_x] == 0) curr_y--;
+			} else if (dir == 2 && curr_x < maze.getWidth() - 1) {
+				if (map[curr_y][curr_x + 1] == 0) curr_x++;
+			} else if (dir == 3 && curr_y < maze.getHeight() - 1) {
+				if (map[curr_y + 1][curr_x] == 0) curr_y++;
+			} else if (dir == 4 && curr_x > 0) {
+				if (map[curr_y][curr_x - 1] == 0) curr_x--;
+			} else if (dir == -1) {
+				return false;
+			}
+
 //			count++;
-////			this.setWindow(prev_x, prev_y, map);
-////			prev_x = curr_x;
-////			prev_y = curr_y;
-////
-////			if ((curr_x == this.esc_x) && (curr_y == this.esc_y)) {
-////				JOptionPane.showMessageDialog(null, "탈출에 성공했습니다. 총 이동 횟수 : " + count);
-////				// maze.storeMapToDB(mapName, map);
-////				// 랭킹 업로드 메소드
-////				LogManager log = new LogManager();
-////				int mincount = log.getMinCount(mouseClassName, mapName);
-////				System.out.println(mincount);
-////
-////				if (count < mincount || mincount <= 0) {
-////					System.out.println("putlog:" + mouseClassName + " / " + mapName + " / " + count);
-////					ArrayList<LogRank> rankList = log.getRankingList(mapName);
-////
-////					for (int k = 0; k < rankList.size(); k++) {
-////						LogRank lr = rankList.get(k);
-////						if (lr.getMouse().contains(mouseClassName)) {
-////							log.deleteLog(lr.getId());
-////						}
-////					}
-////
-////					log.putLog(mouseClassName, mapName, count);
-////				}
-////				finished = true;
-////
-////			}
-//			i++;
-//		}
-//
-//	}
+			ci.addOneSearchMove();
+		}
+		
+		return true;
+	}
+	
+	
+	public boolean isMouseGoal() {
+		if (curr_x == esc_x && curr_y == esc_y) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean playChallenge(int move) {
+		int[][] map = maze.getMap();
+
+		for (int i=0; i<move; i++) {
+			int dir = mouse.nextMove(maze.getArea(curr_x, curr_y));
+
+			if (dir == 1 && curr_y > 0) {
+				if (map[curr_y - 1][curr_x] == 0) curr_y--;
+			} else if (dir == 2 && curr_x < maze.getWidth() - 1) {
+				if (map[curr_y][curr_x + 1] == 0) curr_x++;
+			} else if (dir == 3 && curr_y < maze.getHeight() - 1) {
+				if (map[curr_y + 1][curr_x] == 0) curr_y++;
+			} else if (dir == 4 && curr_x > 0) {
+				if (map[curr_y][curr_x - 1] == 0) curr_x--;
+			}
+
+//			count++;
+			ci.addOneChallengeMove();
+		}
+		
+		return true;
+	}
 	
 	public static void main(String[] args) {
 		MazeEscapeChallenge mec = new MazeEscapeChallenge();

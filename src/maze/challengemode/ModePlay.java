@@ -7,21 +7,32 @@ import javax.swing.JOptionPane;
 import boot.MouseChallenge;
 import maze.challengemode.*;
 
-public class ModeThread extends Thread {
+public class ModePlay {
 	private ModeContainer mc;
-	public PlayThread pt;
-	public TimeThread tt; 
+	private Maze maze;
+	private MouseChallenge mouse;
+	private ChallengeInfo ci;
+	
+	public ModePlayThread pt;
+	public ModeTimeThread mtt; 
+	public TimeThread tt;
+	
+	private boolean playingNow = false;
 
-	public ModeThread() {
+	public ModePlay() {
 		this.mc = new ModeContainer();
-		//		this.spt = new SearchPlayThread(maze, mouse);// , mc);
-		//		this.stt = new SearchTimeThread();// mc);
 	}
 
-	public ModeThread(Maze maze, MouseChallenge mouse, int mode, int searchCount) {
+	public ModePlay(Maze maze, MouseChallenge mouse, ChallengeInfo ci, int mode) {
+		this.maze = maze;
+		this.mouse = mouse;
+		this.mouse.initMouse();
+		this.ci = ci;
+		
 		this.mc = new ModeContainer();
-		this.pt = new PlayThread(maze, mouse, mode, searchCount);// , mc);
-		this.tt = new TimeThread();// mc);
+		this.pt = new ModePlayThread(maze.getMap(), maze.getStart_x(), maze.getStart_y(), maze.getEsc_x(), maze.getEsc_y(), mode);
+		this.mtt = new ModeTimeThread();
+		this.tt = new TimeThread(3000);
 	}
 	
 	public int getCurr_x() {
@@ -32,53 +43,55 @@ public class ModeThread extends Thread {
 		return pt.curr_y;
 	}
 	
+	public boolean isPlaying() {
+		return this.playingNow;
+	}
+	
 	public ModeContainer runMode() {
 		//		ModeContatiner mc = new ModeContatiner();
 
 		pt.start();
-		tt.start();
-		while (true) {
-			if (!tt.isAlive()) {
+		mtt.start();
+		playingNow = true;
+		while (playingNow) {
+			
+//			if (!tt.isAlive()) {
+			if (!tt.isPlaying()) {
 				pt.timeover();
 				mc.addTotalSearch();
 				System.out.println("시간초과");
-				break;
+				this.playingNow = false;
 			} else if (!pt.isAlive()) {
 				System.out.println("종료");
+				mtt.finish();
 				tt.finish();
 				mc.addTotalSearch();
-				break;
+				this.playingNow = false;
 			}
 		}
 		return mc;
 	}
 	
-	class PlayThread extends Thread {
-		private MouseChallenge mouse; // mouse객체
+	class ModePlayThread extends Thread {
+		private int[][] map; 
 		private int start_x, start_y; // 시작 점
-		public int curr_x, curr_y; // 현 위치
+		private int curr_x, curr_y; // 현 위치
 		private int esc_x, esc_y; // 탈출 좌표
-		private Maze maze; // maze 객체
 		private int count; // 몇번 갔는지 확인하는 변수
 		private boolean finished; // 도착해쓴지 확인하는 변수
 		private boolean flag; // 쓰래드 종류하기 위한 변수
 		private int mode; // 0: 탐색 모드, 1: 도전 모드
-		private int searchCount; // 탐색 모드의 이동 수 제한
-		// private ModeContatiner mc;
 
-		public PlayThread(Maze maze, MouseChallenge mouse, int mode, int searchCount) {// , ModeContatiner mc) {
-			this.maze = maze;
-			this.mouse = mouse;
-			//		this.mc = mc;
-			this.start_x = maze.getStart_x();
-			this.start_y = maze.getStart_y();
-			this.esc_x = maze.getEsc_x();
-			this.esc_y = maze.getEsc_y();
+		public ModePlayThread(int map[][], int start_x, int start_y, int esc_x, int esc_y, int mode) {
+			this.map = map;
+			this.start_x = start_x;
+			this.start_y = start_y;
+			this.esc_x = esc_x;
+			this.esc_y = esc_y;
 			this.mode = mode;
-			this.searchCount = searchCount;
 			
-			count = 0;
-			finished = false;
+			this.count = 0;
+			this.finished = false;
 		}
 
 		// 탐색모드일때 mouse.nextSearch가 -1이면 탐색 종료
@@ -86,13 +99,18 @@ public class ModeThread extends Thread {
 		
 		// 도전 모드일때 mouse가 goal까지 가면 종료
 		public void play(int move) {
-			int[][] map = maze.getMap();
 			int prev_x = curr_x;
 			int prev_y = curr_y;
 
 			int i = 0;
 			while (!finished && (i < move || move == -1)) {
-				int dir = mouse.nextMove(maze.getArea(curr_x, curr_y));
+				int dir=0;
+				
+				if (mode == 0) {
+					dir = mouse.nextMove(maze.getArea(curr_x, curr_y));
+				} else if (mode == 1) {
+					dir = mouse.nextSearch(maze.getArea(curr_x, curr_y));
+				}
 
 				if (dir == 1 && curr_y > 0) {
 					if (map[curr_y - 1][curr_x] == 0)
@@ -112,16 +130,15 @@ public class ModeThread extends Thread {
 				prev_x = curr_x;
 				prev_y = curr_y;
 
-				if ((curr_x == this.esc_x) && (curr_y == this.esc_y) && mode == 1) {
+				if (mode == 0 && (count >= ci.getLimitSearchMove() || dir == -1)) {
 					finished = true;
 					flag = true;
 				}
 				
-				if (count >= searchCount && mode == 0) {
+				if (mode == 1 && (curr_x == this.esc_x) && (curr_y == this.esc_y)) {
 					finished = true;
 					flag = true;
 				}
-				
 				
 				i++;
 			}
@@ -143,13 +160,13 @@ public class ModeThread extends Thread {
 		}
 	}
 
-	class TimeThread extends Thread {
+	class ModeTimeThread extends Thread {
 		//		private ModeContatiner mc;
 		private boolean flag = false;
-		private int LimitTime;
+		private int limitTime;
 
-		public TimeThread() {
-			LimitTime=0;
+		public ModeTimeThread() {
+			this.limitTime=0;
 		}
 
 		//		public SearchTimeThread(ModeContatiner mc) {
@@ -157,20 +174,20 @@ public class ModeThread extends Thread {
 		//		}
 
 		public void finish() {
-			flag = true;
+			this.flag = true;
 		}
 		public void setTime(int time) {
-			LimitTime=time;
+			this.limitTime=time;
 		}
 
 		public void run() {
 			mc.start();
 			
 			long t = mc.check();
-			while (!flag) {
+			while (!this.flag) {
 				t = mc.check();
-				if (t > LimitTime) {
-					flag=true;
+				if (t > this.limitTime) {
+					this.flag=true;
 				}
 			}
 		}

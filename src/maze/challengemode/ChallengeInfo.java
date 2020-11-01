@@ -1,13 +1,13 @@
 package maze.challengemode;
 
 public class ChallengeInfo {
-//	private long elapsedTime; // 경과된 시간
-//	private long startTime; // 시작 시간
-////	private int totalSearch;
-////	private long totalMove;
+	private int limitSearchCount;
+	private int limitSearchMove;
+	private int limitSearchTime;
+	private int limitChallengeTime;
 	
-	private int totalSearchCount;
-	private int searchMoveCount;
+	private int delaySearch;
+	private int delayChallenge;
 
 	private int searchCount;
 	private long searchTime[];
@@ -15,100 +15,151 @@ public class ChallengeInfo {
 
 	private long totalSearchTime;
 	private int totalSearchMove;
-
 	
 	private long challengeTime;
 	private int challengeMove;
+	private boolean challengeDone;
 	
 	
 	// 선언 및 초기화
 	public ChallengeInfo() {
-		this.totalSearchCount = 3;
-		this.searchMoveCount = 30;
+		this.limitSearchCount = 3;
+		this.limitSearchMove = 30;
+		this.limitSearchTime = 5000;
+		this.limitChallengeTime = 5000;
+		this.delaySearch = 1;
+		this.delayChallenge = 1;
+
 		this.initialize();
 	}
 	
 	public void initialize() {
-//		this.elapsedTime = 0;
-//		this.startTime = 0;
-		
-		this.searchCount = 0;
-		this.searchTime = new long[totalSearchCount];
-		this.searchMove = new int[totalSearchCount];
+		this.searchCount = -1;
+		this.searchTime = new long[limitSearchCount];
+		this.searchMove = new int[limitSearchCount];
 		
 		this.totalSearchTime = 0;
 		this.totalSearchMove = 0;
 		
 		this.challengeTime = 0;
 		this.challengeMove = 0;
+		
+		this.challengeDone = false;
 	}
 
-//	// 초기화
-//	public void init_time() {
-//		elapsedTime = 0;
-//	}
-//
-//	// 세팅
-//	public void start() {
-//		startTime = System.currentTimeMillis();
-//	}
+	public void calculateTotalSearch() {
+		this.totalSearchTime = 0;
+		this.totalSearchMove = 0;
+		
+		for (int i=0; i<=searchCount; i++) {
+			this.totalSearchTime += this.searchTime[i];
+			this.totalSearchMove += this.searchMove[i];
+		}
+	}
+	
+	public void addSearchCount() {
+		searchCount++;
+	}
+	
+	public void addOneSearchMove() {
+		searchMove[searchCount]++;
+	}
+	
+	public void addOneChallengeMove() {
+		challengeDone = true;
+		challengeMove++;
+	}
+		
+	public boolean isChallengeDone() {
+		return this.challengeDone;
+	}
+		
+	public int getLimitSearchCount() {
+		return limitSearchCount;
+	}
 
-//	public void addSearchCount() {
-//		searchCount++;
-//	}
-//
-//	public void addSearchMove() {
-//		searchMove[searchCount]++;
-//		totalSearchMove++;
-//	}
-//
-//	// 경과된 시간 구하기
-//	public long check() {
-////	synchronized public long check() {
-//		elapsedTime = System.currentTimeMillis() - startTime;
-//		searchTime[searchCount] = elapsedTime;
-//		
-//		return elapsedTime;
-//	}
-//
-//	public long getElapsedTime() {
-//		return elapsedTime;
-//	}
+	public void setLimitSearchCount(int limitSearchCount) {
+		this.limitSearchCount = limitSearchCount;
+	}
+
+	public int getLimitSearchMove() {
+		return limitSearchMove;
+	}
+
+	public void setLimitSearchMove(int limitSearchMove) {
+		this.limitSearchMove = limitSearchMove;
+	}
+
+	public int getLimitSearchTime() {
+		return limitSearchTime;
+	}
+
+	public void setLimitSearchTime(int limitSearchTime) {
+		this.limitSearchTime = limitSearchTime;
+	}
+
+	public int getLimitChallengeTime() {
+		return limitChallengeTime;
+	}
+
+	public void setLimitChallengeTime(int limitChallengeTime) {
+		this.limitChallengeTime = limitChallengeTime;
+	}
 
 	public int getSearchCount() {
 		return searchCount;
 	}
 
-	public int getSearchMove() {
+	public void setSearchCount(int searchCount) {
+		this.searchCount = searchCount;
+	}
+
+	public long[] getSearchTime() {
+		return searchTime;
+	}
+	
+	public long getLastSearchTime() {
+		return searchTime[searchCount];
+	}
+
+	public void setLastSearchTime(long time) {
+		this.searchTime[searchCount] = time;
+	}
+	
+	public void setSearchTime(long[] searchTime) {
+		this.searchTime = searchTime;
+	}
+
+	public int[] getSearchMove() {
+		return searchMove;
+	}
+
+	public int getLastSearchMove() {
 		return searchMove[searchCount];
 	}
 	
-	public int getTotalSearchMove( ) {
-		return totalSearchMove;
+	public void setLastSearchMove(int move) {
+		this.searchMove[searchCount] = move;
 	}
 	
-	public long getSearchTime() {
-		return searchTime[searchCount];
+	public void setSearchMove(int[] searchMove) {
+		this.searchMove = searchMove;
 	}
-	
-	public long getSearchTime(int index) {
-		return searchTime[index];
-	}
- 
+
 	public long getTotalSearchTime() {
-		for (int i=0; i<=searchCount; i++) {
-			totalSearchTime += searchTime[i];
-		}
-		
 		return totalSearchTime;
 	}
 
-	public int getTotalSearchCount() {
-		return totalSearchCount;
+	public void setTotalSearchTime(long totalSearchTime) {
+		this.totalSearchTime = totalSearchTime;
 	}
 
-	public void setTotalSearchCount(int totalSearchCount) {
-		this.totalSearchCount = totalSearchCount;
+	public int getTotalSearchMove() {
+		return totalSearchMove;
+	}
+
+	public void setTotalSearchMove(int totalSearchMove) {
+		this.totalSearchMove = totalSearchMove;
 	}
 
 	public long getChallengeTime() {
@@ -127,31 +178,20 @@ public class ChallengeInfo {
 		this.challengeMove = challengeMove;
 	}
 
-	public void setSearchCount(int searchCount) {
-		this.searchCount = searchCount;
+	public int getDelaySearch() {
+		return delaySearch;
 	}
 
-	public void setSearchTime(long searchTime) {
-		this.searchTime[searchCount] = searchTime;
+	public void setDelaySearch(int delaySearch) {
+		this.delaySearch = delaySearch;
 	}
 
-	public void setSearchMove(int searchMove) {
-		this.searchMove[searchCount] = searchMove;
+	public int getDelayChallenge() {
+		return delayChallenge;
 	}
 
-	public void setTotalSearchTime(long totalSearchTime) {
-		this.totalSearchTime = totalSearchTime;
+	public void setDelayChallenge(int delayChallenge) {
+		this.delayChallenge = delayChallenge;
 	}
 
-	public void setTotalSearchMove(int totalSearchMove) {
-		this.totalSearchMove = totalSearchMove;
-	}
-
-	public int getSearchMoveCount() {
-		return searchMoveCount;
-	}
-
-	public void setSearchMoveCount(int searchMoveCount) {
-		this.searchMoveCount = searchMoveCount;
-	}
 }
