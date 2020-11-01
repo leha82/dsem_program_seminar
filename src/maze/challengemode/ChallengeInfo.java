@@ -8,6 +8,7 @@ public class ChallengeInfo {
 	
 	private int delaySearch;
 	private int delayChallenge;
+	private int delayShow;
 
 	private int searchCount;
 	private long searchTime[];
@@ -29,6 +30,7 @@ public class ChallengeInfo {
 		this.limitChallengeTime = 5000;
 		this.delaySearch = 1;
 		this.delayChallenge = 1;
+		this.delayShow = 10;
 
 		this.initialize();
 	}
@@ -192,6 +194,14 @@ public class ChallengeInfo {
 
 	public void setDelayChallenge(int delayChallenge) {
 		this.delayChallenge = delayChallenge;
+	}
+
+	public int getDelayShow() {
+		return delayShow;
+	}
+
+	public void setDelayShow(int delayShow) {
+		this.delayShow = delayShow;
 	}
 
 }

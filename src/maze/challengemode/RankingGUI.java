@@ -10,9 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import boot.*;
 
 public class RankingGUI extends JFrame {
-	MazeEscapeChallenge mec;
+	BaseModule mec;
 	
-	public RankingGUI(MazeEscapeChallenge mec) {
+	public RankingGUI(BaseModule mec) {
 		this.mec = mec;
 	}
 	
