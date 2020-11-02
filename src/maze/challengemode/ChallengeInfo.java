@@ -26,8 +26,8 @@ public class ChallengeInfo {
 	public ChallengeInfo() {
 		this.limitSearchCount = 3;
 		this.limitSearchMove = 30;
-		this.limitSearchTime = 5000;
-		this.limitChallengeTime = 5000;
+		this.limitSearchTime = 60000;
+		this.limitChallengeTime = 60000;
 		this.delaySearch = 1;
 		this.delayChallenge = 1;
 		this.delayShow = 10;
