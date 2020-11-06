@@ -19,6 +19,10 @@ public abstract class MouseChallenge {
 		this.moved = true;
 	}
 	
+	public boolean isMoved() {
+		return this.moved;
+	}
+	
 	// smap의 구성
 	// 현재 위치 smap의 가운데 (smap이 3x3 일 경우 smap[1][1]에 mouse위치
 	// smap[y][x]의 값 0: 길, 1: 벽,  

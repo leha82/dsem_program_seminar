@@ -7,6 +7,7 @@ public class PlayThread extends Thread {
 	private MouseChallenge mouse;
 	private ChallengeInfo ci;
 	private int mode;
+	private int moveCount;
 	private boolean playing;
 	private int[][] map;
 	private int curr_x, curr_y;
@@ -17,6 +18,7 @@ public class PlayThread extends Thread {
 		this.mouse = bm.mouse;
 		this.ci = ci;
 		this.mode = mode;
+		this.moveCount = 0;
 		this.playing = true;
 
 		this.map = bm.getMap();
@@ -24,10 +26,10 @@ public class PlayThread extends Thread {
 		curr_y = bm.getStart_y();
 
 		this.mouse.initMouse();
-		
+
 		ci.addSearchCount();
 	}
-
+	
 	private void moveMouse(int[][] map, int dir) {
 		if (dir == 1 && curr_y > 0) {
 			if (map[curr_y - 1][curr_x] == 0)
@@ -48,45 +50,63 @@ public class PlayThread extends Thread {
 	public void run() {
 		int dir = 0;
 		try {
-			while (playing) {
-				// search mode에서 play
-				if (mode == 0) {
+			// search mode에서 play
+			if (mode == 0) {
+				while (playing && (ci.getLastSearchMove() < ci.getLimitSearchMove())) {
+
 					dir = mouse.nextSearch(maze.getArea(curr_x, curr_y));
-					if (dir == -1) {
-						playing = false;
+					if (dir == -1)
 						break;
-					}
 
 					this.moveMouse(maze.getMap(), dir);
-
 					ci.addOneSearchMove();
 
-					if (ci.getLastSearchMove() >= ci.getLimitSearchMove()) {
-						playing = false;
-						break;
-					}
 					sleep(ci.getDelaySearch());
-				} else if (mode == 1) {
-					// challenge mode에서 Play
+				}
+				
+			// challenge mode에서 Play
+			} else if (mode == 1) {
+				while (playing && !isMouseGoal()) {
+
 					dir = mouse.nextMove(maze.getArea(curr_x, curr_y));
 
 					this.moveMouse(maze.getMap(), dir);
-
 					ci.addOneChallengeMove();
 
-					if (isMouseGoal()) {
-						playing = false;
-						break;
-					}
-					
 					sleep(ci.getDelayChallenge());
 				}
 			}
+
+			playing = false;
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
+	}
+
+	public void playSearch(int moveCount) {
+		int dir = 0;
+		int cnt = 0;
+		if (moveCount<=0) cnt = -10;
+		
+		try {
+			while (cnt < moveCount && ci.getLastSearchMove() < ci.getLimitSearchMove()) {
+				dir = mouse.nextSearch(maze.getArea(curr_x, curr_y));
+				if (dir == -1)
+					break;
+
+				this.moveMouse(maze.getMap(), dir);
+				ci.addOneSearchMove();
+
+				if (moveCount>0)
+					cnt++;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void finish() {
@@ -125,6 +145,5 @@ public class PlayThread extends Thread {
 	public void setCurr_y(int curr_y) {
 		this.curr_y = curr_y;
 	}
-	
-	
+
 }
