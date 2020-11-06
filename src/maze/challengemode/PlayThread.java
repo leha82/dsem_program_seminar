@@ -23,6 +23,8 @@ public class PlayThread extends Thread {
 		curr_x = bm.getStart_x();
 		curr_y = bm.getStart_y();
 
+		this.mouse.initMouse();
+		
 		ci.addSearchCount();
 	}
 
