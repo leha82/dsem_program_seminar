@@ -8,17 +8,51 @@ public class mouse_YBH extends MouseChallenge {
 	private int dir;
 	private int cur_x, cur_y;
 	private graph g;
-	private boolean back;
+	private boolean answer, finish;
+	private boolean[] visited;
 	Vector<Integer> stack; // 미로 탐색 시 갔던 정점들 쌓는 스택
+	private int queue;
 
 	public mouse_YBH() {
 		dir = 1;
 		g = new graph();
-		back = false;
+		answer = false;
 		stack = new Vector<Integer>();
 		stack.add(0);
+		finish=false;
+		queue=0;
+	}
+	
+	public void initMouse() {
+		cur_x = 0;
+		cur_y = 0;
+		stack = new Vector<Integer>();
+		if(answer==true) {
+			visited=new boolean[g.v.capacity()];
+			dfs(0);
+		}
 	}
 
+	
+	public void dfs(int n) {
+		visited[n]=true;
+		// 탐색 순서 
+		stack.add(n);
+		if (g.v.elementAt(n).info==2 || finish ) {
+			finish=true;
+			return;
+		}
+		vertex vr=g.v.elementAt(n);
+		while(vr.v!= null) {
+			vr=vr.v;
+			dfs(g.v.indexOf(vr));
+		}
+		// 끝에 갔는데 없으면 그 요소 인덱스 삭제
+		stack.remove(stack.capacity()-1);
+	}
+	
+	
+	
 	class vertex {
 		public int x;
 		public int y;
@@ -31,7 +65,6 @@ public class mouse_YBH extends MouseChallenge {
 			this.info = info;
 		}
 	}
-
 	class graph {
 		Vector<vertex> v = new Vector<vertex>(); // 미로 탐색을 통해 그래프가 저장되는 곳 연결리스트로 구현됨
 		// 0=빈공간 1=벽 2=골인지점
@@ -70,18 +103,6 @@ public class mouse_YBH extends MouseChallenge {
 
 	@Override
 	public int nextSearch(int[][] smap) {
-		if (smap[1][0] != 1) {
-			g.addVertex(cur_x, cur_y-1, smap[1][0], g.v.elementAt(stack.lastElement()));
-		}
-		if (smap[1][2] != 1) {
-			g.addVertex(cur_x , cur_y+1, smap[1][2], g.v.elementAt(stack.lastElement()));
-		}
-		if (smap[2][1] != 1) {
-			g.addVertex(cur_x+1, cur_y, smap[2][1], g.v.elementAt(stack.lastElement()));
-		}
-		if(smap[0][1]!=1) {
-			g.addVertex(cur_x -1, cur_y, smap[0][1], g.v.elementAt(stack.lastElement()));
-		}
 
 		int[] rp_X = { 0, 2, 1, 0, 1 }; // right position by current dir
 		int[] rp_Y = { 0, 1, 2, 1, 0 };
@@ -98,6 +119,19 @@ public class mouse_YBH extends MouseChallenge {
 		int[] s_x= {0,-1,0,1,0};
 		int[] s_y= {0,0,1,0,-1};
 		this.checkMoved();
+
+		if (smap[1][0] != 1) {
+			g.addVertex(cur_x, cur_y-1, smap[1][0], g.v.elementAt(stack.lastElement()));
+		}
+		if (smap[1][2] != 1) {
+			g.addVertex(cur_x , cur_y+1, smap[1][2], g.v.elementAt(stack.lastElement()));
+		}
+		if (smap[2][1] != 1) {
+			g.addVertex(cur_x+1, cur_y, smap[2][1], g.v.elementAt(stack.lastElement()));
+		}
+		if(smap[0][1]!=1) {
+			g.addVertex(cur_x -1, cur_y, smap[0][1], g.v.elementAt(stack.lastElement()));
+		}
 
 		// 현재 방향을 기준으로 오른쪽을 검사
 		if (smap[rp_Y[dir]][rp_X[dir]] != 1) {
@@ -125,6 +159,23 @@ public class mouse_YBH extends MouseChallenge {
 
 	@Override
 	public int nextMove(int[][] smap) {
+		if(answer==true) {
+			vertex vi=g.v.elementAt(stack.indexOf(queue++));
+			
+			if (smap[1][0] != 1) {
+				g.addVertex(cur_x, cur_y-1, smap[1][0], g.v.elementAt(stack.lastElement()));
+			}
+			if (smap[1][2] != 1) {
+				g.addVertex(cur_x , cur_y+1, smap[1][2], g.v.elementAt(stack.lastElement()));
+			}
+			if (smap[2][1] != 1) {
+				g.addVertex(cur_x+1, cur_y, smap[2][1], g.v.elementAt(stack.lastElement()));
+			}
+			if(smap[0][1]!=1) {
+				g.addVertex(cur_x -1, cur_y, smap[0][1], g.v.elementAt(stack.lastElement()));
+			}
+			
+		}
 		int[] rp_X = { 0, 2, 1, 0, 1 }; // right position by current dir
 		int[] rp_Y = { 0, 1, 2, 1, 0 };
 
