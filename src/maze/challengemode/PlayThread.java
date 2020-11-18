@@ -86,7 +86,7 @@ public class PlayThread extends Thread {
 
 	}
 
-	public void playSearch(int moveCount) {
+	public boolean playSearch(int moveCount) {
 		int dir = 0;
 		int cnt = 0;
 		if (moveCount<=0) cnt = -10;
@@ -94,8 +94,9 @@ public class PlayThread extends Thread {
 		try {
 			while (cnt < moveCount && ci.getLastSearchMove() < ci.getLimitSearchMove()) {
 				dir = mouse.nextSearch(maze.getArea(curr_x, curr_y));
-				if (dir == -1)
+				if (dir == -1) {
 					break;
+				}
 
 				this.moveMouse(maze.getMap(), dir);
 				ci.addOneSearchMove();
@@ -107,6 +108,11 @@ public class PlayThread extends Thread {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		
+		if (dir == -1)
+			return false;
+		
+		return true;
 	}
 
 	public void finish() {

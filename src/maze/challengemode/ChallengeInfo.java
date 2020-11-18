@@ -25,7 +25,7 @@ public class ChallengeInfo {
 	// 선언 및 초기화
 	public ChallengeInfo() {
 		this.limitSearchCount = 3;
-		this.limitSearchMove = 30;
+		this.limitSearchMove = 1000000;
 		this.limitSearchTime = 60000;
 		this.limitChallengeTime = 60000;
 		this.delaySearch = 1;

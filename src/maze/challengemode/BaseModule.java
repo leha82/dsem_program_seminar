@@ -10,7 +10,7 @@ public class BaseModule {
 	private static String defaultMap = "testmap2";
 	private static String defaultMouseDirectory = "bin/mice";
 	public static String defaultMousePackage = "mice.";
-	private static String defaultMouse = "RightHandMouse";
+	private static String defaultMouse = "Mouse_SH";
 
 	public ArrayList<String> miceList;
 	public ArrayList<String> mapList;
@@ -34,7 +34,7 @@ public class BaseModule {
 	public void initialize() {
 		// map을 불러온다
 		loadMapList();
-		loadMap(defaultMap);
+		loadMap(mapName);
 
 		// mouse를 불러온다
 		loadMiceList();

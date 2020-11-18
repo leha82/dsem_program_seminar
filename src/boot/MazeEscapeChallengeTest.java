@@ -70,7 +70,7 @@ public class MazeEscapeChallengeTest extends JFrame {
 	
 	public void initChallengeInfo() {
 		this.ci.initialize();
-		this.ci.setLimitSearchMove(bm.getMapHeight() * bm.getMapWidth() / 3);
+		//this.ci.setLimitSearchMove(bm.getMapHeight() * bm.getMapWidth() / 3);
 	}
 	
 	public void initWindow() {
@@ -132,6 +132,7 @@ public class MazeEscapeChallengeTest extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Todo : 초기화 버튼을 눌렀을때 동작 추가
+				bm.initialize();
 				initChallengeInfo();
 				initWindow();
 				pt=null;
@@ -169,13 +170,18 @@ public class MazeEscapeChallengeTest extends JFrame {
 				}
 				
 				try {
-					pt.playSearch(1);
+					boolean result = pt.playSearch(1);
 					
 					changeTiles(pt.getCurr_x(), pt.getCurr_y());
 					
 					lbsSearchCount[ci.getSearchCount()].setText("탐색 횟수 : "+ (ci.getSearchCount()+1) +"         ");
 					lbsSearchTime[ci.getSearchCount()].setText("시간 : " + ci.getLastSearchTime()+ " ms         ");
 					lbsSearchMoveCount[ci.getSearchCount()].setText("이동수 : " + ci.getLastSearchMove() +"         ");
+					
+					if (!result) {
+						JOptionPane.showMessageDialog(null, "탐색이 종료되었습니다.");
+						pt = null;
+					}
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
 					e2.printStackTrace();
@@ -211,13 +217,18 @@ public class MazeEscapeChallengeTest extends JFrame {
 				}
 				
 				try {
-					pt.playSearch(10);
+					boolean result = pt.playSearch(10);
 					
 					changeTiles(pt.getCurr_x(), pt.getCurr_y());
 					
 					lbsSearchCount[ci.getSearchCount()].setText("탐색 횟수 : "+ (ci.getSearchCount()+1) +"         ");
 					lbsSearchTime[ci.getSearchCount()].setText("시간 : " + ci.getLastSearchTime()+ " ms         ");
 					lbsSearchMoveCount[ci.getSearchCount()].setText("이동수 : " + ci.getLastSearchMove() +"         ");
+					
+					if (!result) {
+						JOptionPane.showMessageDialog(null, "탐색이 종료되었습니다.");
+						pt = null;
+					}
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
 					e2.printStackTrace();
@@ -253,13 +264,18 @@ public class MazeEscapeChallengeTest extends JFrame {
 				}
 				
 				try {
-					pt.playSearch(-1);
+					boolean result = pt.playSearch(-1);
 					
 					changeTiles(pt.getCurr_x(), pt.getCurr_y());
 					
 					lbsSearchCount[ci.getSearchCount()].setText("탐색 횟수 : "+ (ci.getSearchCount()+1) +"         ");
 					lbsSearchTime[ci.getSearchCount()].setText("시간 : " + ci.getLastSearchTime()+ " ms         ");
 					lbsSearchMoveCount[ci.getSearchCount()].setText("이동수 : " + ci.getLastSearchMove() +"         ");
+					
+					if (!result) {
+						JOptionPane.showMessageDialog(null, "탐색이 종료되었습니다.");
+						pt = null;
+					}
 				} catch (Exception e2) {
 					System.out.println(e2.getMessage());
 					e2.printStackTrace();
