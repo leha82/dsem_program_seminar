@@ -69,7 +69,7 @@ public class RightHandMouse extends MouseChallenge {
 		} else {
 			// 직진방향이 막혀있으면, dir을 반대 방향 뒤로 돌기 -> nextMove();
 			dir = ut_Dir[dir];
-			dir = nextMove(smap);
+			dir = nextSearch(smap);
 		}
 
 		return dir;
