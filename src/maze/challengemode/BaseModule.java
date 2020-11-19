@@ -10,7 +10,7 @@ public class BaseModule {
 	private static String defaultMap = "testmap2";
 	private static String defaultMouseDirectory = "bin/mice";
 	public static String defaultMousePackage = "mice.";
-	private static String defaultMouse = "Mouse_SH";
+	private static String defaultMouse = "RightHandMouse";
 
 	public ArrayList<String> miceList;
 	public ArrayList<String> mapList;
