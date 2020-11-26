@@ -88,7 +88,7 @@ public class Mouse_LKJ extends MouseChallenge {
 //  const int BLOCKED = 2; // 돌아오면서 막은 길                             ->상수 [final)
 //  const int PATH = 3; //지나가면서 표시한 길                                   ->상수 [final)
 	
-	
+
 	
 //	int findMapPath(int x, int y) {
 //	    if(x<0 || y<0 || x>=N || y>=N) {
