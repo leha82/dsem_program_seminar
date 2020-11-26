@@ -82,7 +82,35 @@ public class Mouse_LKJ extends MouseChallenge {
 	// Mouse가 다음으로 움직일 방향을 정한다.
 	// 0: 제자리, 1: 위쪽, 2: 오른쪽, 3: 아래쪽, 4: 왼쪽, -1 : 탐색 종료
 
+//  ==============Recursive Method===================	
+//	const int PATHWAY = 0; // 지나갈 수 있는 길                               ->상수 [final)
+//  const int WALL = 1; // 벽						   ->상수 [final)
+//  const int BLOCKED = 2; // 돌아오면서 막은 길                             ->상수 [final)
+//  const int PATH = 3; //지나가면서 표시한 길                                   ->상수 [final)
+	
+	
+	
+//	int findMapPath(int x, int y) {
+//	    if(x<0 || y<0 || x>=N || y>=N) {
+//	        return 0;
+//	    }else if(map[x][y] != PATHWAY) return 0;
+//	    else if(x == N-1 && y == N-1) {
+//	        map[x][y] = PATH;
+//	        return 1;
+//	    }else {
+//	        map[x][y] = PATH;
+//	        if(findMapPath(x-1, y) || findMapPath(x, y+1)
+//	            || findMapPath(x+1, y) || findMapPath(x, y-1)) {
+//	            return 1;
+//	        }
+//	    map[x][y] = BLOCKED;
+//	    return 0;
+//	    }
+//	}
+// ====================================================
+	
 	public int nextMove(int[][] smap) {
+		
 		
 		int[] rp_X = { 0, 2, 1, 0, 1 }; // right position by current dir
 		int[] rp_Y = { 0, 1, 2, 1, 0 };
