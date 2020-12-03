@@ -240,11 +240,11 @@ public class Mouse_LKJ extends MouseChallenge {
 		System.out.println("focus : " + focus_x + "," + focus_y);
 		System.out.println("curr : " + curr_x + "," + curr_y);
 
-		System.out.print("path: ");
-		for (int i=dirStack.size()-1; i>=0; i--) {
-			System.out.print(dirStack.get(i) + "->");
-		}
-		System.out.println();
+		//System.out.print("path: ");
+		//for (int i=dirStack.size()-1; i>=0; i--) {
+		//	System.out.print(dirStack.get(i) + "->");
+		//}
+		//System.out.println();
 	}
 
 	public void printCheckMap(int[][] pmap) {
@@ -316,7 +316,7 @@ public class Mouse_LKJ extends MouseChallenge {
 		int[] ut_Dir = { 0, 3, 4, 1, 2 };
 		int[] lt_Dir = { 0, 4, 1, 2, 3 }; // ¿ÞÂÊ ¼³Á¤
 		this.overlabMap(smap);
-		this.printMap(map,x,y);
+//		this.printMap(map,x,y);
 		if (discoverDone()) {
 			dir = -1;
 			return dir;
@@ -359,7 +359,7 @@ public class Mouse_LKJ extends MouseChallenge {
 			}
 		}
 
-		// ¼¼¹øÂ° Å½»ö 
+		// ¼¼¹øÂ° Å½»ö - BFS
 		if (searchCount == 3) {
 			if(!isfocusfog) {
 				findFog();
