@@ -179,12 +179,12 @@ public class Mouse_LKJ extends MouseChallenge {
 			curr_y = q_y.poll();
 
 			int index = traceMap[curr_y][curr_x];
-			
-			// 현재점이 goal에 도달하면 최단거리를 찾은 것임
+			 
+			// 현재점이 fog에 도달하면 최단거리를 찾은 것임
 			if (map[curr_y][curr_x] == -1) {
-				focus_x = curr_x;
-				focus_y = curr_y;
-				isfocusfog=true;
+				focus_x = curr_x;// 도달 지점
+				focus_y = curr_y;// 도달 지점
+				isfocusfog=true;// 도달 할 점 찾은 상태
 				break;
 			}
 
@@ -303,7 +303,6 @@ public class Mouse_LKJ extends MouseChallenge {
 	public int nextSearch(int[][] smap) {
 
 		System.out.println("x:"+x+"y:"+y);
-		printMap(map, x, y);
 		int[] rp_X = { 0, 2, 1, 0, 1 }; // right position by current dir
 		int[] rp_Y = { 0, 1, 2, 1, 0 };
 
@@ -317,8 +316,7 @@ public class Mouse_LKJ extends MouseChallenge {
 		int[] ut_Dir = { 0, 3, 4, 1, 2 };
 		int[] lt_Dir = { 0, 4, 1, 2, 3 }; // 왼쪽 설정
 		this.overlabMap(smap);
-
-		printMap(map, x, y);
+		this.printMap(map,x,y);
 		if (discoverDone()) {
 			dir = -1;
 			return dir;
@@ -361,13 +359,13 @@ public class Mouse_LKJ extends MouseChallenge {
 			}
 		}
 
-		// 세번째 탐색 - 최대한 가운데로 직진
+		// 세번째 탐색 
 		if (searchCount == 3) {
 			if(!isfocusfog) {
 				findFog();
 				dir= dirStack.pop();
 				this.moveXY(dir);
-			}else if(focus_x==x && focus_y==y) {
+			}else if((focus_x==x-1 && focus_y==y)||(focus_x==x && focus_y==y+1)||(focus_x==x+1 && focus_y==y)||(focus_x==x && focus_y==y-1)) {
 				findFog();
 				dir= dirStack.pop();
 				this.moveXY(dir);
